@@ -238,12 +238,12 @@ const PensionCalculator: React.FC = () => {
 
   const resetCalculator = () => {
     console.log('Resetting calculator...');
-    setParams({
-      currentAge: 35,
-      retirementAge: 67,
-      currentBalance: 150000,
-      grossSalary: 20000,
-      monthlyDeposit: 4100,
+      setParams({
+        currentAge: 35,
+        retirementAge: 67,
+        currentBalance: 150000,
+        grossSalary: 20000,
+        monthlyDeposit: 4100,
       annualReturn: 4.38,
       employerCompensation: 6.00,
       employerContribution: 6.50,
@@ -253,10 +253,10 @@ const PensionCalculator: React.FC = () => {
       currentManagementFeeBalance: 0.50,
       coverManagementFeeDeposit: 0.90,
       coverManagementFeeBalance: 0.20,
-    });
-    setResult(null);
+      });
+      setResult(null);
     setShowResults(false);
-    setError(null);
+      setError(null);
     form.resetFields();
     console.log('Calculator reset completed');
   };
@@ -498,7 +498,7 @@ const PensionCalculator: React.FC = () => {
                   label={<span style={{ color: 'white' }}>הפרשת מעביד - פיצויים (%)</span>}
                 >
                                     <InputNumber
-                    value={params.employerCompensation}
+                      value={params.employerCompensation}
                     onChange={(value) => setParams(prev => ({ ...prev, employerCompensation: value ?? 0 }))}
                     min={0}
                     max={20}
@@ -522,7 +522,7 @@ const PensionCalculator: React.FC = () => {
                   label={<span style={{ color: 'white' }}>הפרשת מעביד - פנסיה (%)</span>}
                 >
                                     <InputNumber
-                    value={params.employerContribution}
+                      value={params.employerContribution}
                     onChange={(value) => setParams(prev => ({ ...prev, employerContribution: value ?? 0 }))}
                     min={0}
                     max={20}
@@ -690,7 +690,7 @@ const PensionCalculator: React.FC = () => {
                     step={0.01}
                     precision={2}
                     style={{ 
-                      width: '100%', 
+                      width: '100%',
                       borderRadius: '8px', 
                       color: 'white',
                       backgroundColor: 'rgba(0, 0, 0, 0.3)',
@@ -709,7 +709,7 @@ const PensionCalculator: React.FC = () => {
             <Row gutter={[16, 16]} justify="center">
               <Col xs={24} sm={12} md={8}>
                 <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}>
-                  <Button
+                <Button 
                     type="primary"
                     size="large"
                     block
@@ -719,18 +719,18 @@ const PensionCalculator: React.FC = () => {
                     style={{
                       background: 'linear-gradient(135deg, #faad14 0%, #d48806 100%)',
                       border: 'none',
-                      borderRadius: '12px',
+                    borderRadius: '12px', 
                       height: '48px',
                       fontSize: '16px',
-                      fontWeight: 600,
+                    fontWeight: 600,
                     }}
                   >
                     {loading ? 'מחשב נתונים חדשים...' : 'חשב פנסיה'}
-                  </Button>
+                </Button>
                 </motion.div>
               </Col>
               <Col xs={24} sm={12} md={8}>
-                <Button
+                <Button 
                   size="large"
                   block
                   onClick={resetCalculator}
@@ -738,7 +738,7 @@ const PensionCalculator: React.FC = () => {
                     background: 'rgba(255, 255, 255, 0.1)',
                     border: '1px solid rgba(255, 255, 255, 0.3)',
                       color: 'white',
-                    borderRadius: '12px',
+                    borderRadius: '12px', 
                     height: '48px',
                     fontSize: '16px',
                     fontWeight: 600,
