@@ -1,0 +1,315 @@
+/* Global styles for Ant Design customization */
+
+/* RTL support improvements */
+html[dir="rtl"] {
+  font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Segoe UI", Roboto, sans-serif;
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: rgba(0, 0, 0, 0.05);
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(0, 122, 255, 0.3);
+  border-radius: 10px;
+  transition: background 0.3s ease;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(0, 122, 255, 0.5);
+}
+
+/* Custom button animations */
+.ant-btn {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+}
+
+.ant-btn:not(.ant-btn-text):hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15) !important;
+}
+
+/* Primary button gradient */
+.ant-btn-primary {
+  background: linear-gradient(135deg, #007AFF 0%, #5AC8FA 100%) !important;
+  border: none !important;
+  box-shadow: 0 4px 12px rgba(0, 122, 255, 0.3) !important;
+}
+
+.ant-btn-primary:hover {
+  background: linear-gradient(135deg, #0056CC 0%, #007AFF 100%) !important;
+  box-shadow: 0 8px 20px rgba(0, 122, 255, 0.4) !important;
+}
+
+.ant-btn-primary:active {
+  background: linear-gradient(135deg, #0056CC 0%, #007AFF 100%) !important;
+  transform: translateY(0px);
+}
+
+/* Card hover animations */
+.ant-card {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+}
+
+.ant-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.15) !important;
+}
+
+/* Input focus animations */
+.ant-input:focus,
+.ant-input-focused {
+  transform: scale(1.02);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 0 0 2px rgba(0, 122, 255, 0.2) !important;
+}
+
+.ant-select-focused .ant-select-selector {
+  transform: scale(1.02);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 0 0 2px rgba(0, 122, 255, 0.2) !important;
+}
+
+/* Loading animations */
+@keyframes slideInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.slide-in-up {
+  animation: slideInUp 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Gradient backgrounds */
+.gradient-bg-primary {
+  background: linear-gradient(135deg, #007AFF 0%, #5AC8FA 100%);
+}
+
+.gradient-bg-success {
+  background: linear-gradient(135deg, #34C759 0%, #30D158 100%);
+}
+
+.gradient-bg-warning {
+  background: linear-gradient(135deg, #FF9500 0%, #FFCC00 100%);
+}
+
+.gradient-bg-error {
+  background: linear-gradient(135deg, #FF3B30 0%, #FF453A 100%);
+}
+
+/* Glass morphism effect */
+.glass-card {
+  background: rgba(255, 255, 255, 0.8) !important;
+  backdrop-filter: blur(10px) !important;
+  border: 1px solid rgba(255, 255, 255, 0.2) !important;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1) !important;
+}
+
+/* Dark mode glass effect */
+.glass-card-dark {
+  background: rgba(0, 0, 0, 0.1) !important;
+  backdrop-filter: blur(10px) !important;
+  border: 1px solid rgba(255, 255, 255, 0.1) !important;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3) !important;
+}
+
+/* Typography improvements */
+.ant-typography h1,
+.ant-typography h2,
+.ant-typography h3,
+.ant-typography h4,
+.ant-typography h5,
+.ant-typography h6 {
+  font-weight: 600 !important;
+}
+
+.ant-typography h1 {
+  font-size: clamp(2rem, 5vw, 3.5rem) !important;
+  line-height: 1.2 !important;
+  letter-spacing: -0.02em !important;
+}
+
+.ant-typography h2 {
+  font-size: clamp(1.5rem, 4vw, 2.5rem) !important;
+  line-height: 1.3 !important;
+  letter-spacing: -0.01em !important;
+}
+
+.ant-typography h3 {
+  font-size: clamp(1.25rem, 3vw, 2rem) !important;
+  line-height: 1.4 !important;
+}
+
+/* Responsive utilities */
+@media (max-width: 768px) {
+  .ant-btn {
+    height: 40px !important;
+    padding: 0 16px !important;
+    font-size: 14px !important;
+  }
+  
+  .ant-card {
+    margin: 8px !important;
+  }
+  
+  .ant-card-body {
+    padding: 16px !important;
+  }
+}
+
+@media (max-width: 576px) {
+  .ant-layout-header {
+    padding: 0 16px !important;
+  }
+  
+  .ant-btn {
+    height: 36px !important;
+    padding: 0 12px !important;
+    font-size: 13px !important;
+  }
+}
+
+/* Custom spacing utilities */
+.p-0 { padding: 0 !important; }
+.p-1 { padding: 8px !important; }
+.p-2 { padding: 16px !important; }
+.p-3 { padding: 24px !important; }
+.p-4 { padding: 32px !important; }
+
+.m-0 { margin: 0 !important; }
+.m-1 { margin: 8px !important; }
+.m-2 { margin: 16px !important; }
+.m-3 { margin: 24px !important; }
+.m-4 { margin: 32px !important; }
+
+/* Text alignment utilities */
+.text-center { text-align: center !important; }
+.text-right { text-align: right !important; }
+.text-left { text-align: left !important; }
+
+/* Direction utilities */
+.dir-rtl { direction: rtl !important; }
+.dir-ltr { direction: ltr !important; }
+
+/* Flexbox utilities */
+.d-flex { display: flex !important; }
+.flex-column { flex-direction: column !important; }
+.flex-row { flex-direction: row !important; }
+.justify-center { justify-content: center !important; }
+.justify-between { justify-content: space-between !important; }
+.justify-around { justify-content: space-around !important; }
+.align-center { align-items: center !important; }
+.align-start { align-items: flex-start !important; }
+.align-end { align-items: flex-end !important; }
+
+/* CRM Dropdown Menu Styling */
+.crm-dropdown-menu .ant-dropdown {
+  background: #ffffff !important;
+  backdrop-filter: blur(20px) !important;
+  border: 1px solid rgba(0, 0, 0, 0.08) !important;
+  box-shadow: 0 25px 50px rgba(0, 0, 0, 0.35) !important;
+  border-radius: 20px !important;
+  min-width: 320px !important;
+  padding: 16px 0 !important;
+  z-index: 9999 !important;
+}
+
+.crm-dropdown-menu .ant-dropdown-menu {
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+}
+
+.crm-dropdown-menu .ant-dropdown-menu-item {
+  padding: 12px 24px !important;
+  border-radius: 12px !important;
+  margin: 4px 16px !important;
+  transition: all 0.3s ease !important;
+  direction: rtl !important;
+}
+
+.crm-dropdown-menu .ant-dropdown-menu-item:hover {
+  background: rgba(0, 122, 255, 0.1) !important;
+  transform: translateX(-4px) !important;
+}
+
+.crm-dropdown-menu .ant-dropdown-menu-item-group-title {
+  color: #ffffff !important;
+  font-weight: 600 !important;
+  font-size: 12px !important;
+  padding: 8px 24px 4px 24px !important;
+  direction: rtl !important;
+  text-align: right !important;
+}
+
+.crm-dropdown-menu .ant-dropdown-menu-item-divider {
+  background-color: rgba(0, 0, 0, 0.08) !important;
+  margin: 16px 16px !important;
+}
+
+/* Custom Input Number Styling for White Text - Pension Calculator */
+.pension-calculator .ant-input-number {
+  color: white !important;
+  background-color: rgba(0, 0, 0, 0.3) !important;
+  border-color: white !important;
+}
+
+.pension-calculator .ant-input-number input {
+  color: white !important;
+  background-color: transparent !important;
+}
+
+.pension-calculator .ant-input-number:hover {
+  border-color: white !important;
+}
+
+.pension-calculator .ant-input-number:focus,
+.pension-calculator .ant-input-number-focused {
+  border-color: white !important;
+  box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.2) !important;
+}
+
+.pension-calculator .ant-input-number .ant-input-number-input {
+  color: white !important;
+}
+
+.pension-calculator .ant-input-number-disabled {
+  color: white !important;
+  background-color: rgba(0, 0, 0, 0.3) !important;
+  border-color: white !important;
+}
+
+.pension-calculator .ant-input-number-disabled input {
+  color: white !important;
+}
+
+.pension-calculator .ant-input-number-disabled .ant-input-number-input {
+  color: white !important;
+}
+
+/* Custom colors */
+.text-primary { color: #007AFF !important; }
+.text-success { color: #34C759 !important; }
+.text-warning { color: #FF9500 !important; }
+.text-error { color: #FF3B30 !important; }
+.text-secondary { color: #8E8E93 !important; }
+.text-tertiary { color: #C7C7CC !important; }
+
+.bg-primary { background-color: #007AFF !important; }
+.bg-success { background-color: #34C759 !important; }
+.bg-warning { background-color: #FF9500 !important; }
+.bg-error { background-color: #FF3B30 !important; }
+.bg-white { background-color: #ffffff !important; }
+.bg-light { background-color: #f8f9fa !important; }

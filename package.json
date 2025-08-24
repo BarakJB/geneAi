@@ -1,0 +1,24 @@
+{
+  "name": "agents-calculator",
+  "version": "1.0.0",
+  "description": "Pension and Education Fund Calculator for Insurance Agents",
+  "main": "server/index.js",
+  "scripts": {
+    "dev": "concurrently \"npm run server\" \"npm run client\"",
+    "dev:all": "concurrently \"npm run server\" \"npm run client\" \"npm run site\"",
+    "server": "cd server && nodemon index.js",
+    "client": "cd client && npm run dev",
+    "site": "cd site && npm run dev",
+    "build": "cd client && npm run build",
+    "build:site": "cd site && npm run build",
+    "build:all": "npm run build && npm run build:site",
+    "install-all": "npm install && cd client && npm install && cd ../server && npm install && cd ../site && npm install"
+  },
+  "keywords": ["pension", "calculator", "insurance", "react", "nodejs"],
+  "author": "Insurance Agent Calculator",
+  "license": "MIT",
+  "devDependencies": {
+    "concurrently": "^7.6.0",
+    "nodemon": "^2.0.20"
+  }
+}
