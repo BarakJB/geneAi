@@ -4,7 +4,7 @@ import {
   Col,
   Card,
   Typography,
-  Button,
+
   Upload,
   Spin,
   Tag,
@@ -63,7 +63,7 @@ const PayslipAnalyzer: React.FC = () => {
   const [discrepancies, setDiscrepancies] = useState<DiscrepancyItem[]>([]);
   const [analysisComplete, setAnalysisComplete] = useState(false);
 
-  const analyzePayslip = async (file: File) => {
+  const analyzePayslip = async () => {
     setAnalyzing(true);
     setAnalysisComplete(false);
 
@@ -152,7 +152,7 @@ const PayslipAnalyzer: React.FC = () => {
     accept: '.pdf,.jpg,.jpeg,.png',
     beforeUpload: (file) => {
       setUploadedFile(file);
-      analyzePayslip(file);
+      analyzePayslip();
       return false; // Prevent automatic upload
     },
     onRemove: () => {
@@ -451,7 +451,7 @@ const PayslipAnalyzer: React.FC = () => {
                 <Panel 
                   header={
                     <Space>
-                      <ExpandAltOutlined style={{ color: '#faad14' }} />
+                      <WarningOutlined style={{ color: '#faad14' }} />
                       <Text style={{ color: 'white', fontSize: '16px', fontWeight: 600 }}>
                         פרוט מפורט של התלוש
                       </Text>

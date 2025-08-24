@@ -477,7 +477,7 @@ const SalaryCalculator: React.FC = () => {
                     onChange={(value) => handleInputChange('baseSalary', value || 0)}
                     style={{ width: '100%', borderRadius: '8px' }}
                     formatter={(value) => `₪ ${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
-                    parser={(value) => value!.replace(/₪\s?|(,*)/g, '')}
+                    parser={(value) => parseFloat(value!.replace(/₪\s?|(,*)/g, '')) || 0}
                     placeholder="הזן שכר בסיס"
                   />
                 </Form.Item>
@@ -600,7 +600,7 @@ const SalaryCalculator: React.FC = () => {
                         onChange={(value) => handleInputChange('allowances.health', value || 0)}
                         style={{ width: '100%', borderRadius: '8px' }}
                         formatter={(value) => `₪ ${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
-                        parser={(value) => value!.replace(/₪\s?|(,*)/g, '')}
+                        parser={(value) => parseFloat(value!.replace(/₪\s?|(,*)/g, '')) || 0}
                         placeholder="0"
                       />
                     </Form.Item>
@@ -612,7 +612,7 @@ const SalaryCalculator: React.FC = () => {
                         onChange={(value) => handleInputChange('allowances.transport', value || 0)}
                         style={{ width: '100%', borderRadius: '8px' }}
                         formatter={(value) => `₪ ${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
-                        parser={(value) => value!.replace(/₪\s?|(,*)/g, '')}
+                        parser={(value) => parseFloat(value!.replace(/₪\s?|(,*)/g, '')) || 0}
                         placeholder="0"
                       />
                     </Form.Item>
@@ -624,7 +624,7 @@ const SalaryCalculator: React.FC = () => {
                         onChange={(value) => handleInputChange('allowances.food', value || 0)}
                         style={{ width: '100%', borderRadius: '8px' }}
                         formatter={(value) => `₪ ${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
-                        parser={(value) => value!.replace(/₪\s?|(,*)/g, '')}
+                        parser={(value) => parseFloat(value!.replace(/₪\s?|(,*)/g, '')) || 0}
                         placeholder="0"
                       />
                     </Form.Item>
@@ -636,7 +636,7 @@ const SalaryCalculator: React.FC = () => {
                         onChange={(value) => handleInputChange('allowances.seniority', value || 0)}
                         style={{ width: '100%', borderRadius: '8px' }}
                         formatter={(value) => `₪ ${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
-                        parser={(value) => value!.replace(/₪\s?|(,*)/g, '')}
+                        parser={(value) => parseFloat(value!.replace(/₪\s?|(,*)/g, '')) || 0}
                         placeholder="0"
                       />
                     </Form.Item>
@@ -648,7 +648,7 @@ const SalaryCalculator: React.FC = () => {
                         onChange={(value) => handleInputChange('allowances.education', value || 0)}
                         style={{ width: '100%', borderRadius: '8px' }}
                         formatter={(value) => `₪ ${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
-                        parser={(value) => value!.replace(/₪\s?|(,*)/g, '')}
+                        parser={(value) => parseFloat(value!.replace(/₪\s?|(,*)/g, '')) || 0}
                         placeholder="0"
                       />
                     </Form.Item>
@@ -686,7 +686,7 @@ const SalaryCalculator: React.FC = () => {
                           onChange={(value) => handleInputChange('carAllowanceAmount', value || 0)}
                           style={{ width: '100%', borderRadius: '8px' }}
                           formatter={(value) => `₪ ${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
-                          parser={(value) => value!.replace(/₪\s?|(,*)/g, '')}
+                          parser={(value) => parseFloat(value!.replace(/₪\s?|(,*)/g, '')) || 0}
                         />
                       </Form.Item>
                     )}
@@ -709,7 +709,7 @@ const SalaryCalculator: React.FC = () => {
                           onChange={(value) => handleInputChange('phoneAllowanceAmount', value || 0)}
                           style={{ width: '100%', borderRadius: '8px' }}
                           formatter={(value) => `₪ ${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
-                          parser={(value) => value!.replace(/₪\s?|(,*)/g, '')}
+                          parser={(value) => parseFloat(value!.replace(/₪\s?|(,*)/g, '')) || 0}
                         />
                       </Form.Item>
                     )}
@@ -732,7 +732,7 @@ const SalaryCalculator: React.FC = () => {
                           onChange={(value) => handleInputChange('travelExpensesAmount', value || 0)}
                           style={{ width: '100%', borderRadius: '8px' }}
                           formatter={(value) => `₪ ${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
-                          parser={(value) => value!.replace(/₪\s?|(,*)/g, '')}
+                          parser={(value) => parseFloat(value!.replace(/₪\s?|(,*)/g, '')) || 0}
                         />
                       </Form.Item>
                     )}
@@ -765,7 +765,7 @@ const SalaryCalculator: React.FC = () => {
                             onChange={(value) => handleInputChange('childAllowancePerChild', value || 0)}
                             style={{ width: '100%', borderRadius: '8px' }}
                             formatter={(value) => `₪ ${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
-                            parser={(value) => value!.replace(/₪\s?|(,*)/g, '')}
+                            parser={(value) => parseFloat(value!.replace(/₪\s?|(,*)/g, '')) || 0}
                           />
                         </Form.Item>
                       </>
@@ -829,7 +829,7 @@ const SalaryCalculator: React.FC = () => {
                         precision={1}
                         style={{ width: '100%', borderRadius: '8px' }}
                         formatter={(value) => `${value}%`}
-                        parser={(value) => value!.replace('%', '')}
+                        parser={(value) => parseFloat(value!.replace('%', '')) || 0}
                       />
                     </Form.Item>
                   </Col>
@@ -845,7 +845,7 @@ const SalaryCalculator: React.FC = () => {
                         precision={1}
                         style={{ width: '100%', borderRadius: '8px' }}
                         formatter={(value) => `${value}%`}
-                        parser={(value) => value!.replace('%', '')}
+                        parser={(value) => parseFloat(value!.replace('%', '')) || 0}
                       />
                     </Form.Item>
                   </Col>
@@ -861,7 +861,7 @@ const SalaryCalculator: React.FC = () => {
                         precision={1}
                         style={{ width: '100%', borderRadius: '8px' }}
                         formatter={(value) => `${value}%`}
-                        parser={(value) => value!.replace('%', '')}
+                        parser={(value) => parseFloat(value!.replace('%', '')) || 0}
                       />
                     </Form.Item>
                   </Col>
@@ -877,7 +877,7 @@ const SalaryCalculator: React.FC = () => {
                         precision={1}
                         style={{ width: '100%', borderRadius: '8px' }}
                         formatter={(value) => `${value}%`}
-                        parser={(value) => value!.replace('%', '')}
+                        parser={(value) => parseFloat(value!.replace('%', '')) || 0}
                       />
                     </Form.Item>
                   </Col>
@@ -890,7 +890,7 @@ const SalaryCalculator: React.FC = () => {
                         min={0}
                         style={{ width: '100%', borderRadius: '8px' }}
                         formatter={(value) => `₪ ${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
-                        parser={(value) => value!.replace(/₪\s?|(,*)/g, '')}
+                        parser={(value) => parseFloat(value!.replace(/₪\s?|(,*)/g, '')) || 0}
                       />
                     </Form.Item>
                   </Col>
@@ -903,7 +903,7 @@ const SalaryCalculator: React.FC = () => {
                         min={0}
                         style={{ width: '100%', borderRadius: '8px' }}
                         formatter={(value) => `₪ ${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
-                        parser={(value) => value!.replace(/₪\s?|(,*)/g, '')}
+                        parser={(value) => parseFloat(value!.replace(/₪\s?|(,*)/g, '')) || 0}
                       />
                     </Form.Item>
                   </Col>
@@ -916,7 +916,7 @@ const SalaryCalculator: React.FC = () => {
                         min={0}
                         style={{ width: '100%', borderRadius: '8px' }}
                         formatter={(value) => `₪ ${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
-                        parser={(value) => value!.replace(/₪\s?|(,*)/g, '')}
+                        parser={(value) => parseFloat(value!.replace(/₪\s?|(,*)/g, '')) || 0}
                       />
                     </Form.Item>
                   </Col>

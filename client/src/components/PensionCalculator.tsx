@@ -441,7 +441,7 @@ const PensionCalculator: React.FC = () => {
                 </Form.Item>
               </Col>
 
-              <Col xs={24} sm={12}>
+              <Col xs={24} sm={12} lg={8}>
                 <Form.Item 
                   label={<span style={{ color: 'white' }}>תשלום חודשי מחושב</span>}
                 >
@@ -449,7 +449,8 @@ const PensionCalculator: React.FC = () => {
                     value={params.monthlyDeposit}
                     disabled
                     style={{ 
-                      width: '100%', 
+                      width: '100%',
+                      maxWidth: '200px',
                       borderRadius: '8px',
                       color: 'white',
                       backgroundColor: 'rgba(0, 0, 0, 0.3)',
@@ -460,7 +461,7 @@ const PensionCalculator: React.FC = () => {
                 </Form.Item>
               </Col>
 
-              <Col xs={24} sm={12}>
+              <Col xs={24} sm={12} lg={8}>
                 <Form.Item 
                   label={<span style={{ color: 'white' }}>תשואה שנתית (%)</span>}
                 >
@@ -472,7 +473,8 @@ const PensionCalculator: React.FC = () => {
                     step={0.01}
                     precision={2}
                     style={{ 
-                      width: '100%', 
+                      width: '100%',
+                      maxWidth: '150px',
                       borderRadius: '8px', 
                       color: 'white',
                       backgroundColor: 'rgba(0, 0, 0, 0.3)',
@@ -598,7 +600,7 @@ const PensionCalculator: React.FC = () => {
                 </Title>
               </Col>
               
-              <Col xs={24} sm={12}>
+              <Col xs={24} sm={12} lg={8}>
                 <Form.Item 
                   label={<span style={{ color: 'white' }}>דמי ניהול על הפקדות נוכחי (%)</span>}
                 >
@@ -610,7 +612,8 @@ const PensionCalculator: React.FC = () => {
                     step={0.01}
                     precision={2}
                     style={{ 
-                      width: '100%', 
+                      width: '100%',
+                      maxWidth: '150px',
                       borderRadius: '8px', 
                       color: 'white',
                       backgroundColor: 'rgba(0, 0, 0, 0.3)',
@@ -622,7 +625,7 @@ const PensionCalculator: React.FC = () => {
                 </Form.Item>
               </Col>
 
-              <Col xs={24} sm={12}>
+              <Col xs={24} sm={12} lg={8}>
                 <Form.Item 
                   label={<span style={{ color: 'white' }}>דמי ניהול על צבירה נוכחי (%)</span>}
                 >
@@ -634,7 +637,8 @@ const PensionCalculator: React.FC = () => {
                     step={0.01}
                     precision={2}
                     style={{ 
-                      width: '100%', 
+                      width: '100%',
+                      maxWidth: '150px',
                       borderRadius: '8px', 
                       color: 'white',
                       backgroundColor: 'rgba(0, 0, 0, 0.3)',
@@ -654,7 +658,7 @@ const PensionCalculator: React.FC = () => {
                 </Title>
               </Col>
               
-              <Col xs={24} sm={12}>
+              <Col xs={24} sm={12} lg={8}>
                 <Form.Item 
                   label={<span style={{ color: 'white' }}>דמי ניהול על הפקדות חדשים (%)</span>}
                 >
@@ -666,7 +670,8 @@ const PensionCalculator: React.FC = () => {
                     step={0.01}
                     precision={2}
                     style={{ 
-                      width: '100%', 
+                      width: '100%',
+                      maxWidth: '150px',
                       borderRadius: '8px', 
                       color: 'white',
                       backgroundColor: 'rgba(0, 0, 0, 0.3)',
@@ -678,7 +683,7 @@ const PensionCalculator: React.FC = () => {
                 </Form.Item>
               </Col>
 
-              <Col xs={24} sm={12}>
+              <Col xs={24} sm={12} lg={8}>
                 <Form.Item 
                   label={<span style={{ color: 'white' }}>דמי ניהול על צבירה חדשים (%)</span>}
                 >
@@ -691,6 +696,7 @@ const PensionCalculator: React.FC = () => {
                     precision={2}
                     style={{ 
                       width: '100%',
+                      maxWidth: '150px',
                       borderRadius: '8px', 
                       color: 'white',
                       backgroundColor: 'rgba(0, 0, 0, 0.3)',

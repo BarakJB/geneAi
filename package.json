@@ -14,11 +14,20 @@
     "build:all": "npm run build && npm run build:site",
     "install-all": "npm install && cd client && npm install && cd ../server && npm install && cd ../site && npm install"
   },
-  "keywords": ["pension", "calculator", "insurance", "react", "nodejs"],
+  "keywords": [
+    "pension",
+    "calculator",
+    "insurance",
+    "react",
+    "nodejs"
+  ],
   "author": "Insurance Agent Calculator",
   "license": "MIT",
   "devDependencies": {
     "concurrently": "^7.6.0",
     "nodemon": "^2.0.20"
+  },
+  "dependencies": {
+    "emailjs-com": "^3.2.0"
   }
 }

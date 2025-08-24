@@ -142,7 +142,7 @@ const Integrations: React.FC = () => {
           responseData = await response.text();
         }
       } catch (parseError) {
-        responseData = `Error parsing response: ${parseError.message}`;
+        responseData = `Error parsing response: ${(parseError as Error).message}`;
       }
 
       const responseObj: Response = {
@@ -161,7 +161,7 @@ const Integrations: React.FC = () => {
       console.error('Request failed:', error);
       
       let errorMessage = 'שגיאת רשת';
-      if (error.name === 'TypeError' && error.message.includes('Failed to fetch')) {
+      if ((error as Error).name === 'TypeError' && (error as Error).message.includes('Failed to fetch')) {
         if (currentRequest.url.includes('localhost')) {
           errorMessage = `שגיאת רשת: לא ניתן להתחבר ל-${currentRequest.url}. בדוק שהשרת פועל וזמין`;
         } else {
@@ -173,7 +173,7 @@ const Integrations: React.FC = () => {
         status: 0,
         statusText: 'Network Error',
         headers: {},
-        data: { error: errorMessage, details: error.message },
+        data: { error: errorMessage, details: (error as Error).message },
         time: 0,
         size: 0,
       };
@@ -360,7 +360,7 @@ const Integrations: React.FC = () => {
 
         {/* Debug Console Alert */}
         <Alert
-          severity="info" 
+          type="info" 
           style={{
             marginBottom: '24px',
             backgroundColor: 'rgba(59, 130, 246, 0.1)',

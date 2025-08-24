@@ -146,7 +146,7 @@ const Dashboard: React.FC = () => {
         transition={{ duration: 0.6 }}
       >
         {/* Welcome Section */}
-        <Card style={welcomeCardStyle} bodyStyle={{ padding: '32px' }}>
+        <Card style={welcomeCardStyle} styles={{ body: { padding: '32px' } }}>
           <Row align="middle" justify="space-between">
             <Col>
               <Space align="center" size="large">
@@ -165,7 +165,7 @@ const Dashboard: React.FC = () => {
                 </motion.div>
                 <div style={{ direction: 'rtl' }}>
                   <Title level={2} style={{ color: 'white', margin: 0, fontSize: 'clamp(1.5rem, 4vw, 2.5rem)' }}>
-                    ברוך הבא למערכת CRM! 👋
+                    הבית לסוכן
                   </Title>
                   <Text style={{ color: 'rgba(255, 255, 255, 0.8)', fontSize: '18px' }}>
                     {currentTime.toLocaleDateString('he-IL', { 
@@ -225,7 +225,7 @@ const Dashboard: React.FC = () => {
                     background: card.bgColor,
                     border: `1px solid ${card.color}40`,
                   }}
-                  bodyStyle={{ padding: '24px' }}
+                  styles={{ body: { padding: '24px' } }}
                 >
                   <Row justify="space-between" align="middle">
                     <Col>
@@ -289,12 +289,14 @@ const Dashboard: React.FC = () => {
                   </Space>
                 }
                 style={cardStyle}
-                headStyle={{ 
-                  background: 'transparent', 
-                  borderBottom: '1px solid rgba(255, 255, 255, 0.15)',
-                  direction: 'rtl'
+                styles={{ 
+                  header: { 
+                    background: 'transparent', 
+                    borderBottom: '1px solid rgba(255, 255, 255, 0.15)',
+                    direction: 'rtl'
+                  },
+                  body: { padding: '24px', direction: 'rtl' }
                 }}
-                bodyStyle={{ padding: '24px', direction: 'rtl' }}
               >
                 <Row gutter={[16, 16]}>
                   <Col span={12}>
@@ -375,12 +377,14 @@ const Dashboard: React.FC = () => {
                   </Space>
                 }
                 style={cardStyle}
-                headStyle={{ 
-                  background: 'transparent', 
-                  borderBottom: '1px solid rgba(255, 255, 255, 0.15)',
-                  direction: 'rtl'
+                styles={{ 
+                  header: { 
+                    background: 'transparent', 
+                    borderBottom: '1px solid rgba(255, 255, 255, 0.15)',
+                    direction: 'rtl'
+                  },
+                  body: { padding: '24px', direction: 'rtl' }
                 }}
-                bodyStyle={{ padding: '24px', direction: 'rtl' }}
               >
                 <Timeline
                   items={recentActivities.map((activity) => ({
@@ -440,12 +444,14 @@ const Dashboard: React.FC = () => {
                   </Space>
                 }
                 style={cardStyle}
-                headStyle={{ 
-                  background: 'transparent', 
-                  borderBottom: '1px solid rgba(255, 255, 255, 0.15)',
-                  direction: 'rtl'
+                styles={{ 
+                  header: { 
+                    background: 'transparent', 
+                    borderBottom: '1px solid rgba(255, 255, 255, 0.15)',
+                    direction: 'rtl'
+                  },
+                  body: { padding: '24px', direction: 'rtl' }
                 }}
-                bodyStyle={{ padding: '24px', direction: 'rtl' }}
               >
                 <Row gutter={[16, 16]}>
                   <Col xs={24} sm={12} md={6}>

@@ -7,6 +7,8 @@ import {
   Alert,
   Form,
   Divider,
+  Space,
+  message,
 } from 'antd';
 import {
   EyeInvisibleOutlined,
@@ -16,18 +18,37 @@ import {
   ShopOutlined,
   LoginOutlined,
   LoadingOutlined,
+  MailOutlined,
+  PhoneOutlined,
+  ContactsOutlined,
+  ArrowLeftOutlined,
+  SendOutlined,
 } from '@ant-design/icons';
 import { motion } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
+import emailjs from '@emailjs/browser';
+import { EMAIL_CONFIG_DEV } from '../config/email';
 
 const { Title, Text } = Typography;
+const { TextArea } = Input;
+
+interface ContactForm {
+  firstName: string;
+  lastName: string;
+  email: string;
+  phone: string;
+  description: string;
+}
 
 const Login: React.FC = () => {
   const navigate = useNavigate();
   const [form] = Form.useForm();
+  const [contactForm] = Form.useForm();
 
   const [error, setError] = useState<string>('');
   const [loading, setLoading] = useState(false);
+  const [showContact, setShowContact] = useState(false);
+  const [contactLoading, setContactLoading] = useState(false);
 
   const handleSubmit = async (values: { username: string; password: string }) => {
     setLoading(true);
@@ -61,32 +82,72 @@ const Login: React.FC = () => {
     form.setFieldsValue({ username: 'admin', password: 'password' });
   };
 
+  const handleContactSubmit = async (values: ContactForm) => {
+    setContactLoading(true);
+    
+    try {
+      // הגדרות EmailJS - תצטרך לעדכן את הערכים האלה
+      const emailJSParams = {
+        firstName: values.firstName,
+        lastName: values.lastName,
+        email: values.email,
+        phone: values.phone,
+        description: values.description,
+        to_email: 'yacov131@gmail.com', // המייל שלך
+        date: new Date().toLocaleDateString('he-IL') + ' ' + new Date().toLocaleTimeString('he-IL')
+      };
+
+      // שליחה עם EmailJS
+      const result = await emailjs.send(
+        EMAIL_CONFIG_DEV.SERVICE_ID,
+        EMAIL_CONFIG_DEV.TEMPLATE_ID,
+        emailJSParams,
+        EMAIL_CONFIG_DEV.USER_ID
+      );
+
+      if (result.status === 200) {
+        message.success('הפניה נשלחה בהצלחה! נחזור אליך בהקדם');
+        contactForm.resetFields();
+        setShowContact(false);
+      } else {
+        message.error('שגיאה בשליחת הפניה');
+      }
+      
+    } catch (error) {
+      console.error('Error sending contact form:', error);
+      message.error('שגיאה בשליחת הפניה, אנא נסה שנית');
+    } finally {
+      setContactLoading(false);
+    }
+  };
+
   const containerStyle: React.CSSProperties = {
-    minHeight: '100vh',
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    background: 'linear-gradient(135deg, #0f0f23 0%, #1a1a2e 50%, #16213e 100%)',
+        minHeight: '100vh',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        background: 'linear-gradient(135deg, #0f0f23 0%, #1a1a2e 50%, #16213e 100%)',
     padding: '16px',
-    position: 'relative',
-    overflow: 'hidden',
+        position: 'relative',
+        overflow: 'hidden',
   };
 
   const overlayStyle: React.CSSProperties = {
-    content: '""',
-    position: 'absolute',
-    top: 0,
-    left: 0,
-    right: 0,
-    bottom: 0,
-    background: 'radial-gradient(circle at 20% 80%, rgba(120, 119, 198, 0.3) 0%, transparent 50%), radial-gradient(circle at 80% 20%, rgba(255, 119, 198, 0.3) 0%, transparent 50%)',
-    opacity: 0.4,
+          content: '""',
+          position: 'absolute',
+          top: 0,
+          left: 0,
+          right: 0,
+          bottom: 0,
+          background: 'radial-gradient(circle at 20% 80%, rgba(120, 119, 198, 0.3) 0%, transparent 50%), radial-gradient(circle at 80% 20%, rgba(255, 119, 198, 0.3) 0%, transparent 50%)',
+          opacity: 0.4,
     pointerEvents: 'none',
   };
 
   const cardStyle: React.CSSProperties = {
     maxWidth: '500px',
-    width: '100%',
+    width: '60%',
+    minWidth: '400px',
     borderRadius: '24px',
     background: 'rgba(255, 255, 255, 0.98)',
     backdropFilter: 'blur(20px)',
@@ -120,6 +181,180 @@ const Login: React.FC = () => {
     overflow: 'hidden',
   };
 
+  // Contact Form Component
+  const renderContactForm = () => (
+    <Card style={cardStyle} styles={{ body: { padding: '48px' } }}>
+      {/* Header */}
+      <div style={{ textAlign: 'center', marginBottom: '32px' }}>
+        <motion.div
+          initial={{ scale: 0, rotate: -180 }}
+          animate={{ scale: 1, rotate: 0 }}
+          transition={{ delay: 0.2, type: 'spring', duration: 1 }}
+        >
+          <div style={iconContainerStyle}>
+            <ContactsOutlined style={{ fontSize: '40px', color: 'white' }} />
+          </div>
+        </motion.div>
+
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.4, duration: 0.6 }}
+        >
+          <Title
+            level={1}
+            style={{
+              fontWeight: 800,
+              color: '#1a1a1a',
+              marginBottom: '8px',
+              direction: 'rtl',
+              fontSize: 'clamp(1.5rem, 4vw, 2.5rem)',
+            }}
+          >
+            יצירת קשר למוצר המלא
+          </Title>
+          <Text
+            type="secondary"
+            style={{ 
+              direction: 'rtl', 
+              fontSize: '16px',
+              display: 'block',
+              marginBottom: '16px'
+            }}
+          >
+            מלא את הפרטים ונחזור אליך עם הצעה מותאמת אישית
+          </Text>
+        </motion.div>
+      </div>
+
+      {/* Contact Form */}
+      <Form
+        form={contactForm}
+        name="contact"
+        onFinish={handleContactSubmit}
+        layout="vertical"
+        size="large"
+        style={{ direction: 'rtl' }}
+      >
+        <div style={{ display: 'flex', gap: '16px' }}>
+          <Form.Item
+            name="firstName"
+            label="שם פרטי"
+            rules={[{ required: true, message: 'נא הזן שם פרטי' }]}
+            style={{ flex: 1 }}
+          >
+            <Input
+              placeholder="הזן שם פרטי"
+              style={{ 
+                borderRadius: '12px', 
+                height: '48px',
+                textAlign: 'right',
+              }}
+            />
+          </Form.Item>
+
+          <Form.Item
+            name="lastName"
+            label="שם משפחה"
+            rules={[{ required: true, message: 'נא הזן שם משפחה' }]}
+            style={{ flex: 1 }}
+          >
+            <Input
+              placeholder="הזן שם משפחה"
+              style={{ 
+                borderRadius: '12px', 
+                height: '48px',
+                textAlign: 'right',
+              }}
+            />
+          </Form.Item>
+        </div>
+
+        <Form.Item
+          name="email"
+          label="אימייל"
+          rules={[
+            { required: true, message: 'נא הזן כתובת אימייל' },
+            { type: 'email', message: 'אנא הזן כתובת אימייל תקינה' }
+          ]}
+        >
+          <Input
+            prefix={<MailOutlined style={{ color: '#667eea' }} />}
+            placeholder="example@email.com"
+            style={{ 
+              borderRadius: '12px', 
+              height: '48px',
+              textAlign: 'right',
+            }}
+          />
+        </Form.Item>
+
+        <Form.Item
+          name="phone"
+          label="טלפון"
+          rules={[{ required: true, message: 'נא הזן מספר טלפון' }]}
+        >
+          <Input
+            prefix={<PhoneOutlined style={{ color: '#667eea' }} />}
+            placeholder="050-1234567"
+            style={{ 
+              borderRadius: '12px', 
+              height: '48px',
+              textAlign: 'right',
+            }}
+          />
+        </Form.Item>
+
+        <Form.Item
+          name="description"
+          label="תיאור הצרכים שלך"
+          rules={[{ required: true, message: 'נא הזן תיאור קצר של הצרכים שלך' }]}
+        >
+          <TextArea
+            rows={4}
+            placeholder="ספר לנו על הצרכים שלך, סוג העסק, כמות לקוחות וכו..."
+            style={{ 
+              borderRadius: '12px',
+              textAlign: 'right',
+            }}
+          />
+        </Form.Item>
+
+        <Space style={{ width: '100%', justifyContent: 'center', marginTop: '24px' }} size="large">
+          <Button
+            size="large"
+            icon={<ArrowLeftOutlined />}
+            onClick={() => setShowContact(false)}
+            style={{
+              borderRadius: '12px',
+              fontWeight: 600,
+              minWidth: '120px',
+            }}
+          >
+            חזרה
+          </Button>
+          
+          <Button
+            type="primary"
+            htmlType="submit"
+            loading={contactLoading}
+            icon={contactLoading ? <LoadingOutlined /> : <SendOutlined />}
+            size="large"
+            style={{
+              borderRadius: '12px',
+              background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+              border: 'none',
+              fontWeight: 600,
+              minWidth: '120px',
+            }}
+          >
+            {contactLoading ? 'שולח...' : 'שלח פניה'}
+          </Button>
+        </Space>
+      </Form>
+    </Card>
+  );
+
   return (
     <div style={containerStyle}>
       {/* Background overlay */}
@@ -131,35 +366,36 @@ const Login: React.FC = () => {
         transition={{ duration: 0.6 }}
         style={{ width: '100%', display: 'flex', justifyContent: 'center' }}
       >
-        <Card style={cardStyle} bodyStyle={{ padding: '48px' }}>
-          {/* Header */}
+        {showContact ? renderContactForm() : (
+        <Card style={cardStyle} styles={{ body: { padding: '48px' } }}>
+            {/* Header */}
           <div style={{ textAlign: 'center', marginBottom: '32px' }}>
-            <motion.div
-              initial={{ scale: 0, rotate: -180 }}
-              animate={{ scale: 1, rotate: 0 }}
-              transition={{ delay: 0.2, type: 'spring', duration: 1 }}
-            >
+              <motion.div
+                initial={{ scale: 0, rotate: -180 }}
+                animate={{ scale: 1, rotate: 0 }}
+                transition={{ delay: 0.2, type: 'spring', duration: 1 }}
+              >
               <div style={iconContainerStyle}>
                 <ShopOutlined style={{ fontSize: '40px', color: 'white' }} />
               </div>
-            </motion.div>
+              </motion.div>
 
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.4, duration: 0.6 }}
-            >
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.4, duration: 0.6 }}
+              >
               <Title
                 level={1}
                 style={{
-                  fontWeight: 800,
-                  color: '#1a1a1a',
+                    fontWeight: 800,
+                    color: '#1a1a1a',
                   marginBottom: '8px',
-                  direction: 'rtl',
+                    direction: 'rtl',
                   fontSize: 'clamp(2rem, 5vw, 3rem)',
-                }}
-              >
-                CRM מתקדם
+                  }}
+                >
+                  CRM מתקדם
               </Title>
               <Title
                 level={4}
@@ -170,8 +406,8 @@ const Login: React.FC = () => {
                   fontWeight: 500,
                   margin: '0 0 8px 0'
                 }}
-              >
-                מערכת ניהול לקוחות מתקדמת
+                >
+                  מערכת ניהול לקוחות מתקדמת
               </Title>
               <Text
                 type="secondary"
@@ -181,45 +417,45 @@ const Login: React.FC = () => {
                   display: 'block',
                   marginBottom: '16px'
                 }}
-              >
-                ניהול לידים, לקוחות, פוליסות ודוחות במקום אחד
+                >
+                  ניהול לידים, לקוחות, פוליסות ודוחות במקום אחד
               </Text>
-            </motion.div>
-
-            <motion.div
-              initial={{ opacity: 0, scale: 0.9 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ delay: 0.6, duration: 0.5 }}
-            >
+              </motion.div>
+              
+              <motion.div
+                initial={{ opacity: 0, scale: 0.9 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{ delay: 0.6, duration: 0.5 }}
+              >
               <div style={demoBoxStyle}>
                 <Text strong style={{ color: '#1a1a1a', direction: 'rtl', fontSize: '16px', display: 'block', marginBottom: '16px' }}>
-                  🔐 פרטי כניסה לדמו
+                    🔐 פרטי כניסה לדמו
                 </Text>
                 <Text strong style={{ color: '#1a1a1a', fontSize: '16px', display: 'block', marginBottom: '8px' }}>
-                  👤 שם משתמש: admin
+                    👤 שם משתמש: admin
                 </Text>
                 <Text strong style={{ color: '#1a1a1a', fontSize: '16px', display: 'block', marginBottom: '16px' }}>
-                  🔑 סיסמה: password
+                    🔑 סיסמה: password
                 </Text>
-                <Button
-                  size="small"
+                  <Button
+                    size="small"
                   type="default"
                   onClick={fillDemoCredentials}
                   style={{
-                    borderColor: '#6b7280',
-                    color: '#1a1a1a',
+                      borderColor: '#6b7280',
+                      color: '#1a1a1a',
                     fontSize: '14px',
                     height: '32px',
                     borderRadius: '8px',
-                  }}
-                >
-                  מלא אוטומטית
-                </Button>
+                    }}
+                  >
+                    מלא אוטומטית
+                  </Button>
               </div>
-            </motion.div>
+              </motion.div>
           </div>
 
-          {/* Login Form */}
+            {/* Login Form */}
           <Form
             form={form}
             name="login"
@@ -230,14 +466,14 @@ const Login: React.FC = () => {
           >
             <Form.Item
               name="username"
-              label="שם משתמש"
+                label="שם משתמש"
               rules={[{ required: true, message: 'נא הזן שם משתמש' }]}
             >
               <Input
                 prefix={<UserOutlined style={{ color: '#007AFF' }} />}
                 placeholder="הזן שם משתמש"
                 style={{ 
-                  borderRadius: '12px', 
+                    borderRadius: '12px',
                   height: '48px',
                   direction: 'rtl',
                   textAlign: 'right',
@@ -247,7 +483,7 @@ const Login: React.FC = () => {
 
             <Form.Item
               name="password"
-              label="סיסמה"
+                label="סיסמה"
               rules={[{ required: true, message: 'נא הזן סיסמה' }]}
             >
               <Input.Password
@@ -269,12 +505,12 @@ const Login: React.FC = () => {
                 showIcon
                 style={{ 
                   marginBottom: '24px', 
-                  borderRadius: '12px', 
+                    borderRadius: '12px',
                   direction: 'rtl',
                   textAlign: 'right'
                 }}
               />
-            )}
+              )}
 
             <Form.Item style={{ marginBottom: 0 }}>
               <motion.div
@@ -314,14 +550,30 @@ const Login: React.FC = () => {
             </Form.Item>
           </Form>
 
-          {/* Footer */}
-          <Divider style={{ margin: '32px 0 16px 0' }} />
-          <div style={{ textAlign: 'center' }}>
-            <Text type="secondary" style={{ direction: 'rtl', fontSize: '14px' }}>
-              מערכת CRM מתקדמת לניהול לקוחות וביטוחים
+            {/* Footer */}
+          <Divider style={{ margin: '32px 0 24px 0' }} />
+          <div style={{ textAlign: 'center', marginBottom: '24px' }}>
+            <Text type="secondary" style={{ direction: 'rtl', fontSize: '14px', display: 'block', marginBottom: '16px' }}>
+                מערכת CRM מתקדמת לניהול לקוחות וביטוחים
             </Text>
+            <Button
+              type="default"
+              size="large"
+              icon={<ContactsOutlined />}
+              onClick={() => setShowContact(true)}
+              style={{
+                borderColor: '#667eea',
+                color: '#667eea',
+                borderRadius: '12px',
+                fontWeight: 600,
+                direction: 'rtl',
+              }}
+            >
+              יצירת קשר למוצר המלא
+            </Button>
           </div>
         </Card>
+        )}
       </motion.div>
     </div>
   );

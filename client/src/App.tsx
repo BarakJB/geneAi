@@ -362,6 +362,30 @@ function App() {
                 </PageWrapper>
               } 
             />
+            <Route 
+              path="/crm/new-lead" 
+              element={
+                <PageWrapper>
+                  <CRMWrapper />
+                </PageWrapper>
+              } 
+            />
+            <Route 
+              path="/crm/schedule-meeting" 
+              element={
+                <PageWrapper>
+                  <CRMWrapper />
+                </PageWrapper>
+              } 
+            />
+            <Route 
+              path="/crm/reports" 
+              element={
+                <PageWrapper>
+                  <CRMWrapper />
+                </PageWrapper>
+              } 
+            />
           </Routes>
         </Layout>
       </Router>

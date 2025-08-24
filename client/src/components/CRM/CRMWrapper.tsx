@@ -1,5 +1,5 @@
 import React from 'react';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import Dashboard from './Dashboard';
 import PensionCalculator from '../PensionCalculator';
 import SalaryCalculator from '../SalaryCalculator';
@@ -7,6 +7,9 @@ import PayslipAnalyzer from '../PayslipAnalyzer';
 import AddClient from './AddClient';
 import InsuranceWebView from '../InsuranceWebView';
 import Integrations from '../Integrations';
+import NewLead from './NewLead';
+import ScheduleMeeting from './ScheduleMeeting';
+import Reports from './Reports';
 import { 
   Layout,
   Typography,
@@ -30,7 +33,6 @@ import {
   ApiOutlined,
 } from '@ant-design/icons';
 import { motion } from 'framer-motion';
-import { useNavigate } from 'react-router-dom';
 
 const { Header, Content } = Layout;
 const { Title, Text } = Typography;
@@ -50,6 +52,58 @@ const CRMWrapper: React.FC = () => {
   const navigate = useNavigate();
   const [currentTime, setCurrentTime] = React.useState(new Date());
 
+  // Add custom styles for dropdown menu
+  React.useEffect(() => {
+    const style = document.createElement('style');
+    style.textContent = `
+      .crm-dropdown-menu .ant-dropdown-menu {
+        background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%) !important;
+        border: 2px solid rgba(255, 255, 255, 0.1) !important;
+        border-radius: 16px !important;
+        padding: 12px !important;
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3), 0 0 0 1px rgba(255, 255, 255, 0.05) !important;
+        backdrop-filter: blur(10px) !important;
+        min-width: 280px !important;
+      }
+      
+      .crm-dropdown-menu .ant-dropdown-menu-item {
+        background: transparent !important;
+        color: #ffffff !important;
+        border-radius: 10px !important;
+        margin: 4px 0 !important;
+        padding: 12px 16px !important;
+        transition: all 0.3s ease !important;
+      }
+      
+      .crm-dropdown-menu .ant-dropdown-menu-item:hover {
+        background: rgba(255, 255, 255, 0.1) !important;
+        color: #ffffff !important;
+        transform: translateX(-4px) !important;
+      }
+      
+      .crm-dropdown-menu .ant-dropdown-menu-item-group-title {
+        color: rgba(255, 255, 255, 0.6) !important;
+        padding: 8px 16px !important;
+        font-size: 12px !important;
+      }
+      
+      .crm-dropdown-menu .ant-dropdown-menu-item-divider {
+        background: rgba(255, 255, 255, 0.1) !important;
+        margin: 8px 0 !important;
+      }
+      
+      .crm-dropdown-menu .ant-dropdown-menu-item-icon {
+        color: #ffffff !important;
+        margin-inline-end: 12px !important;
+      }
+    `;
+    document.head.appendChild(style);
+    
+    return () => {
+      document.head.removeChild(style);
+    };
+  }, []);
+
   React.useEffect(() => {
     const timer = setInterval(() => {
       setCurrentTime(new Date());
@@ -60,8 +114,6 @@ const CRMWrapper: React.FC = () => {
   const handleMenuItemClick = (item: MenuItem) => {
     if (item.isInternal) {
       navigate(item.url);
-    } else if (item.url === '#') {
-      console.log(`${item.title} - בפיתוח`);
     } else {
       window.open(item.url, '_blank');
     }
@@ -76,9 +128,9 @@ const CRMWrapper: React.FC = () => {
     { key: 'insurance', icon: <SecurityScanOutlined />, title: 'הר הביטוח', url: '/crm/insurance', color: '#6366f1', isPrimary: false, isInternal: true },
     { key: 'integrations', icon: <ApiOutlined />, title: 'אינטגרציות', url: '/crm/integrations', color: '#f59e0b', isPrimary: false, isInternal: true },
     { key: 'divider', icon: <></>, title: '', url: '', color: '', isPrimary: false, isInternal: false },
-    { key: 'lead', icon: <FileSearchOutlined />, title: 'ליד חדש', url: '#', color: '#6b7280', isPrimary: false, isInternal: false },
-    { key: 'meeting', icon: <CalendarOutlined />, title: 'קבע פגישה', url: '#', color: '#9ca3af', isPrimary: false, isInternal: false },
-    { key: 'reports', icon: <BarChartOutlined />, title: 'דוחות', url: '#', color: '#d1d5db', isPrimary: false, isInternal: false },
+    { key: 'lead', icon: <FileSearchOutlined />, title: 'ליד חדש', url: '/crm/new-lead', color: '#1890ff', isPrimary: false, isInternal: true },
+    { key: 'meeting', icon: <CalendarOutlined />, title: 'קבע פגישה', url: '/crm/schedule-meeting', color: '#faad14', isPrimary: false, isInternal: true },
+    { key: 'reports', icon: <BarChartOutlined />, title: 'דוחות', url: '/crm/reports', color: '#722ed1', isPrimary: false, isInternal: true },
     { key: 'logout', icon: <LogoutOutlined />, title: 'יציאה', url: '/crm/login', color: '#ef4444', isPrimary: false, isInternal: true },
   ];
 
@@ -96,6 +148,12 @@ const CRMWrapper: React.FC = () => {
         return '🏛️ הר הביטוח';
       case '/crm/integrations':
         return '🔗 מנהל אינטגרציות';
+      case '/crm/new-lead':
+        return '🎯 ליד חדש';
+      case '/crm/schedule-meeting':
+        return '📅 קביעת פגישה';
+      case '/crm/reports':
+        return '📊 דוחות ואנליטיקה';
       case '/crm/dashboard':
       default:
         return '🏠 דאשבורד ראשי';
@@ -116,6 +174,12 @@ const CRMWrapper: React.FC = () => {
         return <InsuranceWebView />;
       case '/crm/integrations':
         return <Integrations />;
+      case '/crm/new-lead':
+        return <NewLead />;
+      case '/crm/schedule-meeting':
+        return <ScheduleMeeting />;
+      case '/crm/reports':
+        return <Reports />;
       case '/crm/dashboard':
       default:
         return <Dashboard />;
@@ -139,9 +203,17 @@ const CRMWrapper: React.FC = () => {
           direction: 'rtl', 
           textAlign: 'right',
           fontWeight: item.isPrimary ? 700 : 500,
-          color: item.isPrimary ? '#007AFF' : '#1a1a1a',
+          color: '#ffffff',
+          padding: '8px 16px',
+          borderRadius: '8px',
+          transition: 'all 0.3s ease',
+          display: 'flex',
+          alignItems: 'center',
+          gap: '12px',
+          fontSize: '14px',
         }}>
-          {item.title}
+          <span style={{ color: item.isPrimary ? '#007AFF' : '#ffffff' }}>{item.icon}</span>
+          <span style={{ color: item.isPrimary ? '#007AFF' : '#ffffff' }}>{item.title}</span>
         </div>
       ),
       onClick: () => handleMenuItemClick(item),
@@ -240,12 +312,24 @@ const CRMWrapper: React.FC = () => {
           
           <motion.div whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.95 }}>
             <Dropdown
-              menu={{ items: finalMenuItems }}
+              menu={{ 
+                items: finalMenuItems,
+                style: {
+                  background: 'linear-gradient(135deg, #1a1a2e 0%, #16213e 100%)',
+                  border: '2px solid rgba(255, 255, 255, 0.1)',
+                  borderRadius: '16px',
+                  padding: '12px',
+                  boxShadow: '0 20px 40px rgba(0, 0, 0, 0.3), 0 0 0 1px rgba(255, 255, 255, 0.05)',
+                  backdropFilter: 'blur(10px)',
+                  minWidth: '280px',
+                },
+              }}
               placement="bottomRight"
               trigger={['click']}
               overlayStyle={{
                 borderRadius: '20px',
                 overflow: 'hidden',
+                marginTop: '8px',
               }}
               overlayClassName="crm-dropdown-menu"
             >
@@ -271,7 +355,12 @@ const CRMWrapper: React.FC = () => {
       </Header>
 
       {/* Content */}
-      <Content style={{ position: 'relative', zIndex: 1 }}>
+      <Content style={{ 
+        position: 'relative', 
+        zIndex: 1,
+        background: 'linear-gradient(135deg, #0f0f23 0%, #1a1a2e 50%, #16213e 100%)',
+        minHeight: 'calc(100vh - 88px)'
+      }}>
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}

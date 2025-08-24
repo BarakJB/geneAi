@@ -2,6 +2,7 @@ const express = require('express');
 const cors = require('cors');
 const helmet = require('helmet');
 const morgan = require('morgan');
+const nodemailer = require('nodemailer');
 
 const app = express();
 const PORT = process.env.PORT || 8000;
@@ -272,6 +273,65 @@ app.post('/api/calculate-salary', (req, res) => {
   } catch (error) {
     console.error('Salary calculation error:', error);
     res.status(400).json({ success: false, error: error.message });
+  }
+});
+
+// Email configuration
+const transporter = nodemailer.createTransport({
+  service: 'gmail',
+  auth: {
+    user: process.env.EMAIL_USER || 'your-email@gmail.com',
+    pass: process.env.EMAIL_PASS || 'your-app-password'
+  }
+});
+
+// Contact form endpoint
+app.post('/api/contact', async (req, res) => {
+  try {
+    const { firstName, lastName, email, phone, description } = req.body;
+    
+    const mailOptions = {
+      from: email,
+      to: 'yacov131@gmail.com',
+      subject: 'פניה חדשה למוצר המלא - CRM מתקדם',
+      html: `
+        <div style="direction: rtl; font-family: Arial, sans-serif;">
+          <h2>פניה חדשה למוצר המלא</h2>
+          <table border="1" cellpadding="10" cellspacing="0" style="border-collapse: collapse; width: 100%;">
+            <tr>
+              <td><strong>שם פרטי:</strong></td>
+              <td>${firstName}</td>
+            </tr>
+            <tr>
+              <td><strong>שם משפחה:</strong></td>
+              <td>${lastName}</td>
+            </tr>
+            <tr>
+              <td><strong>אימייל:</strong></td>
+              <td>${email}</td>
+            </tr>
+            <tr>
+              <td><strong>טלפון:</strong></td>
+              <td>${phone}</td>
+            </tr>
+            <tr>
+              <td><strong>תיאור הצרכים:</strong></td>
+              <td>${description}</td>
+            </tr>
+            <tr>
+              <td><strong>תאריך פניה:</strong></td>
+              <td>${new Date().toLocaleDateString('he-IL')} ${new Date().toLocaleTimeString('he-IL')}</td>
+            </tr>
+          </table>
+        </div>
+      `
+    };
+
+    await transporter.sendMail(mailOptions);
+    res.json({ success: true, message: 'הפניה נשלחה בהצלחה!' });
+  } catch (error) {
+    console.error('Error sending email:', error);
+    res.status(500).json({ success: false, error: 'שגיאה בשליחת המייל' });
   }
 });
 

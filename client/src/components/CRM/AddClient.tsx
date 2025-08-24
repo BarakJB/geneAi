@@ -64,6 +64,136 @@ interface FileUpload {
 
 const AddClient: React.FC = () => {
   const [form] = Form.useForm();
+
+  // Add custom styles for inputs to match pension calculator
+  React.useEffect(() => {
+    const style = document.createElement('style');
+    style.textContent = `
+      .crm-input .ant-input {
+        background-color: rgba(0, 0, 0, 0.3) !important;
+        border-color: white !important;
+        color: white !important;
+        border-radius: 8px !important;
+      }
+      
+      .crm-input .ant-input::placeholder {
+        color: rgba(255, 255, 255, 0.65) !important;
+      }
+      
+      .crm-input .ant-input-number {
+        background-color: rgba(0, 0, 0, 0.3) !important;
+        border-color: white !important;
+        color: white !important;
+        border-radius: 8px !important;
+      }
+      
+      .crm-input .ant-input-number .ant-input-number-input {
+        background-color: transparent !important;
+        color: white !important;
+      }
+      
+      .crm-input .ant-input-number .ant-input-number-input::placeholder {
+        color: rgba(255, 255, 255, 0.65) !important;
+      }
+      
+      .crm-input .ant-select .ant-select-selector {
+        background-color: rgba(0, 0, 0, 0.3) !important;
+        border-color: white !important;
+        color: white !important;
+        border-radius: 8px !important;
+      }
+      
+      .crm-input .ant-select .ant-select-selection-placeholder {
+        color: rgba(255, 255, 255, 0.65) !important;
+      }
+      
+      .crm-input .ant-select .ant-select-selection-item {
+        color: white !important;
+      }
+      
+      .crm-input .ant-picker {
+        background-color: rgba(0, 0, 0, 0.3) !important;
+        border-color: white !important;
+        color: white !important;
+        border-radius: 8px !important;
+      }
+      
+      .crm-input .ant-picker input {
+        color: white !important;
+      }
+      
+      .crm-input .ant-picker .ant-picker-input::placeholder {
+        color: rgba(255, 255, 255, 0.65) !important;
+      }
+
+      .crm-input .ant-input:focus,
+      .crm-input .ant-input-focused {
+        border-color: white !important;
+        box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.2) !important;
+      }
+      
+      .crm-input .ant-input-number:focus,
+      .crm-input .ant-input-number-focused {
+        border-color: white !important;
+        box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.2) !important;
+      }
+      
+      .crm-input .ant-select:focus .ant-select-selector,
+      .crm-input .ant-select-focused .ant-select-selector {
+        border-color: white !important;
+        box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.2) !important;
+      }
+      
+      .crm-input .ant-picker:focus,
+      .crm-input .ant-picker-focused {
+        border-color: white !important;
+        box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.2) !important;
+      }
+
+      .crm-input .ant-form-item-label > label {
+        color: white !important;
+      }
+
+      /* Tab styling */
+      .crm-tabs .ant-tabs-tab {
+        color: white !important;
+      }
+
+      .crm-tabs .ant-tabs-tab:hover {
+        color: white !important;
+      }
+
+      .crm-tabs .ant-tabs-tab.ant-tabs-tab-active {
+        color: white !important;
+      }
+
+      .crm-tabs .ant-tabs-tab-btn {
+        color: white !important;
+      }
+
+      .crm-tabs .ant-tabs-ink-bar {
+        background: white !important;
+      }
+
+      .crm-tabs .ant-tabs-content {
+        color: white !important;
+      }
+
+      .crm-tabs .ant-tabs-nav {
+        color: white !important;
+      }
+
+      .crm-tabs .ant-tabs-tab .ant-tabs-tab-btn {
+        color: white !important;
+      }
+    `;
+    document.head.appendChild(style);
+    
+    return () => {
+      document.head.removeChild(style);
+    };
+  }, []);
+
   const [client, setClient] = useState<Client>({
     firstName: '',
     lastName: '',
@@ -102,6 +232,10 @@ const AddClient: React.FC = () => {
     border: '1px solid rgba(255, 255, 255, 0.15)',
     background: 'rgba(255, 255, 255, 0.05)',
     backdropFilter: 'blur(20px)',
+    width: '60%',
+    maxWidth: '1000px',
+    minWidth: '600px',
+    margin: '0 auto',
   };
 
   const handleInputChange = (field: keyof Client, value: string | number | boolean | string[]) => {
@@ -283,13 +417,15 @@ const AddClient: React.FC = () => {
               </Space>
             </div>
           }
-          headStyle={{
-            background: 'transparent',
-            borderBottom: '1px solid rgba(255, 255, 255, 0.15)',
-            textAlign: 'center',
-            direction: 'rtl',
+          styles={{
+            header: {
+              background: 'transparent',
+              borderBottom: '1px solid rgba(255, 255, 255, 0.15)',
+              textAlign: 'center',
+              direction: 'rtl',
+            },
+            body: { padding: '32px', direction: 'rtl' }
           }}
-          bodyStyle={{ padding: '32px', direction: 'rtl' }}
         >
         <AnimatePresence>
           {success && (
@@ -327,13 +463,14 @@ const AddClient: React.FC = () => {
               style={{
                 marginBottom: '32px',
               }}
+              className="crm-tabs"
               items={[
                 {
                   key: '1',
                   label: (
                     <Space>
-                      <UserAddOutlined />
-                      <span>פרטים אישיים</span>
+                      <UserAddOutlined style={{ color: 'white' }} />
+                      <span style={{ color: 'white' }}>פרטים אישיים</span>
                     </Space>
                   ),
                   children: (
@@ -345,16 +482,17 @@ const AddClient: React.FC = () => {
                       <Row gutter={[24, 24]}>
                         <Col xs={24} sm={12}>
                           <Form.Item
-                        label="שם פרטי"
+                        label={<span style={{ color: 'white' }}>שם פרטי</span>}
                             validateStatus={errors.firstName ? 'error' : ''}
                             help={errors.firstName}
                             style={{ textAlign: 'right' }}
+                            className="crm-input"
                           >
                             <Input
                               placeholder="הזן שם פרטי"
                         value={client.firstName}
                               onChange={(e) => handleInputChange('firstName', e.target.value)}
-                              style={{ borderRadius: '8px', textAlign: 'right' }}
+style={{ textAlign: 'right' }}
                             />
                           </Form.Item>
                         </Col>
@@ -365,12 +503,13 @@ const AddClient: React.FC = () => {
                             validateStatus={errors.lastName ? 'error' : ''}
                             help={errors.lastName}
                             style={{ textAlign: 'right' }}
+                            className="crm-input"
                           >
                             <Input
                               placeholder="הזן שם משפחה"
                         value={client.lastName}
                               onChange={(e) => handleInputChange('lastName', e.target.value)}
-                              style={{ borderRadius: '8px', textAlign: 'right' }}
+style={{ textAlign: 'right' }}
                             />
                           </Form.Item>
                         </Col>
@@ -381,12 +520,13 @@ const AddClient: React.FC = () => {
                             validateStatus={errors.idNumber ? 'error' : ''}
                             help={errors.idNumber}
                             style={{ textAlign: 'right' }}
+                            className="crm-input"
                           >
                             <Input
                               placeholder="123456789"
                               value={client.idNumber}
                               onChange={(e) => handleInputChange('idNumber', e.target.value)}
-                              style={{ borderRadius: '8px', textAlign: 'right' }}
+style={{ textAlign: 'right' }}
                               maxLength={9}
                             />
                           </Form.Item>
@@ -396,11 +536,12 @@ const AddClient: React.FC = () => {
                           <Form.Item
                             label="תאריך לידה"
                             style={{ textAlign: 'right' }}
+                            className="crm-input"
                           >
                             <DatePicker
                               placeholder="בחר תאריך"
-                              style={{ width: '100%', borderRadius: '8px' }}
-                              onChange={(date, dateString) => handleInputChange('dateOfBirth', dateString)}
+style={{ width: '100%' }}
+                              onChange={(_, dateString) => handleInputChange('dateOfBirth', dateString)}
                             />
                           </Form.Item>
                         </Col>
@@ -411,12 +552,13 @@ const AddClient: React.FC = () => {
                             validateStatus={errors.email ? 'error' : ''}
                             help={errors.email}
                             style={{ textAlign: 'right' }}
+                            className="crm-input"
                           >
                             <Input
                               placeholder="example@email.com"
                         value={client.email}
                               onChange={(e) => handleInputChange('email', e.target.value)}
-                              style={{ borderRadius: '8px', textAlign: 'right' }}
+style={{ textAlign: 'right' }}
                             />
                           </Form.Item>
                         </Col>
@@ -427,12 +569,13 @@ const AddClient: React.FC = () => {
                             validateStatus={errors.phone ? 'error' : ''}
                             help={errors.phone}
                             style={{ textAlign: 'right' }}
+                            className="crm-input"
                           >
                             <Input
                               placeholder="050-1234567"
                         value={client.phone}
                               onChange={(e) => handleInputChange('phone', e.target.value)}
-                              style={{ borderRadius: '8px', textAlign: 'right' }}
+style={{ textAlign: 'right' }}
                             />
                           </Form.Item>
                         </Col>
@@ -441,12 +584,13 @@ const AddClient: React.FC = () => {
                           <Form.Item
                         label="כתובת"
                             style={{ textAlign: 'right' }}
+                            className="crm-input"
                           >
                             <Input
                               placeholder="הזן כתובת מלאה"
                         value={client.address}
                               onChange={(e) => handleInputChange('address', e.target.value)}
-                              style={{ borderRadius: '8px', textAlign: 'right' }}
+style={{ textAlign: 'right' }}
                             />
                           </Form.Item>
                         </Col>
@@ -455,12 +599,13 @@ const AddClient: React.FC = () => {
                           <Form.Item
                         label="עיר"
                             style={{ textAlign: 'right' }}
+                            className="crm-input"
                           >
                             <Input
                               placeholder="הזן עיר"
                         value={client.city}
                               onChange={(e) => handleInputChange('city', e.target.value)}
-                              style={{ borderRadius: '8px', textAlign: 'right' }}
+style={{ textAlign: 'right' }}
                             />
                           </Form.Item>
                         </Col>
@@ -469,12 +614,13 @@ const AddClient: React.FC = () => {
                           <Form.Item
                         label="מקצוע"
                             style={{ textAlign: 'right' }}
+                            className="crm-input"
                           >
                             <Select
                               placeholder="בחר מקצוע"
                         value={client.occupation}
                               onChange={(value) => handleInputChange('occupation', value)}
-                              style={{ borderRadius: '8px' }}
+style={{ borderRadius: '8px' }}
                               showSearch
                               filterOption={(input, option) =>
                                 (option?.children as unknown as string).toLowerCase().includes(input.toLowerCase())
@@ -496,8 +642,8 @@ const AddClient: React.FC = () => {
                   key: '2',
                   label: (
                     <Space>
-                      <EditOutlined />
-                      <span>פרטים נוספים</span>
+                      <EditOutlined style={{ color: 'white' }} />
+                      <span style={{ color: 'white' }}>פרטים נוספים</span>
                     </Space>
                   ),
                   children: (
@@ -511,12 +657,13 @@ const AddClient: React.FC = () => {
                           <Form.Item
                             label="מצב משפחתי"
                             style={{ textAlign: 'right' }}
+                            className="crm-input"
                           >
                             <Select
                               placeholder="בחר מצב משפחתי"
                               value={client.maritalStatus}
                               onChange={(value) => handleInputChange('maritalStatus', value)}
-                              style={{ borderRadius: '8px' }}
+style={{ borderRadius: '8px' }}
                             >
                               {maritalStatusOptions.map((status) => (
                                 <Select.Option key={status.value} value={status.value}>
@@ -531,14 +678,18 @@ const AddClient: React.FC = () => {
                           <Form.Item
                         label="הכנסה חודשית"
                             style={{ textAlign: 'right' }}
+                            className="crm-input"
                           >
                             <InputNumber
                               placeholder="0"
                         value={client.monthlyIncome}
                               onChange={(value) => handleInputChange('monthlyIncome', value || 0)}
-                              style={{ width: '100%', borderRadius: '8px' }}
+style={{ width: '100%' }}
                               formatter={(value) => `₪ ${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
-                              parser={(value) => value!.replace(/₪\s?|(,*)/g, '')}
+                              parser={(value) => {
+                                const parsed = parseFloat(value!.replace(/₪\s?|(,*)/g, ''));
+                                return isNaN(parsed) ? 0 : parsed;
+                              }}
                             />
                           </Form.Item>
                         </Col>
@@ -547,6 +698,7 @@ const AddClient: React.FC = () => {
                           <Form.Item
                             label="מספר ילדים"
                             style={{ textAlign: 'right' }}
+                            className="crm-input"
                           >
                             <InputNumber
                               placeholder="0"
@@ -557,7 +709,7 @@ const AddClient: React.FC = () => {
                               }}
                               min={0}
                               max={10}
-                              style={{ width: '100%', borderRadius: '8px' }}
+style={{ width: '100%' }}
                             />
                           </Form.Item>
                         </Col>
@@ -566,13 +718,14 @@ const AddClient: React.FC = () => {
                           <Form.Item
                             label="סוגי ביטוח מעניינים"
                             style={{ textAlign: 'right' }}
+                            className="crm-input"
                           >
                         <Select
                               mode="multiple"
                               placeholder="בחר סוגי ביטוח"
                               value={client.insuranceTypes}
                               onChange={(value) => handleInputChange('insuranceTypes', value)}
-                              style={{ borderRadius: '8px' }}
+style={{ borderRadius: '8px' }}
                             >
                               {insuranceTypeOptions.map((type) => (
                                 <Select.Option key={type.value} value={type.value}>
@@ -587,6 +740,7 @@ const AddClient: React.FC = () => {
                           <Form.Item
                             label="תגיות"
                             style={{ textAlign: 'right' }}
+                            className="crm-input"
                           >
                             <Row gutter={[8, 8]}>
                               <Col flex="auto">
@@ -595,7 +749,7 @@ const AddClient: React.FC = () => {
                                   value={newTag}
                                   onChange={(e) => setNewTag(e.target.value)}
                                   onPressEnter={addTag}
-                                  style={{ borderRadius: '8px', textAlign: 'right' }}
+                                  style={{ textAlign: 'right' }}
                                 />
                               </Col>
                               <Col>
@@ -632,13 +786,14 @@ const AddClient: React.FC = () => {
                           <Form.Item
                         label="הערות"
                             style={{ textAlign: 'right' }}
+                            className="crm-input"
                           >
                             <TextArea
                         rows={4}
                               placeholder="הערות נוספות על הלקוח..."
                         value={client.notes}
                               onChange={(e) => handleInputChange('notes', e.target.value)}
-                              style={{ borderRadius: '8px', textAlign: 'right' }}
+style={{ textAlign: 'right' }}
                             />
                           </Form.Item>
                         </Col>
@@ -650,8 +805,8 @@ const AddClient: React.FC = () => {
                   key: '3',
                   label: (
                     <Space>
-                      <UploadOutlined />
-                      <span>מסמכים</span>
+                      <UploadOutlined style={{ color: 'white' }} />
+                      <span style={{ color: 'white' }}>מסמכים</span>
                     </Space>
                   ),
                   children: (
