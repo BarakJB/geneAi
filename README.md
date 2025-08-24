@@ -287,4 +287,4 @@ cd client && npm run lint:fix
 <div align="center">
   <strong>🚀 Made with ❤️ in Israel 🇮🇱</strong><br>
   <sub>© 2024 GeneAI. כל הזכויות שמורות.</sub>
-</div>
+</div># geneAi
