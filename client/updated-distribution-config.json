@@ -1,13 +1,3 @@
-#!/bin/bash
-
-echo "🚀 מעדכן CloudFront distribution עם הדומיין החדש..."
-
-# נקבל את ה-ETag הנוכחי
-ETAG=$(aws cloudfront get-distribution-config --id EQ6TXB0TVC4ZZ --query 'ETag' --output text)
-echo "ETag נוכחי: $ETAG"
-
-# נעדכן את הקונפיגורציה עם הדומיין החדש
-cat > updated-distribution-config.json << 'EOF'
 {
     "CallerReference": "2ae15841-a28b-4bb6-72cc-fb0f76eb9ec4",
     "Aliases": {
@@ -83,7 +73,7 @@ cat > updated-distribution-config.json << 'EOF'
         "ACMCertificateArn": "arn:aws:acm:us-east-1:257402714973:certificate/c6ede3b0-728d-4e7b-acb1-490423e7c2cf",
         "SSLSupportMethod": "sni-only",
         "MinimumProtocolVersion": "TLSv1.2_2021",
-        "CertificateSource": "acm"
+        "IncludeSubdomains": false
     },
     "Restrictions": {
         "GeoRestriction": {
@@ -97,19 +87,3 @@ cat > updated-distribution-config.json << 'EOF'
     "Staging": false,
     "WebACLId": ""
 }
-EOF
-
-echo "📝 מעדכן CloudFront distribution..."
-aws cloudfront update-distribution \
-    --id EQ6TXB0TVC4ZZ \
-    --if-match "$ETAG" \
-    --distribution-config file://updated-distribution-config.json
-
-if [ $? -eq 0 ]; then
-    echo "✅ CloudFront distribution עודכן בהצלחה!"
-    echo "⏳ יתפשט תוך 5-15 דקות..."
-    echo ""
-    echo "🎯 השלב הבא: הוספת A Records ב-MyNames"
-else
-    echo "❌ שגיאה בעדכון CloudFront distribution"
-fi

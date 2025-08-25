@@ -299,6 +299,79 @@ html[dir="rtl"] {
   color: white !important;
 }
 
+/* Custom Input Number Styling for White Text - Salary Calculator */
+.salary-calculator .ant-input-number {
+  color: white !important;
+  background-color: rgba(0, 0, 0, 0.3) !important;
+  border-color: white !important;
+}
+
+.salary-calculator .ant-input-number input {
+  color: white !important;
+  background-color: transparent !important;
+}
+
+.salary-calculator .ant-input-number:hover {
+  border-color: white !important;
+}
+
+.salary-calculator .ant-input-number:focus,
+.salary-calculator .ant-input-number-focused {
+  border-color: white !important;
+  box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.2) !important;
+}
+
+.salary-calculator .ant-input-number .ant-input-number-input {
+  color: white !important;
+}
+
+.salary-calculator .ant-input-number-disabled {
+  color: white !important;
+  background-color: rgba(0, 0, 0, 0.3) !important;
+  border-color: white !important;
+}
+
+.salary-calculator .ant-input-number-disabled input {
+  color: white !important;
+}
+
+.salary-calculator .ant-input-number-disabled .ant-input-number-input {
+  color: white !important;
+}
+
+/* Custom Select Styling for White Text - Salary Calculator */
+.salary-calculator .ant-select {
+  color: white !important;
+}
+
+.salary-calculator .ant-select .ant-select-selector {
+  background-color: rgba(0, 0, 0, 0.3) !important;
+  border-color: white !important;
+  color: white !important;
+}
+
+.salary-calculator .ant-select .ant-select-selection-item {
+  color: white !important;
+}
+
+.salary-calculator .ant-select:hover .ant-select-selector {
+  border-color: white !important;
+}
+
+.salary-calculator .ant-select-focused .ant-select-selector {
+  border-color: white !important;
+  box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.2) !important;
+}
+
+/* Custom Form Labels for Salary Calculator */
+.salary-calculator .ant-form-item-label > label {
+  color: white !important;
+}
+
+.salary-calculator .ant-form-item-label > label::after {
+  content: none !important;
+}
+
 /* Custom colors */
 .text-primary { color: #007AFF !important; }
 .text-success { color: #34C759 !important; }

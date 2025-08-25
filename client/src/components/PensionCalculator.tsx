@@ -304,7 +304,7 @@ const PensionCalculator: React.FC = () => {
             >
               <TrophyOutlined style={{ fontSize: '48px', color: '#faad14' }} />
             </motion.div>
-            <Title level={1} style={{ color: 'white', margin: 0 }}>
+            <Title level={2} style={{ color: 'white', margin: 0 }}>
               מחשבון פנסיה וקרן השתלמות
             </Title>
             <Text style={{ color: 'rgba(255, 255, 255, 0.8)', fontSize: '18px' }}>
