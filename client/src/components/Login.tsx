@@ -180,10 +180,10 @@ const Login: React.FC = () => {
     }
   };
 
-  const fillDemoCredentials = () => {
-    setUsername('admin');
-    setPassword('password');
-  };
+  // const fillDemoCredentials = () => {
+  //   setUsername('admin');
+  //   setPassword('password');
+  // };
 
   const handleContactSubmit = async (values: ContactForm) => {
     setContactLoading(true);

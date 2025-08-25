@@ -198,6 +198,111 @@ button, input, textarea, select {
 
 /* Firefox scrollbar (merged into body above to avoid duplicate selectors) */
 
+/* Global monochrome theme toggle */
+.monochrome {
+  --mono-bg: #0a0a0a;
+  --mono-surface: #121212;
+  --mono-text: #ffffff;
+  --mono-muted: rgba(255, 255, 255, 0.65);
+  --mono-border: rgba(255, 255, 255, 0.2);
+  background-color: var(--mono-bg) !important;
+  color: var(--mono-text) !important;
+}
+
+.monochrome a { color: var(--mono-text) !important; }
+.monochrome .anticon { color: var(--mono-text) !important; }
+
+/* Layout and containers */
+.monochrome .ant-layout,
+.monochrome .ant-layout * { color: var(--mono-text); }
+.monochrome .ant-layout,
+.monochrome .ant-layout-content { background: var(--mono-bg) !important; }
+.monochrome .ant-layout-header {
+  background: #000 !important;
+  box-shadow: none !important;
+  border-bottom: 1px solid var(--mono-border) !important;
+}
+
+/* Cards and panels */
+.monochrome .ant-card,
+.monochrome .ant-collapse,
+.monochrome .ant-collapse-content,
+.monochrome .ant-statistic,
+.monochrome .ant-tabs,
+.monochrome .ant-segmented {
+  background: var(--mono-surface) !important;
+  border-color: var(--mono-border) !important;
+  color: var(--mono-text) !important;
+}
+.monochrome .ant-card-bordered { border-color: var(--mono-border) !important; }
+.monochrome .ant-card-head { border-bottom: 1px solid var(--mono-border) !important; }
+
+/* Inputs */
+.monochrome .ant-input,
+.monochrome .ant-input-affix-wrapper,
+.monochrome .ant-input-number,
+.monochrome .ant-input-number-input,
+.monochrome .ant-select-selector,
+.monochrome .ant-picker,
+.monochrome textarea {
+  background: #141414 !important;
+  color: var(--mono-text) !important;
+  border-color: #ffffff !important;
+}
+.monochrome .ant-input::placeholder,
+.monochrome .ant-input-number-input::placeholder { color: var(--mono-muted) !important; }
+
+/* Buttons */
+.monochrome .ant-btn {
+  background: transparent !important;
+  color: var(--mono-text) !important;
+  border: 1px solid #ffffff !important;
+}
+.monochrome .ant-btn-primary {
+  background: #000 !important;
+  color: #ffffff !important;
+  border: 1px solid #ffffff !important;
+}
+.monochrome .ant-btn:hover,
+.monochrome .ant-btn:focus,
+.monochrome .ant-btn-primary:hover,
+.monochrome .ant-btn-primary:focus {
+  background: #111 !important;
+  border-color: #ffffff !important;
+  color: #ffffff !important;
+}
+
+/* Alerts, tags, badges -> monochrome */
+.monochrome .ant-alert,
+.monochrome .ant-tag,
+.monochrome .ant-badge,
+.monochrome .ant-breadcrumb {
+  color: var(--mono-text) !important;
+}
+.monochrome .ant-alert-success,
+.monochrome .ant-alert-info,
+.monochrome .ant-alert-warning,
+.monochrome .ant-alert-error {
+  background: rgba(255, 255, 255, 0.06) !important;
+  border: 1px solid var(--mono-border) !important;
+  color: var(--mono-text) !important;
+}
+.monochrome .ant-tag { background: rgba(255,255,255,0.06) !important; border-color: var(--mono-border) !important; }
+
+/* Dividers and borders */
+.monochrome .ant-divider,
+.monochrome .ant-divider-horizontal { border-block-start: 1px solid var(--mono-border) !important; }
+
+/* Statistic text */
+.monochrome .ant-statistic-content-value,
+.monochrome .ant-statistic-title { color: var(--mono-text) !important; }
+
+/* Switch, checkbox, radio */
+.monochrome .ant-switch-checked { background: #ffffff !important; }
+.monochrome .ant-switch-checked .ant-switch-handle { background: #000 !important; }
+.monochrome .ant-checkbox-checked .ant-checkbox-inner,
+.monochrome .ant-radio-checked .ant-radio-inner { background: #fff !important; border-color: #fff !important; }
+
 /* Image optimization */
 img {
   max-width: 100%;

@@ -28,10 +28,8 @@ const GoogleAd: React.FC<GoogleAdProps> = ({
 }) => {
   useEffect(() => {
     try {
-      // Push ad to AdSense
-      if (window.adsbygoogle) {
-        window.adsbygoogle.push({});
-      }
+      // Always queue the request; AdSense script will process when ready
+      (window.adsbygoogle = window.adsbygoogle || []).push({});
     } catch (error) {
       console.error('Google AdSense error:', error);
     }

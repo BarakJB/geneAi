@@ -3,7 +3,7 @@ import { Card, Button, Collapse, Typography, Space, Tag, Alert } from 'antd';
 import { BugOutlined, ReloadOutlined, CheckCircleOutlined, CloseCircleOutlined } from '@ant-design/icons';
 
 const { Panel } = Collapse;
-const { Text, Title } = Typography;
+const { Text } = Typography;
 
 interface AdDebugInfo {
   totalAds: number;
@@ -204,7 +204,7 @@ const AdDebugger: React.FC = () => {
                         </Text>
                         <Tag 
                           color={ad.status === 'done' ? 'green' : ad.status === 'error' ? 'red' : 'orange'}
-                          size="small"
+                          style={{ fontSize: '11px', lineHeight: '18px', height: '20px' }}
                         >
                           {ad.status === 'done' ? 'נטען בהצלחה' : 
                            ad.status === 'error' ? 'שגיאה' : 'ממתין'}
