@@ -78,6 +78,9 @@ body {
   background-color: var(--color-bg-base);
   color: var(--color-text);
   overflow-x: hidden;
+  /* Firefox scrollbar */
+  scrollbar-width: thin;
+  scrollbar-color: rgba(0, 122, 255, 0.3) rgba(0, 0, 0, 0.05);
 }
 
 /* RTL Support */
@@ -193,11 +196,7 @@ button, input, textarea, select {
   background: rgba(0, 122, 255, 0.5);
 }
 
-/* Firefox scrollbar */
-* {
-  scrollbar-width: thin;
-  scrollbar-color: rgba(0, 122, 255, 0.3) rgba(0, 0, 0, 0.05);
-}
+/* Firefox scrollbar (merged into body above to avoid duplicate selectors) */
 
 /* Image optimization */
 img {
@@ -363,4 +362,60 @@ li {
 /* Ensure proper rendering on different devices */
 @media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
   /* High DPI adjustments if needed */
+}
+
+/* Scoped dark field styles for SalaryCalculator page */
+.salary-calculator .ant-input,
+.salary-calculator .ant-input-affix-wrapper,
+.salary-calculator .ant-input-number,
+.salary-calculator .ant-input-number-input,
+.salary-calculator .ant-input-number-affix-wrapper,
+.salary-calculator .ant-select-selector {
+  background-color: #141414 !important;
+  color: #ffffff !important;
+  border-color: #ffffff !important;
+}
+
+.salary-calculator .ant-input::placeholder,
+.salary-calculator .ant-input-number-input::placeholder,
+.salary-calculator .ant-select-selection-placeholder {
+  color: rgba(255, 255, 255, 0.45) !important;
+}
+
+.salary-calculator .ant-select-selection-item,
+.salary-calculator .ant-select-arrow,
+.salary-calculator .ant-input-prefix,
+.salary-calculator .ant-input-suffix {
+  color: #ffffff !important;
+}
+
+/* Hover and focus states */
+.salary-calculator .ant-input:hover,
+.salary-calculator .ant-input:focus,
+.salary-calculator .ant-input-affix-wrapper:hover,
+.salary-calculator .ant-input-affix-wrapper:focus,
+.salary-calculator .ant-input-affix-wrapper-focused,
+.salary-calculator .ant-input-number:hover,
+.salary-calculator .ant-input-number:focus,
+.salary-calculator .ant-input-number-focused,
+.salary-calculator .ant-select:hover .ant-select-selector,
+.salary-calculator .ant-select-focused .ant-select-selector {
+  border-color: #ffffff !important;
+  box-shadow: none !important;
+}
+
+/* InputNumber handlers */
+.salary-calculator .ant-input-number-handler-wrap {
+  background: #141414 !important;
+  border-left: 1px solid #ffffff !important;
+}
+
+/* Ensure disabled fields remain readable on dark */
+.salary-calculator .ant-input[disabled],
+.salary-calculator .ant-input-affix-wrapper-disabled,
+.salary-calculator .ant-input-number-disabled,
+.salary-calculator .ant-select-disabled .ant-select-selector {
+  background-color: #1f1f1f !important;
+  color: rgba(255, 255, 255, 0.45) !important;
+  border-color: rgba(255, 255, 255, 0.35) !important;
 }

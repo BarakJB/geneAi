@@ -26,6 +26,7 @@ import {
 } from '@ant-design/icons';
 import { motion } from 'framer-motion';
 import type { UploadProps } from 'antd';
+import GoogleAd from './GoogleAd';
 
 const { Title, Text } = Typography;
 const { Dragger } = Upload;
@@ -57,6 +58,50 @@ interface DiscrepancyItem {
 }
 
 const PayslipAnalyzer: React.FC = () => {
+  // Add custom styles for inputs to match CRM
+  React.useEffect(() => {
+    const style = document.createElement('style');
+    style.textContent = `
+      .payslip-analyzer .ant-input {
+        background-color: rgba(0, 0, 0, 0.3) !important;
+        border-color: white !important;
+        color: white !important;
+        border-radius: 8px !important;
+      }
+      
+      .payslip-analyzer .ant-input::placeholder {
+        color: rgba(255, 255, 255, 0.65) !important;
+      }
+      
+      .payslip-analyzer .ant-upload.ant-upload-drag {
+        background-color: rgba(0, 0, 0, 0.3) !important;
+        border-color: white !important;
+        border-radius: 12px !important;
+      }
+
+      .payslip-analyzer .ant-upload.ant-upload-drag:hover {
+        border-color: rgba(255, 255, 255, 0.8) !important;
+      }
+
+      .payslip-analyzer .ant-upload.ant-upload-drag .ant-upload-text {
+        color: white !important;
+      }
+
+      .payslip-analyzer .ant-upload.ant-upload-drag .ant-upload-hint {
+        color: rgba(255, 255, 255, 0.65) !important;
+      }
+
+      .payslip-analyzer .ant-form-item-label > label {
+        color: white !important;
+      }
+    `;
+    document.head.appendChild(style);
+    
+    return () => {
+      document.head.removeChild(style);
+    };
+  }, []);
+
   const [uploadedFile, setUploadedFile] = useState<File | null>(null);
   const [analyzing, setAnalyzing] = useState(false);
   const [payslipData, setPayslipData] = useState<PayslipData | null>(null);
@@ -192,7 +237,7 @@ const PayslipAnalyzer: React.FC = () => {
 
   const containerStyle: React.CSSProperties = {
     padding: '24px',
-    background: 'transparent',
+    background: 'linear-gradient(135deg, #0f0f23 0%, #1a1a2e 50%, #16213e 100%)',
     minHeight: 'calc(100vh - 140px)',
   };
 
@@ -206,7 +251,7 @@ const PayslipAnalyzer: React.FC = () => {
   };
 
   return (
-    <div style={containerStyle}>
+    <div style={containerStyle} className="payslip-analyzer">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -540,6 +585,19 @@ const PayslipAnalyzer: React.FC = () => {
             </Card>
         </motion.div>
       )}
+
+      {/* פרסומת בתחתית */}
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 1, duration: 0.6 }}
+      >
+        <GoogleAd 
+          adSlot="5544332211"
+          adFormat="horizontal"
+          style={{ marginTop: '32px' }}
+        />
+      </motion.div>
       </motion.div>
     </div>
   );

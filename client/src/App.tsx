@@ -7,6 +7,9 @@ import SalaryCalculator from './components/SalaryCalculator';
 import PayslipAnalyzer from './components/PayslipAnalyzer';
 import Login from './components/Login';
 import CRMWrapper from './components/CRM/CRMWrapper';
+import GoogleAd from './components/GoogleAd';
+import FloatingAd from './components/FloatingAd';
+import AdDebugger from './components/AdDebugger';
 import 'antd/dist/reset.css';
 import './App.css';
 
@@ -193,49 +196,117 @@ const HomePage: React.FC = () => {
             position: 'relative',
             zIndex: 1,
             width: '100%',
-            padding: '32px 16px',
           }}
         >
-          <div
-            style={{
-              textAlign: 'center',
-              marginBottom: '32px',
-              padding: '16px 0',
-            }}
-          >
-            <Title
-              level={1}
-              style={{
-                color: '#1a1a1a',
-                marginBottom: '8px',
-                fontWeight: 700,
-                direction: 'rtl',
-                fontSize: 'clamp(2rem, 5vw, 3.5rem)',
-              }}
-            >
-              מחשבון פנסיה וקרן השתלמות
-            </Title>
-            <Title
-              level={3}
-              style={{
-                color: '#666666',
-                fontWeight: 400,
-                direction: 'rtl',
-                fontSize: 'clamp(1.2rem, 3vw, 1.5rem)',
-                margin: 0,
-              }}
-            >
-              השוואת תוכניות פנסיוניות וחישוב חיסכון
-            </Title>
-          </div>
+          {/* Navigation Buttons */}
+          <div style={{ 
+            position: 'absolute', 
+            top: '20px', 
+            right: '20px', 
+            left: '20px',
+            zIndex: 10,
+            display: 'flex',
+            justifyContent: 'space-between',
+            alignItems: 'center'
+          }}>
+            {/* Left side - Other calculators */}
+            <div style={{ display: 'flex', gap: '12px' }}>
+              <Link to="/salary">
+                <Button
+                  size="large"
+                  style={{
+                    background: 'rgba(255, 255, 255, 0.9)',
+                    border: 'none',
+                    borderRadius: '12px',
+                    fontWeight: 600,
+                    color: '#007AFF',
+                    boxShadow: '0 2px 8px rgba(0,0,0,0.1)',
+                    direction: 'rtl',
+                  }}
+                >
+                  💰 מחשבון שכר
+                </Button>
+              </Link>
+              <Link to="/payslip">
+                <Button
+                  size="large"
+                  style={{
+                    background: 'rgba(255, 255, 255, 0.9)',
+                    border: 'none',
+                    borderRadius: '12px',
+                    fontWeight: 600,
+                    color: '#007AFF',
+                    boxShadow: '0 2px 8px rgba(0,0,0,0.1)',
+                    direction: 'rtl',
+                  }}
+                >
+                  📄 ניתוח תלוש
+                </Button>
+              </Link>
+            </div>
 
+            {/* Right side - CRM access */}
+            <Link to="/crm/login">
+              <Button
+                type="primary"
+                size="large"
+                style={{
+                  background: 'linear-gradient(135deg, #007AFF 0%, #5AC8FA 100%)',
+                  border: 'none',
+                  borderRadius: '12px',
+                  fontWeight: 600,
+                  boxShadow: '0 4px 20px rgba(0,122,255,0.3)',
+                  direction: 'rtl',
+                }}
+                onMouseEnter={(e) => {
+                  (e.target as HTMLElement).style.transform = 'scale(1.05)';
+                }}
+                onMouseLeave={(e) => {
+                  (e.target as HTMLElement).style.transform = 'scale(1)';
+                }}
+              >
+                🏢 כניסה ל-CRM
+              </Button>
+            </Link>
+          </div>
+          
+          {/* פרסומת עליונה */}
           <motion.div
-            initial={{ opacity: 0, y: 30 }}
+            initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 1.5, delay: 0.3, ease: "easeOut" }}
+            transition={{ delay: 0.5, duration: 0.6 }}
+            style={{ marginBottom: '32px' }}
           >
-            <PensionCalculator />
+            <GoogleAd 
+              adSlot="1111222233"
+              adFormat="horizontal"
+              style={{ marginTop: '20px' }}
+            />
           </motion.div>
+
+          <PensionCalculator />
+
+          {/* פרסומת צדדית קבועה */}
+          <div 
+            className="google-ad-sidebar left"
+            style={{
+              position: 'fixed',
+              left: '20px',
+              top: '50%',
+              transform: 'translateY(-50%)',
+              zIndex: 1000,
+              width: '160px'
+            }}>
+            <GoogleAd 
+              adSlot="4444555566"
+              adFormat="vertical"
+              style={{ 
+                position: 'sticky',
+                top: '50vh',
+                transform: 'translateY(-50%)'
+              }}
+            />
+          </div>
         </motion.div>
       )}
     </AnimatePresence>
@@ -271,7 +342,6 @@ function App() {
               path="/" 
               element={
                 <PageWrapper>
-                  <Navigation />
                   <HomePage />
                 </PageWrapper>
               } 
@@ -388,6 +458,12 @@ function App() {
             />
           </Routes>
         </Layout>
+        
+        {/* פרסומת צפה חכמה */}
+        <FloatingAd />
+        
+        {/* כלי בדיקת פרסומות - רק בפיתוח */}
+        {process.env.NODE_ENV === 'development' && <AdDebugger />}
       </Router>
     </ConfigProvider>
   );

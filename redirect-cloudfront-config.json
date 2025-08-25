@@ -1,0 +1,38 @@
+{
+    "CallerReference": "redirect-geneai-co-il-2025",
+    "Aliases": {
+        "Quantity": 1,
+        "Items": ["geneai.co.il"]
+    },
+    "DefaultRootObject": "",
+    "Origins": {
+        "Quantity": 1,
+        "Items": [
+            {
+                "Id": "S3-redirect-geneai.co.il",
+                "DomainName": "geneai.co.il.s3-website.eu-central-1.amazonaws.com",
+                "CustomOriginConfig": {
+                    "HTTPPort": 80,
+                    "HTTPSPort": 443,
+                    "OriginProtocolPolicy": "http-only"
+                }
+            }
+        ]
+    },
+    "DefaultCacheBehavior": {
+        "TargetOriginId": "S3-redirect-geneai.co.il",
+        "ViewerProtocolPolicy": "redirect-to-https",
+        "MinTTL": 0,
+        "ForwardedValues": {
+            "QueryString": false,
+            "Cookies": {"Forward": "none"}
+        }
+    },
+    "Comment": "CloudFront distribution for geneai.co.il redirect",
+    "Enabled": true,
+    "ViewerCertificate": {
+        "ACMCertificateArn": "arn:aws:acm:us-east-1:257402714973:certificate/c6ede3b0-728d-4e7b-acb1-490423e7c2cf",
+        "SSLSupportMethod": "sni-only",
+        "MinimumProtocolVersion": "TLSv1.2_2021"
+    }
+}

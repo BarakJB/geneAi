@@ -26,6 +26,38 @@ import { motion } from 'framer-motion';
 const { Title, Text, Paragraph } = Typography;
 
 const InsuranceWebView: React.FC = () => {
+  // Add custom styles for inputs to match CRM
+  React.useEffect(() => {
+    const style = document.createElement('style');
+    style.textContent = `
+      .insurance-webview .ant-input {
+        background-color: rgba(0, 0, 0, 0.3) !important;
+        border-color: white !important;
+        color: white !important;
+        border-radius: 8px !important;
+      }
+      
+      .insurance-webview .ant-input::placeholder {
+        color: rgba(255, 255, 255, 0.65) !important;
+      }
+      
+      .insurance-webview .ant-input:focus,
+      .insurance-webview .ant-input-focused {
+        border-color: white !important;
+        box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.2) !important;
+      }
+
+      .insurance-webview .ant-form-item-label > label {
+        color: white !important;
+      }
+    `;
+    document.head.appendChild(style);
+    
+    return () => {
+      document.head.removeChild(style);
+    };
+  }, []);
+
   const INSURANCE_URL = 'https://harb.cma.gov.il/';
 
   const openInNewTab = () => {
@@ -67,6 +99,7 @@ const InsuranceWebView: React.FC = () => {
 
   const containerStyle: React.CSSProperties = {
     padding: '24px',
+    background: 'linear-gradient(135deg, #0f0f23 0%, #1a1a2e 50%, #16213e 100%)',
     minHeight: 'calc(100vh - 200px)',
   };
 
@@ -92,7 +125,7 @@ const InsuranceWebView: React.FC = () => {
   };
 
   return (
-    <div style={containerStyle}>
+    <div style={containerStyle} className="insurance-webview">
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}

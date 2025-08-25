@@ -68,6 +68,71 @@ const httpMethods = ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'HEAD', 'OPTIONS']
 
 
 const Integrations: React.FC = () => {
+  // Add custom styles for inputs to match CRM
+  React.useEffect(() => {
+    const style = document.createElement('style');
+    style.textContent = `
+      .integrations-component .ant-input {
+        background-color: rgba(0, 0, 0, 0.3) !important;
+        border-color: white !important;
+        color: white !important;
+        border-radius: 8px !important;
+      }
+      
+      .integrations-component .ant-input::placeholder {
+        color: rgba(255, 255, 255, 0.65) !important;
+      }
+      
+      .integrations-component .ant-select .ant-select-selector {
+        background-color: rgba(0, 0, 0, 0.3) !important;
+        border-color: white !important;
+        color: white !important;
+        border-radius: 8px !important;
+      }
+      
+      .integrations-component .ant-select .ant-select-selection-placeholder {
+        color: rgba(255, 255, 255, 0.65) !important;
+      }
+      
+      .integrations-component .ant-select .ant-select-selection-item {
+        color: white !important;
+      }
+      
+      .integrations-component .ant-input:focus,
+      .integrations-component .ant-input-focused {
+        border-color: white !important;
+        box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.2) !important;
+      }
+
+      .integrations-component .ant-select:focus .ant-select-selector,
+      .integrations-component .ant-select-focused .ant-select-selector {
+        border-color: white !important;
+        box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.2) !important;
+      }
+
+      .integrations-component .ant-form-item-label > label {
+        color: white !important;
+      }
+
+      .integrations-component textarea.ant-input {
+        background-color: rgba(0, 0, 0, 0.3) !important;
+        border-color: white !important;
+        color: white !important;
+        border-radius: 8px !important;
+      }
+
+      .integrations-component textarea.ant-input:focus {
+        border-color: white !important;
+        box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.2) !important;
+      }
+    `;
+    document.head.appendChild(style);
+    
+    return () => {
+      document.head.removeChild(style);
+    };
+  }, []);
+
   const [currentRequest, setCurrentRequest] = useState<RequestConfig>({
     name: 'בקשה חדשה',
     method: 'GET',
@@ -317,7 +382,7 @@ const Integrations: React.FC = () => {
 
   const containerStyle: React.CSSProperties = {
     padding: '24px',
-    background: 'transparent',
+    background: 'linear-gradient(135deg, #0f0f23 0%, #1a1a2e 50%, #16213e 100%)',
     minHeight: 'calc(100vh - 140px)',
   };
 
@@ -331,7 +396,7 @@ const Integrations: React.FC = () => {
   };
 
   return (
-    <div style={containerStyle}>
+    <div style={containerStyle} className="integrations-component">
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}

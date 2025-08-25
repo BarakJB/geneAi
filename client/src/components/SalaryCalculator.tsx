@@ -455,7 +455,7 @@ const SalaryCalculator: React.FC = () => {
               <Col xs={24} sm={12} lg={8}>
                 <Form.Item 
                   label="סוג עובד" 
-                  style={{ color: 'white' }}
+                  style={{  }}
                 >
                         <Select
                           value={params.employeeType}

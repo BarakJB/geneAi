@@ -456,17 +456,26 @@ const Dashboard: React.FC = () => {
                 <Row gutter={[16, 16]}>
                   <Col xs={24} sm={12} md={6}>
                     <Button 
-                      type="primary" 
                       block 
                       size="large"
-                      icon={<UserAddOutlined />}
+                      icon={<UserAddOutlined style={{ color: 'white' }} />}
                       style={{ 
                         height: '60px',
                         borderRadius: '12px',
-                        background: 'linear-gradient(135deg, #52c41a 0%, #389e0d 100%)',
-                        border: 'none',
+                        background: 'rgba(0, 0, 0, 0.4)',
+                        border: '2px solid white',
+                        color: 'white',
                         fontSize: '16px',
                         fontWeight: 600,
+                        backdropFilter: 'blur(10px)',
+                      }}
+                      onMouseEnter={(e) => {
+                        (e.target as HTMLElement).style.background = 'rgba(255, 255, 255, 0.1)';
+                        (e.target as HTMLElement).style.transform = 'translateY(-2px)';
+                      }}
+                      onMouseLeave={(e) => {
+                        (e.target as HTMLElement).style.background = 'rgba(0, 0, 0, 0.4)';
+                        (e.target as HTMLElement).style.transform = 'translateY(0px)';
                       }}
                     >
                       לקוח חדש
@@ -474,17 +483,26 @@ const Dashboard: React.FC = () => {
                   </Col>
                   <Col xs={24} sm={12} md={6}>
                     <Button 
-                      type="primary" 
                       block 
                       size="large"
-                      icon={<CalendarOutlined />}
+                      icon={<CalendarOutlined style={{ color: 'white' }} />}
                       style={{ 
                         height: '60px',
                         borderRadius: '12px',
-                        background: 'linear-gradient(135deg, #1890ff 0%, #096dd9 100%)',
-                        border: 'none',
+                        background: 'rgba(0, 0, 0, 0.4)',
+                        border: '2px solid white',
+                        color: 'white',
                         fontSize: '16px',
                         fontWeight: 600,
+                        backdropFilter: 'blur(10px)',
+                      }}
+                      onMouseEnter={(e) => {
+                        (e.target as HTMLElement).style.background = 'rgba(255, 255, 255, 0.1)';
+                        (e.target as HTMLElement).style.transform = 'translateY(-2px)';
+                      }}
+                      onMouseLeave={(e) => {
+                        (e.target as HTMLElement).style.background = 'rgba(0, 0, 0, 0.4)';
+                        (e.target as HTMLElement).style.transform = 'translateY(0px)';
                       }}
                     >
                       קביעת פגישה
@@ -492,17 +510,26 @@ const Dashboard: React.FC = () => {
                   </Col>
                   <Col xs={24} sm={12} md={6}>
                     <Button 
-                      type="primary" 
                       block 
                       size="large"
-                      icon={<FileTextOutlined />}
+                      icon={<FileTextOutlined style={{ color: 'white' }} />}
                       style={{ 
                         height: '60px',
                         borderRadius: '12px',
-                        background: 'linear-gradient(135deg, #722ed1 0%, #531dab 100%)',
-                        border: 'none',
+                        background: 'rgba(0, 0, 0, 0.4)',
+                        border: '2px solid white',
+                        color: 'white',
                         fontSize: '16px',
                         fontWeight: 600,
+                        backdropFilter: 'blur(10px)',
+                      }}
+                      onMouseEnter={(e) => {
+                        (e.target as HTMLElement).style.background = 'rgba(255, 255, 255, 0.1)';
+                        (e.target as HTMLElement).style.transform = 'translateY(-2px)';
+                      }}
+                      onMouseLeave={(e) => {
+                        (e.target as HTMLElement).style.background = 'rgba(0, 0, 0, 0.4)';
+                        (e.target as HTMLElement).style.transform = 'translateY(0px)';
                       }}
                     >
                       הצעה חדשה
@@ -510,17 +537,26 @@ const Dashboard: React.FC = () => {
                   </Col>
                   <Col xs={24} sm={12} md={6}>
                     <Button 
-                      type="primary" 
                       block 
                       size="large"
-                      icon={<BarChartOutlined />}
+                      icon={<BarChartOutlined style={{ color: 'white' }} />}
                       style={{ 
                         height: '60px',
                         borderRadius: '12px',
-                        background: 'linear-gradient(135deg, #fa541c 0%, #d4380d 100%)',
-                        border: 'none',
+                        background: 'rgba(0, 0, 0, 0.4)',
+                        border: '2px solid white',
+                        color: 'white',
                         fontSize: '16px',
                         fontWeight: 600,
+                        backdropFilter: 'blur(10px)',
+                      }}
+                      onMouseEnter={(e) => {
+                        (e.target as HTMLElement).style.background = 'rgba(255, 255, 255, 0.1)';
+                        (e.target as HTMLElement).style.transform = 'translateY(-2px)';
+                      }}
+                      onMouseLeave={(e) => {
+                        (e.target as HTMLElement).style.background = 'rgba(0, 0, 0, 0.4)';
+                        (e.target as HTMLElement).style.transform = 'translateY(0px)';
                       }}
                     >
                       דוחות

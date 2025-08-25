@@ -19,6 +19,7 @@ import {
   CheckCircleOutlined,
 } from '@ant-design/icons';
 import { motion, AnimatePresence } from 'framer-motion';
+import GoogleAd from './GoogleAd';
 
 const { Title, Text } = Typography;
 
@@ -272,7 +273,7 @@ const PensionCalculator: React.FC = () => {
 
   const containerStyle: React.CSSProperties = {
     padding: '24px',
-    background: 'transparent',
+    background: 'linear-gradient(135deg, #0f0f23 0%, #1a1a2e 50%, #16213e 100%)',
     minHeight: 'calc(100vh - 140px)',
   };
 
@@ -304,7 +305,7 @@ const PensionCalculator: React.FC = () => {
             >
               <TrophyOutlined style={{ fontSize: '48px', color: '#faad14' }} />
             </motion.div>
-            <Title level={2} style={{ color: 'white', margin: 0 }}>
+            <Title level={1} style={{ color: 'white', margin: 0 }}>
               מחשבון פנסיה וקרן השתלמות
             </Title>
             <Text style={{ color: 'rgba(255, 255, 255, 0.8)', fontSize: '18px' }}>
@@ -816,6 +817,20 @@ const PensionCalculator: React.FC = () => {
                       : 'הספק הנוכחי עדיף במקרה זה'
                     }
                   </Text>
+
+                  {/* פרסומת בתוך התוצאות */}
+                  <motion.div
+                    initial={{ opacity: 0, scale: 0.9 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    transition={{ delay: 0.8, duration: 0.5 }}
+                    style={{ marginTop: '24px' }}
+                  >
+                    <GoogleAd 
+                      adSlot="7777888899"
+                      adFormat="rectangle"
+                      style={{ marginBottom: '16px' }}
+                    />
+                  </motion.div>
                 </Card>
 
                 {/* Comparison Cards */}
@@ -872,6 +887,19 @@ const PensionCalculator: React.FC = () => {
             </motion.div>
           )}
         </AnimatePresence>
+
+        {/* פרסומת בתחתית */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 1, duration: 0.6 }}
+        >
+          <GoogleAd 
+            adSlot="0987654321"
+            adFormat="horizontal"
+            style={{ marginTop: '32px' }}
+          />
+        </motion.div>
       </motion.div>
     </div>
   );

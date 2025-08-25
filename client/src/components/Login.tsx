@@ -5,10 +5,10 @@ import {
   Button,
   Typography,
   Alert,
-  Form,
   Divider,
   Space,
   message,
+  Form,
 } from 'antd';
 import {
   EyeInvisibleOutlined,
@@ -26,6 +26,7 @@ import {
 } from '@ant-design/icons';
 import { motion } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
+import GoogleAd from './GoogleAd';
 import emailjs from '@emailjs/browser';
 import { EMAIL_CONFIG_DEV } from '../config/email';
 
@@ -42,7 +43,103 @@ interface ContactForm {
 
 const Login: React.FC = () => {
   const navigate = useNavigate();
-  const [form] = Form.useForm();
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
+
+  // Add custom styles for inputs to match CRM
+  React.useEffect(() => {
+    const style = document.createElement('style');
+    style.textContent = `
+      .login-component .ant-input {
+        background-color: rgba(0, 0, 0, 0.3) !important;
+        border-color: white !important;
+        color: white !important;
+        border-radius: 8px !important;
+      }
+      
+      .login-component .ant-input::placeholder {
+        color: rgba(255, 255, 255, 0.65) !important;
+      }
+      
+      .login-component .ant-input:hover {
+        border-color: white !important;
+        background-color: rgba(0, 0, 0, 0.3) !important;
+      }
+      
+      .login-component .ant-input:focus,
+      .login-component .ant-input-focused {
+        border-color: white !important;
+        box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.2) !important;
+        background-color: rgba(0, 0, 0, 0.3) !important;
+      }
+
+      /* שדות input ספציפיים */
+      .login-component input[type="text"],
+      .login-component input[type="email"] {
+        background-color: rgba(0, 0, 0, 0.3) !important;
+        border-color: white !important;
+        color: white !important;
+      }
+
+      /* וידוא שכל השדות עקביים */
+      .login-component .ant-form-item .ant-input {
+        background-color: rgba(0, 0, 0, 0.3) !important;
+        border: 1px solid white !important;
+        color: white !important;
+      }
+
+      .login-component .ant-input-password {
+        background-color: rgba(0, 0, 0, 0.3) !important;
+        border-color: white !important;
+        border-radius: 8px !important;
+      }
+
+      .login-component .ant-input-password input {
+        background-color: transparent !important;
+        color: white !important;
+      }
+
+      .login-component .ant-input-password:hover {
+        border-color: white !important;
+        background-color: rgba(0, 0, 0, 0.3) !important;
+      }
+
+      .login-component .ant-input-password:focus,
+      .login-component .ant-input-password-focused {
+        border-color: white !important;
+        box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.2) !important;
+        background-color: rgba(0, 0, 0, 0.3) !important;
+      }
+
+      /* איקונים בשדות */
+      .login-component .ant-input-prefix,
+      .login-component .ant-input-suffix {
+        color: rgba(255, 255, 255, 0.65) !important;
+      }
+
+      .login-component .anticon {
+        color: rgba(255, 255, 255, 0.65) !important;
+      }
+
+      .login-component .ant-form-item-label > label {
+        color: white !important;
+      }
+
+      /* וידוא שכל הFormItems עקביים */
+      .login-component .ant-form-item {
+        margin-bottom: 24px;
+      }
+
+      .login-component .ant-form-item .ant-form-item-control-input {
+        min-height: 40px;
+      }
+    `;
+    document.head.appendChild(style);
+    
+    return () => {
+      document.head.removeChild(style);
+    };
+  }, []);
   const [contactForm] = Form.useForm();
 
   const [error, setError] = useState<string>('');
@@ -50,26 +147,31 @@ const Login: React.FC = () => {
   const [showContact, setShowContact] = useState(false);
   const [contactLoading, setContactLoading] = useState(false);
 
-  const handleSubmit = async (values: { username: string; password: string }) => {
+  const handleSubmit = async () => {
+    if (!username || !password) {
+      setError('נא הזן שם משתמש וסיסמה');
+      return;
+    }
+
     setLoading(true);
     setError('');
 
     try {
       // Clean the input values (remove spaces and convert to lowercase for comparison)
-      const username = values.username.trim().toLowerCase();
-      const password = values.password.trim();
+      const cleanUsername = username.trim().toLowerCase();
+      const cleanPassword = password.trim();
       
-      console.log('Attempting login with:', { username, password }); // Debug log
+      console.log('Attempting login with:', { username: cleanUsername, password: cleanPassword }); // Debug log
       
       // Default credentials for now
-      if (username === 'admin' && password === 'password') {
+      if (cleanUsername === 'admin' && cleanPassword === 'password') {
         // Store token in localStorage
         localStorage.setItem('crmToken', 'dummy-token-123');
         localStorage.setItem('crmUser', JSON.stringify({ username: 'admin', role: 'admin' }));
         // Navigate to dashboard
         navigate('/crm/dashboard');
       } else {
-        setError(`שם משתמש או סיסמה שגויים. הזנת: "${username}" / "${password}". השתמש ב: admin / password`);
+        setError(`שם משתמש או סיסמה שגויים. הזנת: "${cleanUsername}" / "${cleanPassword}". השתמש ב: admin / password`);
       }
     } catch {
       setError('שגיאה בהתחברות');
@@ -79,7 +181,8 @@ const Login: React.FC = () => {
   };
 
   const fillDemoCredentials = () => {
-    form.setFieldsValue({ username: 'admin', password: 'password' });
+    setUsername('admin');
+    setPassword('password');
   };
 
   const handleContactSubmit = async (values: ContactForm) => {
@@ -149,10 +252,10 @@ const Login: React.FC = () => {
     width: '60%',
     minWidth: '400px',
     borderRadius: '24px',
-    background: 'rgba(255, 255, 255, 0.98)',
+    background: 'rgba(255, 255, 255, 0.05)',
     backdropFilter: 'blur(20px)',
-    boxShadow: '0 25px 50px rgba(0, 0, 0, 0.25), 0 0 0 1px rgba(255, 255, 255, 0.2)',
-    border: '1px solid rgba(255, 255, 255, 0.3)',
+    boxShadow: '0 25px 50px rgba(0, 0, 0, 0.25), 0 0 0 1px rgba(255, 255, 255, 0.15)',
+    border: '1px solid rgba(255, 255, 255, 0.15)',
     position: 'relative',
     zIndex: 1,
   };
@@ -171,8 +274,8 @@ const Login: React.FC = () => {
   };
 
   const demoBoxStyle: React.CSSProperties = {
-    background: 'linear-gradient(135deg, rgba(243, 244, 246, 0.8) 0%, rgba(229, 231, 235, 0.8) 100%)',
-    border: '1px solid rgba(209, 213, 219, 0.5)',
+    background: 'rgba(0, 0, 0, 0.3)',
+    border: '1px solid rgba(255, 255, 255, 0.15)',
     borderRadius: '12px',
     padding: '24px',
     marginBottom: '32px',
@@ -205,7 +308,7 @@ const Login: React.FC = () => {
             level={1}
             style={{
               fontWeight: 800,
-              color: '#1a1a1a',
+              color: 'white',
               marginBottom: '8px',
               direction: 'rtl',
               fontSize: 'clamp(1.5rem, 4vw, 2.5rem)',
@@ -214,12 +317,12 @@ const Login: React.FC = () => {
             יצירת קשר למוצר המלא
           </Title>
           <Text
-            type="secondary"
             style={{ 
               direction: 'rtl', 
               fontSize: '16px',
               display: 'block',
-              marginBottom: '16px'
+              marginBottom: '16px',
+              color: 'rgba(255, 255, 255, 0.8)'
             }}
           >
             מלא את הפרטים ונחזור אליך עם הצעה מותאמת אישית
@@ -249,6 +352,9 @@ const Login: React.FC = () => {
                 borderRadius: '12px', 
                 height: '48px',
                 textAlign: 'right',
+                backgroundColor: 'rgba(0, 0, 0, 0.3)',
+                borderColor: 'white',
+                color: 'white',
               }}
             />
           </Form.Item>
@@ -265,6 +371,9 @@ const Login: React.FC = () => {
                 borderRadius: '12px', 
                 height: '48px',
                 textAlign: 'right',
+                backgroundColor: 'rgba(0, 0, 0, 0.3)',
+                borderColor: 'white',
+                color: 'white',
               }}
             />
           </Form.Item>
@@ -279,12 +388,15 @@ const Login: React.FC = () => {
           ]}
         >
           <Input
-            prefix={<MailOutlined style={{ color: '#667eea' }} />}
+            prefix={<MailOutlined style={{ color: 'rgba(255, 255, 255, 0.65)' }} />}
             placeholder="example@email.com"
             style={{ 
               borderRadius: '12px', 
               height: '48px',
               textAlign: 'right',
+              backgroundColor: 'rgba(0, 0, 0, 0.3)',
+              borderColor: 'white',
+              color: 'white',
             }}
           />
         </Form.Item>
@@ -295,12 +407,15 @@ const Login: React.FC = () => {
           rules={[{ required: true, message: 'נא הזן מספר טלפון' }]}
         >
           <Input
-            prefix={<PhoneOutlined style={{ color: '#667eea' }} />}
+            prefix={<PhoneOutlined style={{ color: 'rgba(255, 255, 255, 0.65)' }} />}
             placeholder="050-1234567"
             style={{ 
               borderRadius: '12px', 
               height: '48px',
               textAlign: 'right',
+              backgroundColor: 'rgba(0, 0, 0, 0.3)',
+              borderColor: 'white',
+              color: 'white',
             }}
           />
         </Form.Item>
@@ -316,6 +431,9 @@ const Login: React.FC = () => {
             style={{ 
               borderRadius: '12px',
               textAlign: 'right',
+              backgroundColor: 'rgba(0, 0, 0, 0.3)',
+              borderColor: 'white',
+              color: 'white',
             }}
           />
         </Form.Item>
@@ -356,7 +474,7 @@ const Login: React.FC = () => {
   );
 
   return (
-    <div style={containerStyle}>
+    <div style={containerStyle} className="login-component">
       {/* Background overlay */}
       <div style={overlayStyle} />
 
@@ -389,7 +507,7 @@ const Login: React.FC = () => {
                 level={1}
                 style={{
                     fontWeight: 800,
-                    color: '#1a1a1a',
+                    color: 'white',
                   marginBottom: '8px',
                     direction: 'rtl',
                   fontSize: 'clamp(2rem, 5vw, 3rem)',
@@ -428,75 +546,95 @@ const Login: React.FC = () => {
                 transition={{ delay: 0.6, duration: 0.5 }}
               >
               <div style={demoBoxStyle}>
-                <Text strong style={{ color: '#1a1a1a', direction: 'rtl', fontSize: '16px', display: 'block', marginBottom: '16px' }}>
+                <Text strong style={{ color: 'white', direction: 'rtl', fontSize: '16px', display: 'block', marginBottom: '16px' }}>
                     🔐 פרטי כניסה לדמו
                 </Text>
-                <Text strong style={{ color: '#1a1a1a', fontSize: '16px', display: 'block', marginBottom: '8px' }}>
-                    👤 שם משתמש: admin
+                <Text strong style={{ color: 'white', fontSize: '16px', display: 'block', marginBottom: '8px' }}>
+                    👤 שם משתמש: 
                 </Text>
-                <Text strong style={{ color: '#1a1a1a', fontSize: '16px', display: 'block', marginBottom: '16px' }}>
-                    🔑 סיסמה: password
+                <Text strong style={{ color: 'white', fontSize: '16px', display: 'block', marginBottom: '16px' }}>
+                    🔑 סיסמה: 
                 </Text>
-                  <Button
+                  {/* <Button
                     size="small"
                   type="default"
                   onClick={fillDemoCredentials}
                   style={{
-                      borderColor: '#6b7280',
-                      color: '#1a1a1a',
+                      borderColor: 'white',
+                      color: 'white',
                     fontSize: '14px',
                     height: '32px',
                     borderRadius: '8px',
+                    background: 'transparent',
                     }}
                   >
                     מלא אוטומטית
-                  </Button>
+                  </Button> */}
               </div>
               </motion.div>
           </div>
 
             {/* Login Form */}
-          <Form
-            form={form}
-            name="login"
-            onFinish={handleSubmit}
-            layout="vertical"
-            size="large"
-            style={{ direction: 'rtl' }}
-          >
-            <Form.Item
-              name="username"
-                label="שם משתמש"
-              rules={[{ required: true, message: 'נא הזן שם משתמש' }]}
-            >
+          <div style={{ direction: 'rtl' }}>
+            {/* Username field */}
+            <div style={{ marginBottom: '24px' }}>
+              <label htmlFor="username" style={{ 
+                color: 'white', 
+                fontSize: '16px', 
+                fontWeight: 500, 
+                marginBottom: '8px', 
+                display: 'block' 
+              }}>
+                שם משתמש
+              </label>
               <Input
-                prefix={<UserOutlined style={{ color: '#007AFF' }} />}
+                id="username"
+                value={username}
+                onChange={(e) => setUsername(e.target.value)}
+                prefix={<UserOutlined style={{ color: 'rgba(255, 255, 255, 0.65)' }} />}
                 placeholder="הזן שם משתמש"
-                style={{ 
-                    borderRadius: '12px',
-                  height: '48px',
-                  direction: 'rtl',
-                  textAlign: 'right',
-                }}
-              />
-            </Form.Item>
-
-            <Form.Item
-              name="password"
-                label="סיסמה"
-              rules={[{ required: true, message: 'נא הזן סיסמה' }]}
-            >
-              <Input.Password
-                prefix={<LockOutlined style={{ color: '#007AFF' }} />}
-                placeholder="הזן סיסמה"
-                iconRender={(visible) => (visible ? <EyeTwoTone /> : <EyeInvisibleOutlined />)}
+                size="large"
                 style={{ 
                   borderRadius: '12px', 
                   height: '48px',
                   direction: 'rtl',
+                  backgroundColor: 'rgba(0, 0, 0, 0.3)',
+                  borderColor: 'white',
+                  color: 'white',
                 }}
               />
-            </Form.Item>
+            </div>
+
+            {/* Password field */}
+            <div style={{ marginBottom: '24px' }}>
+              <label htmlFor="password" style={{ 
+                color: 'white', 
+                fontSize: '16px', 
+                fontWeight: 500, 
+                marginBottom: '8px', 
+                display: 'block' 
+              }}>
+                סיסמה
+              </label>
+              <Input.Password
+                id="password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                onKeyDown={(e) => e.key === 'Enter' && handleSubmit()}
+                prefix={<LockOutlined style={{ color: 'rgba(255, 255, 255, 0.65)' }} />}
+                placeholder="הזן סיסמה"
+                size="large"
+                iconRender={(visible) => (visible ? <EyeTwoTone twoToneColor="rgba(255, 255, 255, 0.65)" /> : <EyeInvisibleOutlined style={{ color: 'rgba(255, 255, 255, 0.65)' }} />)}
+                style={{ 
+                  borderRadius: '12px', 
+                  height: '48px',
+                  direction: 'rtl',
+                  backgroundColor: 'rgba(0, 0, 0, 0.3)',
+                  borderColor: 'white',
+                  color: 'white',
+                }}
+              />
+            </div>
 
             {error && (
               <Alert
@@ -512,43 +650,42 @@ const Login: React.FC = () => {
               />
               )}
 
-            <Form.Item style={{ marginBottom: 0 }}>
-              <motion.div
-                whileHover={{ scale: 1.02 }}
-                whileTap={{ scale: 0.98 }}
+            <motion.div
+              whileHover={{ scale: 1.02 }}
+              whileTap={{ scale: 0.98 }}
+              style={{ marginTop: '24px' }}
+            >
+              <Button
+                type="primary"
+                onClick={handleSubmit}
+                loading={loading}
+                icon={loading ? <LoadingOutlined /> : <LoginOutlined />}
+                block
+                style={{
+                  height: '56px',
+                  fontSize: '18px',
+                  fontWeight: 600,
+                  borderRadius: '16px',
+                  background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+                  border: 'none',
+                  boxShadow: '0 8px 32px rgba(102, 126, 234, 0.3)',
+                  transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
+                }}
+                onMouseEnter={(e) => {
+                  (e.target as HTMLElement).style.background = 'linear-gradient(135deg, #5a67d8 0%, #6a4c93 100%)';
+                  (e.target as HTMLElement).style.transform = 'translateY(-2px)';
+                  (e.target as HTMLElement).style.boxShadow = '0 12px 40px rgba(102, 126, 234, 0.4)';
+                }}
+                onMouseLeave={(e) => {
+                  (e.target as HTMLElement).style.background = 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)';
+                  (e.target as HTMLElement).style.transform = 'translateY(0px)';
+                  (e.target as HTMLElement).style.boxShadow = '0 8px 32px rgba(102, 126, 234, 0.3)';
+                }}
               >
-                <Button
-                  type="primary"
-                  htmlType="submit"
-                  loading={loading}
-                  icon={loading ? <LoadingOutlined /> : <LoginOutlined />}
-                  block
-                  style={{
-                    height: '56px',
-                    fontSize: '18px',
-                    fontWeight: 600,
-                    borderRadius: '16px',
-                    background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
-                    border: 'none',
-                    boxShadow: '0 8px 32px rgba(102, 126, 234, 0.3)',
-                    transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
-                  }}
-                  onMouseEnter={(e) => {
-                    (e.target as HTMLElement).style.background = 'linear-gradient(135deg, #5a67d8 0%, #6a4c93 100%)';
-                    (e.target as HTMLElement).style.transform = 'translateY(-2px)';
-                    (e.target as HTMLElement).style.boxShadow = '0 12px 40px rgba(102, 126, 234, 0.4)';
-                  }}
-                  onMouseLeave={(e) => {
-                    (e.target as HTMLElement).style.background = 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)';
-                    (e.target as HTMLElement).style.transform = 'translateY(0px)';
-                    (e.target as HTMLElement).style.boxShadow = '0 8px 32px rgba(102, 126, 234, 0.3)';
-                  }}
-                >
-                  {loading ? 'מתחבר...' : '🚀 כניסה למערכת'}
-                </Button>
-              </motion.div>
-            </Form.Item>
-          </Form>
+                {loading ? 'מתחבר...' : '🚀 כניסה למערכת'}
+              </Button>
+            </motion.div>
+          </div>
 
             {/* Footer */}
           <Divider style={{ margin: '32px 0 24px 0' }} />
@@ -574,6 +711,29 @@ const Login: React.FC = () => {
           </div>
         </Card>
         )}
+      </motion.div>
+
+      {/* פרסומת בתחתית */}
+      <motion.div
+        initial={{ opacity: 0, y: 30 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 1.2, duration: 0.8 }}
+        style={{ 
+          marginTop: '40px',
+          display: 'flex', 
+          justifyContent: 'center',
+          width: '100%'
+        }}
+      >
+        <GoogleAd 
+          adSlot="1122334455"
+          adFormat="rectangle"
+          style={{ 
+            maxWidth: '500px',
+            width: '60%',
+            minWidth: '320px'
+          }}
+        />
       </motion.div>
     </div>
   );
