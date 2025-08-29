@@ -98,7 +98,7 @@ const InsuranceWebView: React.FC = () => {
   ];
 
   const containerStyle: React.CSSProperties = {
-    padding: '24px',
+    padding: '8px',
     background: 'linear-gradient(135deg, #0f0f23 0%, #1a1a2e 50%, #16213e 100%)',
     minHeight: 'calc(100vh - 200px)',
   };
@@ -114,7 +114,7 @@ const InsuranceWebView: React.FC = () => {
   const headerStyle: React.CSSProperties = {
     background: 'linear-gradient(135deg, #0f0f23 0%, #1a1a2e 100%)',
     color: 'white',
-    padding: '24px',
+    padding: '8px',
     borderRadius: '16px 16px 0 0',
     marginBottom: '0',
   };
@@ -229,7 +229,7 @@ const InsuranceWebView: React.FC = () => {
                   bodyStyle={{ 
                     textAlign: 'right', 
                     direction: 'rtl',
-                    padding: '24px',
+                    padding: '8px',
                   }}
                 >
                   <Paragraph style={{ fontSize: '16px', lineHeight: '1.6', margin: 0 }}>
@@ -277,7 +277,7 @@ const InsuranceWebView: React.FC = () => {
                   bodyStyle={{ 
                     textAlign: 'right', 
                     direction: 'rtl',
-                    padding: '24px',
+                    padding: '8px',
                   }}
                 >
                   <Space direction="vertical" size="large" style={{ width: '100%' }}>
@@ -348,7 +348,7 @@ const InsuranceWebView: React.FC = () => {
                   bodyStyle={{ 
                     textAlign: 'right', 
                     direction: 'rtl',
-                    padding: '24px',
+                    padding: '8px',
                   }}
                 >
                   <Row gutter={[16, 16]}>

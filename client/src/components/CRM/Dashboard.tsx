@@ -31,10 +31,12 @@ import {
   MailOutlined,
 } from '@ant-design/icons';
 import { motion } from 'framer-motion';
+import { useTheme } from '../../contexts/ThemeContext';
 
 const { Title, Text } = Typography;
 
 const Dashboard: React.FC = () => {
+  const { theme } = useTheme();
   const [currentTime, setCurrentTime] = useState(new Date());
 
   useEffect(() => {
@@ -44,22 +46,98 @@ const Dashboard: React.FC = () => {
     return () => clearInterval(timer);
   }, []);
 
-  const stats = {
-    totalClients: 1247,
-    monthlyRevenue: 185420,
-    activePolicies: 892,
-    pendingLeads: 34,
-    completionRate: 87.5,
-    customerSatisfaction: 4.8,
-    monthlyGrowth: 12.3,
-    averageDealValue: 15800,
-    conversion_rate: 23.5,
-    total_meetings: 145,
-    closed_deals: 67,
-    pipeline_value: 2450000,
-    response_time: 2.4,
-    retention_rate: 94.2,
-  };
+  // Demo agency ID - in real app this would come from user context
+  const currentAgencyId = 'b7faffec-8453-11f0-a626-0242ac140002'; // ביטוח וייעוץ המרכז
+  
+  const [dashboardStats, setDashboardStats] = useState({
+    active_customers: 0,
+    leads_count: 0,
+    meetings_scheduled: 0,
+    not_relevant_count: 0,
+    total_contacts: 0,
+    pending_tasks: 0,
+    active_tasks: 0,
+    completed_tasks: 0,
+    total_tasks: 0,
+    total_pension_balance: 0,
+    total_insurance_coverage: 0,
+    conversion_rate_percentage: 0,
+    new_contacts_today: 0,
+    new_tasks_today: 0,
+    new_contacts_week: 0,
+    new_contacts_month: 0,
+    agency_name: '',
+  });
+
+  const [recentActivity, setRecentActivity] = useState([]);
+  const [urgentItems, setUrgentItems] = useState([]);
+
+  useEffect(() => {
+    // Simulate API call to get dashboard stats
+    // In real app: fetch(`/api/dashboard/stats?agency_id=${currentAgencyId}`)
+    const fetchDashboardData = async () => {
+      try {
+        // This would be replaced with actual API calls to the views we created
+        // SELECT * FROM v_dashboard_stats WHERE agency_id = ?
+        const mockStats = {
+          active_customers: 1,
+          leads_count: 1,
+          meetings_scheduled: 0,
+          not_relevant_count: 0,
+          total_contacts: 2,
+          pending_tasks: 2,
+          active_tasks: 1,
+          completed_tasks: 1,
+          total_tasks: 4,
+          total_pension_balance: 1755000,
+          total_insurance_coverage: 4260000,
+          conversion_rate_percentage: 50.0,
+          new_contacts_today: 0,
+          new_tasks_today: 0,
+          new_contacts_week: 2,
+          new_contacts_month: 2,
+          agency_name: 'ביטוח וייעוץ המרכז',
+        };
+        
+        setDashboardStats(mockStats);
+        
+        // Mock recent activity - from v_recent_activity
+        setRecentActivity([
+          {
+            type: 'customer_created',
+            description: 'לקוח חדש נוסף',
+            name: 'ישראל ישראלי',
+            time: '10 דקות',
+            status: 'לקוח',
+            color: theme.colors.success
+          },
+          {
+            type: 'status_changed',
+            description: 'שינוי סטטוס לקוח',
+            name: 'דוד לוי',
+            time: '30 דקות',
+            status: 'ליד',
+            color: theme.colors.warning
+          }
+        ]);
+        
+        // Mock urgent items - from v_urgent_items
+        setUrgentItems([
+          {
+            type: 'old_lead',
+            description: 'ליד ישן - דוד לוי',
+            days: 1,
+            priority: 'medium'
+          }
+        ]);
+        
+      } catch (error) {
+        console.error('Error fetching dashboard data:', error);
+      }
+    };
+    
+    fetchDashboardData();
+  }, [currentAgencyId]);
 
 
 
@@ -74,80 +152,89 @@ const Dashboard: React.FC = () => {
 
   const topCards = [
     {
-      title: 'סך הכל לקוחות',
-      value: stats.totalClients.toLocaleString(),
-      icon: <TeamOutlined style={{ color: '#52c41a' }} />,
-      trend: '+12.5%',
-      trendUp: true,
-      color: '#52c41a',
-      bgColor: 'rgba(82, 196, 26, 0.1)',
+      title: 'לקוחות פעילים',
+      value: dashboardStats.active_customers.toLocaleString(),
+      subtitle: `מתוך ${dashboardStats.total_contacts} איש קשר`,
+      icon: <TeamOutlined style={{ color: theme.colors.success }} />,
+      trend: dashboardStats.new_contacts_week > 0 ? `+${dashboardStats.new_contacts_week} השבוע` : 'ללא שינוי',
+      trendUp: dashboardStats.new_contacts_week > 0,
+      color: theme.colors.success,
+      bgColor: theme.mode === 'dark' ? 'rgba(76, 175, 80, 0.2)' : 'rgba(76, 175, 80, 0.1)',
     },
     {
-      title: 'הכנסות החודש',
-      value: formatCurrency(stats.monthlyRevenue),
-      icon: <DollarOutlined style={{ color: '#1890ff' }} />,
-      trend: '+8.3%',
-      trendUp: true,
-      color: '#1890ff',
-      bgColor: 'rgba(24, 144, 255, 0.1)',
+      title: 'לידים פעילים',
+      value: dashboardStats.leads_count.toLocaleString(),
+      subtitle: `+ ${dashboardStats.meetings_scheduled} פגישות מתוכננות`,
+      icon: <UserAddOutlined style={{ color: theme.colors.warning }} />,
+      trend: dashboardStats.new_contacts_month > 0 ? `+${dashboardStats.new_contacts_month} החודש` : 'ללא שינוי',
+      trendUp: dashboardStats.new_contacts_month > 0,
+      color: theme.colors.warning,
+      bgColor: theme.mode === 'dark' ? 'rgba(255, 193, 7, 0.2)' : 'rgba(255, 193, 7, 0.1)',
     },
     {
-      title: 'פוליסות פעילות',
-      value: stats.activePolicies.toLocaleString(),
-      icon: <FileTextOutlined style={{ color: '#722ed1' }} />,
-      trend: '+5.7%',
-      trendUp: true,
-      color: '#722ed1',
-      bgColor: 'rgba(114, 46, 209, 0.1)',
+      title: 'יתרת פנסיה כוללת',
+      value: formatCurrency(dashboardStats.total_pension_balance),
+      subtitle: 'מלקוחות פעילים בלבד',
+      icon: <DollarOutlined style={{ color: theme.colors.info }} />,
+      trend: `שיעור המרה: ${dashboardStats.conversion_rate_percentage}%`,
+      trendUp: dashboardStats.conversion_rate_percentage > 25,
+      color: theme.colors.info,
+      bgColor: theme.mode === 'dark' ? 'rgba(33, 150, 243, 0.2)' : 'rgba(33, 150, 243, 0.1)',
     },
     {
-      title: 'לידים ממתינים',
-      value: stats.pendingLeads.toLocaleString(),
-      icon: <UserAddOutlined style={{ color: '#fa541c' }} />,
-      trend: '-3.2%',
-      trendUp: false,
-      color: '#fa541c',
-      bgColor: 'rgba(250, 84, 28, 0.1)',
+      title: 'משימות פעילות',
+      value: (dashboardStats.pending_tasks + dashboardStats.active_tasks).toLocaleString(),
+      subtitle: `${dashboardStats.completed_tasks} הושלמו מתוך ${dashboardStats.total_tasks}`,
+      icon: <FileTextOutlined style={{ color: theme.colors.warning }} />,
+      trend: dashboardStats.new_tasks_today > 0 ? `+${dashboardStats.new_tasks_today} היום` : 'ללא חדשות',
+      trendUp: dashboardStats.total_tasks > dashboardStats.pending_tasks,
+      color: theme.colors.warning,
+      bgColor: theme.mode === 'dark' ? 'rgba(255, 152, 0, 0.2)' : 'rgba(255, 152, 0, 0.1)',
     },
   ];
 
-  const recentActivities = [
-    { type: 'call', client: 'דוד כהן', action: 'שיחה טלפונית', time: '10:30', status: 'completed' },
-    { type: 'meeting', client: 'שרה לוי', action: 'פגישת ייעוץ', time: '14:00', status: 'scheduled' },
-    { type: 'email', client: 'משה אברהם', action: 'שליחת הצעה', time: '16:45', status: 'sent' },
-    { type: 'deal', client: 'רחל גולד', action: 'סגירת עסקה', time: '09:15', status: 'closed' },
-  ];
+  // recentActivities is now managed by state from the API
+  // This gets populated in the useEffect above
 
   const containerStyle: React.CSSProperties = {
-    padding: '24px',
+    padding: '8px',
     background: 'transparent',
     minHeight: 'calc(100vh - 140px)',
   };
 
   const cardStyle: React.CSSProperties = {
     borderRadius: '16px',
-    boxShadow: '0 8px 32px rgba(255, 255, 255, 0.1)',
-    border: '1px solid rgba(255, 255, 255, 0.15)',
-    background: 'rgba(255, 255, 255, 0.05)',
+    boxShadow: `0 8px 32px ${theme.colors.shadow}`,
+    border: `1px solid ${theme.colors.border}`,
+    background: theme.colors.cardBackground,
     backdropFilter: 'blur(20px)',
+    color: theme.colors.text,
   };
 
   const welcomeCardStyle: React.CSSProperties = {
     ...cardStyle,
-    background: 'linear-gradient(135deg, rgba(255, 255, 255, 0.15) 0%, rgba(255, 255, 255, 0.05) 100%)',
-    border: '1px solid rgba(255, 255, 255, 0.2)',
+    background: theme.mode === 'dark' 
+      ? 'linear-gradient(135deg, rgba(255, 255, 255, 0.15) 0%, rgba(255, 255, 255, 0.05) 100%)'
+      : 'linear-gradient(135deg, rgba(0, 0, 0, 0.05) 0%, rgba(0, 0, 0, 0.02) 100%)',
+    border: `1px solid ${theme.colors.border}`,
   };
 
   return (
-    <div style={containerStyle}>
+    <div style={{
+      ...containerStyle,
+      maxWidth: '100%',
+      width: '100%',
+      overflow: 'hidden',
+      boxSizing: 'border-box'
+    }}>
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6 }}
       >
         {/* Welcome Section */}
-        <Card style={welcomeCardStyle} styles={{ body: { padding: '32px' } }}>
-          <Row align="middle" justify="space-between">
+        <Card style={welcomeCardStyle} styles={{ body: { padding: '12px' } }}>
+          <Row align="middle" justify="space-between" style={{ width: '100%' }}>
             <Col>
               <Space align="center" size="large">
                 <motion.div
@@ -210,7 +297,7 @@ const Dashboard: React.FC = () => {
         </Card>
 
         {/* Stats Cards */}
-        <Row gutter={[24, 24]} style={{ marginTop: '24px' }}>
+        <Row gutter={[16, 16]} style={{ marginTop: '16px', width: '100%' }}>
           {topCards.map((card, index) => (
             <Col xs={24} sm={12} lg={6} key={index}>
               <motion.div
@@ -227,7 +314,7 @@ const Dashboard: React.FC = () => {
                   }}
                   styles={{ body: { padding: '24px' } }}
                 >
-                  <Row justify="space-between" align="middle">
+                  <Row justify="space-between" align="middle" style={{ width: '100%' }}>
                     <Col>
                       <div style={{ marginBottom: '8px' }}>
                         <Text style={{ color: 'white', fontSize: '14px', fontWeight: 500 }}>
@@ -271,7 +358,7 @@ const Dashboard: React.FC = () => {
         </Row>
 
         {/* Performance & Activities */}
-        <Row gutter={[24, 24]} style={{ marginTop: '24px' }}>
+        <Row gutter={[16, 16]} style={{ marginTop: '16px', width: '100%' }}>
           {/* Performance Chart */}
           <Col xs={24} lg={14}>
             <motion.div
@@ -282,8 +369,8 @@ const Dashboard: React.FC = () => {
               <Card 
                 title={
                   <Space>
-                    <BarChartOutlined style={{ color: '#1890ff' }} />
-                    <span style={{ color: 'white', fontSize: '18px', fontWeight: 600 }}>
+                    <BarChartOutlined style={{ color: theme.colors.info }} />
+                    <span style={{ color: theme.colors.text, fontSize: '18px', fontWeight: 600 }}>
                       ביצועים חודשיים
                     </span>
                   </Space>
@@ -298,62 +385,97 @@ const Dashboard: React.FC = () => {
                   body: { padding: '24px', direction: 'rtl' }
                 }}
               >
-                <Row gutter={[16, 16]}>
-                  <Col span={12}>
-                    <Statistic 
-                      title={<span style={{ color: 'rgba(255, 255, 255, 0.7)' }}>אחוז השלמה</span>}
-                      value={stats.completionRate} 
-                      suffix="%"
-                      valueStyle={{ color: '#52c41a', fontSize: '32px', fontWeight: 700 }}
-                    />
-                    <Progress 
-                      percent={stats.completionRate} 
-                      showInfo={false} 
-                      strokeColor="#52c41a"
-                      trailColor="rgba(255, 255, 255, 0.1)"
-                    />
+                <Row gutter={[12, 12]} style={{ width: '100%' }}>
+                  <Col xs={24} sm={12}>
+                    <div style={{ 
+                      background: 'transparent',
+                      padding: '16px',
+                      borderRadius: '8px'
+                    }}>
+                      <Statistic 
+                        title={<span style={{ color: theme.colors.textSecondary }}>אחוז השלמה</span>}
+                        value={dashboardStats.completion_rate || 85} 
+                        suffix="%"
+                        valueStyle={{ color: theme.colors.success, fontSize: '32px', fontWeight: 700 }}
+                        className="custom-statistic-success"
+                      />
+                      <Progress 
+                        percent={dashboardStats.completion_rate || 85} 
+                        showInfo={false} 
+                        strokeColor={theme.colors.success}
+                        trailColor={theme.mode === 'dark' ? 'rgba(255, 255, 255, 0.1)' : 'rgba(0, 0, 0, 0.1)'}
+                      />
+                    </div>
                   </Col>
-                  <Col span={12}>
-                    <Statistic 
-                      title={<span style={{ color: 'rgba(255, 255, 255, 0.7)' }}>שביעות רצון לקוחות</span>}
-                      value={stats.customerSatisfaction}
-                      suffix={<StarOutlined style={{ color: '#faad14' }} />}
-                      valueStyle={{ color: '#faad14', fontSize: '32px', fontWeight: 700 }}
-                    />
-                    <Progress 
-                      percent={(stats.customerSatisfaction / 5) * 100} 
-                      showInfo={false} 
-                      strokeColor="#faad14"
-                      trailColor="rgba(255, 255, 255, 0.1)"
-                    />
+                  <Col xs={24} sm={12}>
+                    <div style={{ 
+                      background: 'transparent',
+                      padding: '16px',
+                      borderRadius: '8px'
+                    }}>
+                      <Statistic 
+                        title={<span style={{ color: theme.colors.textSecondary }}>שביעות רצון לקוחות</span>}
+                        value={4.5}
+                        suffix={<StarOutlined style={{ color: theme.colors.warning }} />}
+                        valueStyle={{ color: theme.colors.warning, fontSize: '32px', fontWeight: 700 }}
+                        className="custom-statistic-warning"
+                      />
+                      <Progress 
+                        percent={(4.5 / 5) * 100} 
+                        showInfo={false} 
+                        strokeColor={theme.colors.warning}
+                        trailColor={theme.mode === 'dark' ? 'rgba(255, 255, 255, 0.1)' : 'rgba(0, 0, 0, 0.1)'}
+                      />
+                    </div>
                   </Col>
                 </Row>
                 
-                <Divider style={{ borderColor: 'rgba(255, 255, 255, 0.15)', margin: '24px 0' }} />
+                <Divider style={{ borderColor: theme.colors.border, margin: '24px 0' }} />
                 
-                <Row gutter={[16, 16]}>
-                  <Col span={8}>
-                    <Statistic 
-                      title={<span style={{ color: 'rgba(255, 255, 255, 0.7)' }}>צמיחה חודשית</span>}
-                      value={stats.monthlyGrowth} 
-                      suffix="%"
-                      valueStyle={{ color: '#1890ff', fontSize: '20px', fontWeight: 600 }}
-                    />
+                <Row gutter={[12, 12]} style={{ width: '100%' }}>
+                  <Col xs={24} sm={12} md={8}>
+                    <div style={{ 
+                      background: 'transparent',
+                      padding: '12px',
+                      borderRadius: '8px'
+                    }}>
+                      <Statistic 
+                        title={<span style={{ color: theme.colors.textSecondary }}>צמיחה חודשית</span>}
+                        value={12.5} 
+                        suffix="%"
+                        valueStyle={{ color: theme.colors.info, fontSize: '20px', fontWeight: 600 }}
+                        className="custom-statistic-info"
+                      />
+                    </div>
                   </Col>
-                  <Col span={8}>
-                    <Statistic 
-                      title={<span style={{ color: 'rgba(255, 255, 255, 0.7)' }}>ממוצע עסקה</span>}
-                      value={formatCurrency(stats.averageDealValue)}
-                      valueStyle={{ color: '#722ed1', fontSize: '20px', fontWeight: 600 }}
-                    />
+                  <Col xs={24} sm={12} md={8}>
+                    <div style={{ 
+                      background: 'transparent',
+                      padding: '12px',
+                      borderRadius: '8px'
+                    }}>
+                      <Statistic 
+                        title={<span style={{ color: theme.colors.textSecondary }}>ממוצע עסקה</span>}
+                        value={formatCurrency(50000)}
+                        valueStyle={{ color: theme.colors.accent, fontSize: '20px', fontWeight: 600 }}
+                        className="custom-statistic-accent"
+                      />
+                    </div>
                   </Col>
-                  <Col span={8}>
-                    <Statistic 
-                      title={<span style={{ color: 'rgba(255, 255, 255, 0.7)' }}>קצב המרה</span>}
-                      value={stats.conversion_rate} 
-                      suffix="%"
-                      valueStyle={{ color: '#fa541c', fontSize: '20px', fontWeight: 600 }}
-                    />
+                  <Col xs={24} sm={12} md={8}>
+                    <div style={{ 
+                      background: 'transparent',
+                      padding: '12px',
+                      borderRadius: '8px'
+                    }}>
+                      <Statistic 
+                        title={<span style={{ color: theme.colors.textSecondary }}>קצב המרה</span>}
+                        value={dashboardStats.conversion_rate} 
+                        suffix="%"
+                        valueStyle={{ color: theme.colors.warning, fontSize: '20px', fontWeight: 600 }}
+                        className="custom-statistic-warning-small"
+                      />
+                    </div>
                   </Col>
                 </Row>
               </Card>
@@ -387,35 +509,35 @@ const Dashboard: React.FC = () => {
                 }}
               >
                 <Timeline
-                  items={recentActivities.map((activity) => ({
-                    dot: activity.type === 'call' ? <PhoneOutlined style={{ color: '#1890ff' }} />
-                       : activity.type === 'meeting' ? <CalendarOutlined style={{ color: '#52c41a' }} />
-                       : activity.type === 'email' ? <MailOutlined style={{ color: '#722ed1' }} />
-                       : <DollarOutlined style={{ color: '#fa541c' }} />,
+                  items={recentActivity.map((activity, index) => ({
+                    dot: activity.type === 'customer_created' ? <UserAddOutlined style={{ color: activity.color }} />
+                       : activity.type === 'status_changed' ? <TeamOutlined style={{ color: activity.color }} />
+                       : activity.type === 'task_created' ? <FileTextOutlined style={{ color: activity.color }} />
+                       : <CalendarOutlined style={{ color: activity.color }} />,
                     children: (
-                      <div style={{ direction: 'rtl', textAlign: 'right' }}>
+                      <div key={index} style={{ direction: 'rtl', textAlign: 'right' }}>
                         <Text strong style={{ color: 'white', fontSize: '16px' }}>
-                          {activity.client}
+                          {activity.name}
                         </Text>
                         <br />
                         <Text style={{ color: 'rgba(255, 255, 255, 0.7)', fontSize: '14px' }}>
-                          {activity.action}
+                          {activity.description}
                         </Text>
                         <br />
                         <Text type="secondary" style={{ color: 'rgba(255, 255, 255, 0.5)', fontSize: '12px' }}>
-                          {activity.time}
+                          לפני {activity.time}
                         </Text>
                         <Tag 
-                          color={
-                            activity.status === 'completed' ? 'success' :
-                            activity.status === 'scheduled' ? 'processing' :
-                            activity.status === 'sent' ? 'warning' : 'error'
-                          }
-                          style={{ marginRight: '8px', fontSize: '11px' }}
+                          color={activity.color}
+                          style={{ 
+                            marginRight: '8px', 
+                            fontSize: '11px',
+                            backgroundColor: activity.color,
+                            borderColor: activity.color,
+                            color: 'white'
+                          }}
                         >
-                          {activity.status === 'completed' ? 'הושלם' :
-                           activity.status === 'scheduled' ? 'מתוכנן' :
-                           activity.status === 'sent' ? 'נשלח' : 'סגור'}
+                          {activity.status}
                         </Tag>
                       </div>
                     ),
@@ -427,8 +549,8 @@ const Dashboard: React.FC = () => {
         </Row>
 
         {/* Quick Actions */}
-        <Row gutter={[16, 16]} style={{ marginTop: '24px' }}>
-          <Col span={24}>
+        <Row gutter={[12, 12]} style={{ marginTop: '16px', width: '100%' }}>
+          <Col span={24} style={{ width: '100%' }}>
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
@@ -453,7 +575,7 @@ const Dashboard: React.FC = () => {
                   body: { padding: '24px', direction: 'rtl' }
                 }}
               >
-                <Row gutter={[16, 16]}>
+                <Row gutter={[12, 12]} style={{ width: '100%' }}>
                   <Col xs={24} sm={12} md={6}>
                     <Button 
                       block 

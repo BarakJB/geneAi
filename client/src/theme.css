@@ -1,0 +1,564 @@
+/* Global CSS Variables and Theme Styles */
+
+/* CSS Custom Properties for Theme */
+:root {
+  /* Default (dark) theme colors */
+  --color-primary: linear-gradient(135deg, #0f0f23 0%, #1a1a2e 50%, #16213e 100%);
+  --color-secondary: rgba(10, 10, 16, 0.95);
+  --color-surface: #222;
+  
+  /* Text colors */
+  --color-text: #ffffff;
+  --color-text-secondary: rgba(255, 255, 255, 0.8);
+  --color-text-muted: rgba(255, 255, 255, 0.6);
+  
+  /* Border and divider colors */
+  --color-border: rgba(255, 255, 255, 0.15);
+  --color-divider: rgba(255, 255, 255, 0.1);
+  
+  /* Interactive colors */
+  --color-accent: #2196F3;
+  --color-accent-hover: #1976D2;
+  
+  /* Status colors */
+  --color-success: #4CAF50;
+  --color-warning: #FFC107;
+  --color-error: #F44336;
+  --color-info: #2196F3;
+  
+  /* Component specific colors */
+  --color-card-bg: rgba(0, 0, 0, 0.4);
+  --color-sidebar-bg: rgba(10, 10, 16, 0.95);
+  --color-header-bg: rgba(10, 10, 16, 0.95);
+  --color-input-bg: #333;
+  
+  /* Shadows */
+  --shadow: rgba(0, 0, 0, 0.3);
+  --shadow-hover: rgba(0, 0, 0, 0.5);
+}
+
+/* Light theme override */
+[data-theme="light"] {
+  --color-primary: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+  --color-secondary: #ffffff;
+  --color-surface: #f1f3f4;
+  
+  /* Text colors */
+  --color-text: #212529;
+  --color-text-secondary: #495057;
+  --color-text-muted: #6c757d;
+  
+  /* Border and divider colors */
+  --color-border: #dee2e6;
+  --color-divider: #e9ecef;
+  
+  /* Interactive colors */
+  --color-accent: #007bff;
+  --color-accent-hover: #0056b3;
+  
+  /* Status colors */
+  --color-success: #28a745;
+  --color-warning: #ffc107;
+  --color-error: #dc3545;
+  --color-info: #17a2b8;
+  
+  /* Component specific colors */
+  --color-card-bg: #ffffff;
+  --color-sidebar-bg: #ffffff;
+  --color-header-bg: #ffffff;
+  --color-input-bg: #ffffff;
+  
+  /* Shadows */
+  --shadow: rgba(0, 0, 0, 0.1);
+  --shadow-hover: rgba(0, 0, 0, 0.15);
+}
+
+/* Global styles that use CSS variables */
+* {
+  color: var(--color-text) !important;
+}
+
+/* Ant Design component overrides */
+.ant-typography {
+  color: var(--color-text) !important;
+}
+
+.ant-typography-caption {
+  color: var(--color-text-secondary) !important;
+}
+
+.ant-card {
+  background: var(--color-card-bg) !important;
+  border-color: var(--color-border) !important;
+  color: var(--color-text) !important;
+}
+
+.ant-card .ant-card-head {
+  border-color: var(--color-border) !important;
+  background: var(--color-card-bg) !important;
+}
+
+.ant-card .ant-card-head-title {
+  color: var(--color-text) !important;
+}
+
+.ant-card .ant-card-body {
+  color: var(--color-text) !important;
+}
+
+.ant-input {
+  background: var(--color-input-bg) !important;
+  border-color: var(--color-border) !important;
+  color: var(--color-text) !important;
+}
+
+.ant-input::placeholder {
+  color: var(--color-text-muted) !important;
+}
+
+.ant-select .ant-select-selection {
+  background: var(--color-input-bg) !important;
+  border-color: var(--color-border) !important;
+}
+
+.ant-select .ant-select-selection-item {
+  color: var(--color-text) !important;
+}
+
+.ant-btn {
+  border-color: var(--color-border) !important;
+  color: var(--color-text) !important;
+}
+
+.ant-btn-primary {
+  background: var(--color-accent) !important;
+  border-color: var(--color-accent) !important;
+  color: #ffffff !important;
+}
+
+.ant-btn-primary:hover {
+  background: var(--color-accent-hover) !important;
+  border-color: var(--color-accent-hover) !important;
+}
+
+.ant-table {
+  background: var(--color-card-bg) !important;
+  color: var(--color-text) !important;
+}
+
+.ant-table-thead > tr > th {
+  background: var(--color-surface) !important;
+  border-color: var(--color-border) !important;
+  color: var(--color-text) !important;
+}
+
+.ant-table-tbody > tr > td {
+  border-color: var(--color-border) !important;
+  color: var(--color-text) !important;
+}
+
+.ant-table-tbody > tr {
+  background: var(--color-card-bg) !important;
+}
+
+.ant-table-tbody > tr:hover > td {
+  background: var(--color-surface) !important;
+}
+
+/* MUI component overrides */
+.MuiTypography-root {
+  color: var(--color-text) !important;
+}
+
+.MuiPaper-root {
+  background: var(--color-card-bg) !important;
+  color: var(--color-text) !important;
+}
+
+.MuiCard-root {
+  background: var(--color-card-bg) !important;
+  border: 1px solid var(--color-border) !important;
+}
+
+.MuiTextField-root .MuiInputBase-root {
+  background: var(--color-input-bg) !important;
+  color: var(--color-text) !important;
+}
+
+.MuiTextField-root .MuiInputBase-input {
+  color: var(--color-text) !important;
+}
+
+.MuiTextField-root .MuiInputLabel-root {
+  color: var(--color-text-secondary) !important;
+}
+
+.MuiTextField-root .MuiOutlinedInput-notchedOutline {
+  border-color: var(--color-border) !important;
+}
+
+.MuiButton-root {
+  color: var(--color-text) !important;
+  border-color: var(--color-border) !important;
+}
+
+.MuiButton-contained {
+  background: var(--color-accent) !important;
+  color: #ffffff !important;
+}
+
+.MuiButton-contained:hover {
+  background: var(--color-accent-hover) !important;
+}
+
+/* Specific fixes for white text problem */
+h1, h2, h3, h4, h5, h6, p, span, div, label, li, td, th {
+  color: var(--color-text) !important;
+}
+
+/* Force text color inheritance for all elements */
+[data-theme="light"] * {
+  color: var(--color-text) !important;
+}
+
+[data-theme="dark"] * {
+  color: var(--color-text) !important;
+}
+
+/* Override specific hardcoded colors */
+[data-theme="light"] [style*="color: white"],
+[data-theme="light"] [style*="color: #fff"],
+[data-theme="light"] [style*="color: #ffffff"],
+[data-theme="light"] [style*="color: rgba(255, 255, 255"] {
+  color: #212529 !important;
+}
+
+[data-theme="dark"] [style*="color: black"],
+[data-theme="dark"] [style*="color: #000"],
+[data-theme="dark"] [style*="color: #000000"],
+[data-theme="dark"] [style*="color: rgba(0, 0, 0"] {
+  color: #ffffff !important;
+}
+
+/* Force all cards to use theme background */
+[data-theme="light"] .ant-card,
+[data-theme="light"] .MuiCard-root,
+[data-theme="light"] .MuiPaper-root {
+  background-color: #ffffff !important;
+  color: #212529 !important;
+  border-color: #dee2e6 !important;
+}
+
+[data-theme="dark"] .ant-card,
+[data-theme="dark"] .MuiCard-root,
+[data-theme="dark"] .MuiPaper-root {
+  background-color: rgba(0, 0, 0, 0.4) !important;
+  color: #ffffff !important;
+  border-color: rgba(255, 255, 255, 0.15) !important;
+}
+
+/* Force all backgrounds that use linear gradients */
+[data-theme="light"] [style*="linear-gradient"] {
+  background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%) !important;
+}
+
+[data-theme="dark"] [style*="linear-gradient"] {
+  background: linear-gradient(135deg, #0f0f23 0%, #1a1a2e 50%, #16213e 100%) !important;
+}
+
+/* Special handling for primary text */
+[data-theme="light"] .MuiTypography-root {
+  color: #212529 !important;
+}
+
+[data-theme="dark"] .MuiTypography-root {
+  color: #ffffff !important;
+}
+
+/* Force MUI components to use theme colors */
+[data-theme="light"] .MuiPaper-root {
+  background-color: #ffffff !important;
+  color: #212529 !important;
+}
+
+[data-theme="dark"] .MuiPaper-root {
+  background-color: rgba(0, 0, 0, 0.4) !important;
+  color: #ffffff !important;
+}
+
+[data-theme="light"] .MuiButton-root {
+  color: #212529 !important;
+  border-color: #dee2e6 !important;
+}
+
+[data-theme="dark"] .MuiButton-root {
+  color: #ffffff !important;
+  border-color: rgba(255, 255, 255, 0.15) !important;
+}
+
+[data-theme="light"] .MuiButton-outlined:hover {
+  border-color: #007bff !important;
+  background-color: rgba(0, 123, 255, 0.1) !important;
+}
+
+[data-theme="dark"] .MuiButton-outlined:hover {
+  border-color: rgba(255, 255, 255, 0.5) !important;
+  background-color: rgba(255, 255, 255, 0.1) !important;
+}
+
+/* MUI Select components */
+[data-theme="light"] .MuiSelect-select,
+[data-theme="light"] .MuiInputBase-root,
+[data-theme="light"] .MuiTextField-root .MuiInputBase-input {
+  background-color: #ffffff !important;
+  color: #212529 !important;
+}
+
+[data-theme="dark"] .MuiSelect-select,
+[data-theme="dark"] .MuiInputBase-root,
+[data-theme="dark"] .MuiTextField-root .MuiInputBase-input {
+  background-color: rgba(0, 0, 0, 0.4) !important;
+  color: #ffffff !important;
+}
+
+/* MUI TextField and Select borders */
+[data-theme="light"] .MuiOutlinedInput-notchedOutline {
+  border-color: #dee2e6 !important;
+}
+
+[data-theme="dark"] .MuiOutlinedInput-notchedOutline {
+  border-color: rgba(255, 255, 255, 0.15) !important;
+}
+
+/* MUI Select dropdown */
+[data-theme="light"] .MuiPaper-root.MuiMenu-paper {
+  background-color: #ffffff !important;
+  color: #212529 !important;
+}
+
+[data-theme="dark"] .MuiPaper-root.MuiMenu-paper {
+  background-color: rgba(0, 0, 0, 0.9) !important;
+  color: #ffffff !important;
+}
+
+/* MUI MenuItem */
+[data-theme="light"] .MuiMenuItem-root {
+  color: #212529 !important;
+}
+
+[data-theme="dark"] .MuiMenuItem-root {
+  color: #ffffff !important;
+}
+
+[data-theme="light"] .MuiMenuItem-root:hover {
+  background-color: rgba(0, 123, 255, 0.1) !important;
+}
+
+[data-theme="dark"] .MuiMenuItem-root:hover {
+  background-color: rgba(255, 255, 255, 0.1) !important;
+}
+
+/* Chips and badges */
+.MuiChip-root {
+  background: var(--color-surface) !important;
+  color: var(--color-text) !important;
+  border-color: var(--color-border) !important;
+}
+
+/* Dialogs */
+.MuiDialog-paper {
+  background: var(--color-card-bg) !important;
+  color: var(--color-text) !important;
+}
+
+/* Lists */
+.MuiList-root {
+  background: var(--color-card-bg) !important;
+}
+
+.MuiListItem-root {
+  color: var(--color-text) !important;
+}
+
+.MuiListItemText-primary {
+  color: var(--color-text) !important;
+}
+
+.MuiListItemText-secondary {
+  color: var(--color-text-secondary) !important;
+}
+
+/* Ultra-aggressive theme enforcement */
+[data-theme="light"] {
+  --force-text-color: #212529 !important;
+  --force-bg-color: #ffffff !important;
+  --force-border-color: #dee2e6 !important;
+}
+
+[data-theme="dark"] {
+  --force-text-color: #ffffff !important;
+  --force-bg-color: rgba(0, 0, 0, 0.4) !important;
+  --force-border-color: rgba(255, 255, 255, 0.15) !important;
+}
+
+/* Override ALL inline styles that set colors */
+[data-theme="light"] [style] {
+  color: #212529 !important;
+}
+
+[data-theme="dark"] [style] {
+  color: #ffffff !important;
+}
+
+/* Force specific components */
+[data-theme="light"] .ant-statistic-content,
+[data-theme="light"] .ant-statistic-title,
+[data-theme="light"] .ant-typography {
+  color: #212529 !important;
+}
+
+[data-theme="dark"] .ant-statistic-content,
+[data-theme="dark"] .ant-statistic-title,
+[data-theme="dark"] .ant-typography {
+  color: #ffffff !important;
+}
+
+/* Force icon colors */
+[data-theme="light"] .anticon {
+  color: #495057 !important;
+}
+
+[data-theme="dark"] .anticon {
+  color: rgba(255, 255, 255, 0.8) !important;
+}
+
+/* Force all elements with hardcoded styles */
+[data-theme="light"] * {
+  border-color: #dee2e6 !important;
+}
+
+[data-theme="dark"] * {
+  border-color: rgba(255, 255, 255, 0.15) !important;
+}
+
+/* Force Statistic components to inherit background */
+[data-theme="light"] .ant-statistic {
+  background: transparent !important;
+  color: #212529 !important;
+}
+
+[data-theme="dark"] .ant-statistic {
+  background: transparent !important;
+  color: #ffffff !important;
+}
+
+[data-theme="light"] .ant-statistic-title {
+  color: #495057 !important;
+}
+
+[data-theme="dark"] .ant-statistic-title {
+  color: rgba(255, 255, 255, 0.8) !important;
+}
+
+[data-theme="light"] .ant-statistic-content {
+  /* Don't override if inline style is present */
+}
+
+[data-theme="dark"] .ant-statistic-content {
+  /* Don't override if inline style is present */
+}
+
+/* Only override if no specific color is set */
+[data-theme="light"] .ant-statistic-content:not([style*="color"]) {
+  color: #212529 !important;
+}
+
+[data-theme="dark"] .ant-statistic-content:not([style*="color"]) {
+  color: #ffffff !important;
+}
+
+/* Custom statistic color enforcement */
+[data-theme="light"] .custom-statistic-success .ant-statistic-content {
+  color: #28a745 !important;
+}
+
+[data-theme="dark"] .custom-statistic-success .ant-statistic-content {
+  color: #4CAF50 !important;
+}
+
+[data-theme="light"] .custom-statistic-warning .ant-statistic-content,
+[data-theme="light"] .custom-statistic-warning-small .ant-statistic-content {
+  color: #ffc107 !important;
+}
+
+[data-theme="dark"] .custom-statistic-warning .ant-statistic-content,
+[data-theme="dark"] .custom-statistic-warning-small .ant-statistic-content {
+  color: #FFC107 !important;
+}
+
+[data-theme="light"] .custom-statistic-info .ant-statistic-content {
+  color: #17a2b8 !important;
+}
+
+[data-theme="dark"] .custom-statistic-info .ant-statistic-content {
+  color: #2196F3 !important;
+}
+
+[data-theme="light"] .custom-statistic-accent .ant-statistic-content {
+  color: #007bff !important;
+}
+
+[data-theme="dark"] .custom-statistic-accent .ant-statistic-content {
+  color: #2196F3 !important;
+}
+
+/* Fix for CRM forms - Ant Design components */
+[data-theme="light"] .crm-input .ant-input,
+[data-theme="light"] .crm-input .ant-input-number,
+[data-theme="light"] .crm-input .ant-select .ant-select-selector,
+[data-theme="light"] .crm-input .ant-picker {
+  background-color: #ffffff !important;
+  border-color: #d9d9d9 !important;
+  color: #000000 !important;
+}
+
+[data-theme="dark"] .crm-input .ant-input,
+[data-theme="dark"] .crm-input .ant-input-number,
+[data-theme="dark"] .crm-input .ant-select .ant-select-selector,
+[data-theme="dark"] .crm-input .ant-picker {
+  background-color: rgba(255, 255, 255, 0.1) !important;
+  border-color: rgba(255, 255, 255, 0.15) !important;
+  color: #ffffff !important;
+}
+
+/* Fix for CRM tabs */
+[data-theme="light"] .crm-tabs .ant-tabs-tab {
+  color: #000000 !important;
+}
+
+[data-theme="dark"] .crm-tabs .ant-tabs-tab {
+  color: #ffffff !important;
+}
+
+[data-theme="light"] .crm-tabs .ant-tabs-ink-bar {
+  background: #1890ff !important;
+}
+
+[data-theme="dark"] .crm-tabs .ant-tabs-ink-bar {
+  background: #ffffff !important;
+}
+
+/* Fix for Task Management - Override any hardcoded styles */
+[data-theme="light"] .task-management .MuiSelect-select,
+[data-theme="light"] .task-management .MuiInputBase-root,
+[data-theme="light"] .task-management .MuiTextField-root .MuiInputBase-input {
+  background-color: #ffffff !important;
+  color: #000000 !important;
+}
+
+[data-theme="dark"] .task-management .MuiSelect-select,
+[data-theme="dark"] .task-management .MuiInputBase-root,
+[data-theme="dark"] .task-management .MuiTextField-root .MuiInputBase-input {
+  background-color: rgba(255, 255, 255, 0.1) !important;
+  color: #ffffff !important;
+}

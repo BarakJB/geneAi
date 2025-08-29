@@ -26,7 +26,7 @@ import {
 } from '@ant-design/icons';
 import { motion } from 'framer-motion';
 import type { UploadProps } from 'antd';
-import GoogleAd from './GoogleAd';
+import { useTheme } from '../contexts/ThemeContext';
 
 const { Title, Text } = Typography;
 const { Dragger } = Upload;
@@ -58,49 +58,9 @@ interface DiscrepancyItem {
 }
 
 const PayslipAnalyzer: React.FC = () => {
-  // Add custom styles for inputs to match CRM
-  React.useEffect(() => {
-    const style = document.createElement('style');
-    style.textContent = `
-      .payslip-analyzer .ant-input {
-        background-color: rgba(0, 0, 0, 0.3) !important;
-        border-color: white !important;
-        color: white !important;
-        border-radius: 8px !important;
-      }
-      
-      .payslip-analyzer .ant-input::placeholder {
-        color: rgba(255, 255, 255, 0.65) !important;
-      }
-      
-      .payslip-analyzer .ant-upload.ant-upload-drag {
-        background-color: rgba(0, 0, 0, 0.3) !important;
-        border-color: white !important;
-        border-radius: 12px !important;
-      }
-
-      .payslip-analyzer .ant-upload.ant-upload-drag:hover {
-        border-color: rgba(255, 255, 255, 0.8) !important;
-      }
-
-      .payslip-analyzer .ant-upload.ant-upload-drag .ant-upload-text {
-        color: white !important;
-      }
-
-      .payslip-analyzer .ant-upload.ant-upload-drag .ant-upload-hint {
-        color: rgba(255, 255, 255, 0.65) !important;
-      }
-
-      .payslip-analyzer .ant-form-item-label > label {
-        color: white !important;
-      }
-    `;
-    document.head.appendChild(style);
-    
-    return () => {
-      document.head.removeChild(style);
-    };
-  }, []);
+  const { theme } = useTheme();
+  
+  // Theme is now handled by global CSS
 
   const [uploadedFile, setUploadedFile] = useState<File | null>(null);
   const [analyzing, setAnalyzing] = useState(false);
@@ -219,10 +179,10 @@ const PayslipAnalyzer: React.FC = () => {
 
   const getDiscrepancyColor = (type: string) => {
     switch (type) {
-      case 'error': return '#ff4d4f';
-      case 'warning': return '#faad14';
-      case 'info': return '#1890ff';
-      default: return '#52c41a';
+      case 'error': return theme.colors.error;
+      case 'warning': return theme.colors.warning;
+      case 'info': return theme.colors.info;
+      default: return theme.colors.success;
     }
   };
 
@@ -236,16 +196,16 @@ const PayslipAnalyzer: React.FC = () => {
   };
 
   const containerStyle: React.CSSProperties = {
-    padding: '24px',
-    background: 'linear-gradient(135deg, #0f0f23 0%, #1a1a2e 50%, #16213e 100%)',
+    padding: '8px',
+    background: theme.colors.primary,
     minHeight: 'calc(100vh - 140px)',
   };
 
   const cardStyle: React.CSSProperties = {
     borderRadius: '16px',
-    boxShadow: '0 8px 32px rgba(255, 255, 255, 0.1)',
-    border: '1px solid rgba(255, 255, 255, 0.15)',
-    background: 'rgba(255, 255, 255, 0.05)',
+    boxShadow: `0 8px 32px ${theme.colors.shadow}`,
+    border: `1px solid ${theme.colors.border}`,
+    background: theme.colors.cardBackground,
     backdropFilter: 'blur(20px)',
     marginBottom: '24px',
   };
@@ -260,19 +220,19 @@ const PayslipAnalyzer: React.FC = () => {
         {/* Header Card */}
         <Card 
           style={cardStyle}
-          bodyStyle={{ padding: '32px', textAlign: 'center', direction: 'rtl' }}
+          bodyStyle={{ padding: '12px', textAlign: 'center', direction: 'rtl' }}
         >
           <Space direction="vertical" size="large" style={{ width: '100%' }}>
             <motion.div
               whileHover={{ scale: 1.05, rotate: 5 }}
               transition={{ type: "spring", stiffness: 400, damping: 17 }}
             >
-              <CalculatorOutlined style={{ fontSize: '48px', color: '#722ed1' }} />
+              <CalculatorOutlined style={{ fontSize: '48px', color: theme.colors.accent }} />
             </motion.div>
-            <Title level={1} style={{ color: 'white', margin: 0 }}>
+            <Title level={1} style={{ color: theme.colors.text, margin: 0 }}>
               מנתח תלושי שכר
             </Title>
-            <Text style={{ color: 'rgba(255, 255, 255, 0.8)', fontSize: '18px' }}>
+            <Text style={{ color: theme.colors.textSecondary, fontSize: '18px' }}>
               בדיקה אוטומטית של תלושי שכר ואיתור שגיאות בחישובים
             </Text>
           </Space>
@@ -322,7 +282,7 @@ const PayslipAnalyzer: React.FC = () => {
                 {analyzing && (
           <Card 
             style={cardStyle}
-            bodyStyle={{ padding: '32px', textAlign: 'center', direction: 'rtl' }}
+            bodyStyle={{ padding: '12px', textAlign: 'center', direction: 'rtl' }}
           >
             <Space direction="vertical" size="large" style={{ width: '100%' }}>
               <Spin size="large" />
@@ -586,18 +546,7 @@ const PayslipAnalyzer: React.FC = () => {
         </motion.div>
       )}
 
-      {/* פרסומת בתחתית */}
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 1, duration: 0.6 }}
-      >
-        <GoogleAd 
-          adSlot="5544332211"
-          adFormat="horizontal"
-          style={{ marginTop: '32px' }}
-        />
-      </motion.div>
+      
       </motion.div>
     </div>
   );

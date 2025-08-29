@@ -1,0 +1,41 @@
+services:
+  mysql:
+    image: mysql:8.0
+    container_name: agents_calculator_mysql
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: jronaldo1991
+      MYSQL_DATABASE: agents_calculator
+      MYSQL_USER: barak
+      MYSQL_PASSWORD: jronaldo1991
+    ports:
+      - "3308:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+      - ./database/init:/docker-entrypoint-initdb.d
+    command: --default-authentication-plugin=mysql_native_password --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
+    networks:
+      - agents_network
+
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin:latest
+    container_name: agents_calculator_phpmyadmin
+    restart: always
+    environment:
+      PMA_HOST: mysql
+      PMA_USER: barak
+      PMA_PASSWORD: jronaldo1991
+    ports:
+      - "8081:80"
+    depends_on:
+      - mysql
+    networks:
+      - agents_network
+
+volumes:
+  mysql_data:
+    driver: local
+
+networks:
+  agents_network:
+    driver: bridge

@@ -381,7 +381,7 @@ const Integrations: React.FC = () => {
   };
 
   const containerStyle: React.CSSProperties = {
-    padding: '24px',
+    padding: '8px',
     background: 'linear-gradient(135deg, #0f0f23 0%, #1a1a2e 50%, #16213e 100%)',
     minHeight: 'calc(100vh - 140px)',
   };
@@ -405,7 +405,7 @@ const Integrations: React.FC = () => {
         {/* Header Card */}
         <Card 
           style={cardStyle}
-          bodyStyle={{ padding: '32px', textAlign: 'center', direction: 'rtl' }}
+          bodyStyle={{ padding: '12px', textAlign: 'center', direction: 'rtl' }}
         >
           <Space direction="vertical" size="large" style={{ width: '100%' }}>
             <motion.div
@@ -479,7 +479,7 @@ const Integrations: React.FC = () => {
                   backgroundColor: 'rgba(0, 0, 0, 0.3)',
                   border: '1px solid rgba(255, 255, 255, 0.1)',
                   borderRadius: '8px',
-                  padding: '16px',
+                  padding: '8px',
                   marginBottom: '16px',
                 }}>
                   <pre style={{

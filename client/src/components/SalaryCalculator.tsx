@@ -24,6 +24,7 @@ import {
   CheckCircleOutlined,
 } from '@ant-design/icons';
 import { motion, AnimatePresence } from 'framer-motion';
+import { useTheme } from '../contexts/ThemeContext';
 
 const { Title, Text } = Typography;
 const { Panel } = Collapse;
@@ -101,6 +102,7 @@ interface SalaryResult {
 }
 
 const SalaryCalculator: React.FC = () => {
+  const { theme } = useTheme();
   const [form] = Form.useForm();
   const [params, setParams] = useState<SalaryParams>({
     employeeType: 'regular',
@@ -372,18 +374,20 @@ const SalaryCalculator: React.FC = () => {
   };
 
   const containerStyle: React.CSSProperties = {
-    padding: '24px',
-    background: 'transparent',
+    padding: '8px',
+    background: theme.colors.primary,
     minHeight: 'calc(100vh - 140px)',
+    color: theme.colors.text,
   };
 
   const cardStyle: React.CSSProperties = {
     borderRadius: '16px',
-    boxShadow: '0 8px 32px rgba(255, 255, 255, 0.1)',
-    border: '1px solid rgba(255, 255, 255, 0.15)',
-    background: 'rgba(255, 255, 255, 0.05)',
+    boxShadow: `0 8px 32px ${theme.colors.shadow}`,
+    border: `1px solid ${theme.colors.border}`,
+    background: theme.colors.cardBackground,
     backdropFilter: 'blur(20px)',
     marginBottom: '24px',
+    color: theme.colors.text,
   };
 
   return (
@@ -396,19 +400,19 @@ const SalaryCalculator: React.FC = () => {
         {/* Header Card */}
         <Card 
           style={cardStyle}
-          bodyStyle={{ padding: '32px', textAlign: 'center', direction: 'rtl' }}
+          bodyStyle={{ padding: '12px', textAlign: 'center', direction: 'rtl' }}
         >
           <Space direction="vertical" size="large" style={{ width: '100%' }}>
             <motion.div
               whileHover={{ scale: 1.05, rotate: 5 }}
               transition={{ type: "spring", stiffness: 400, damping: 17 }}
             >
-              <CalculatorOutlined style={{ fontSize: '48px', color: '#1890ff' }} />
+              <CalculatorOutlined style={{ fontSize: '48px', color: theme.colors.info }} />
             </motion.div>
-            <Title level={1} style={{ color: 'white', margin: 0 }}>
+            <Title level={1} style={{ color: theme.colors.text, margin: 0 }}>
               מחשבון שכר מתקדם
             </Title>
-            <Text style={{ color: 'rgba(255, 255, 255, 0.8)', fontSize: '18px' }}>
+            <Text style={{ color: theme.colors.textSecondary, fontSize: '18px' }}>
               חישוב מדויק של שכר ברוטו ונטו כולל תוספות וניכויים
             </Text>
           </Space>
@@ -434,8 +438,8 @@ const SalaryCalculator: React.FC = () => {
           style={cardStyle}
           title={
             <Space>
-              <UserOutlined style={{ color: '#52c41a' }} />
-              <span style={{ color: 'white' }}>פרטי העובד</span>
+              <UserOutlined style={{ color: theme.colors.success }} />
+              <span style={{ color: theme.colors.text }}>פרטי העובד</span>
             </Space>
           }
           headStyle={{
@@ -443,7 +447,7 @@ const SalaryCalculator: React.FC = () => {
             borderBottom: '1px solid rgba(255, 255, 255, 0.15)',
                 direction: 'rtl',
           }}
-          bodyStyle={{ padding: '32px', direction: 'rtl' }}
+          bodyStyle={{ padding: '12px', direction: 'rtl' }}
         >
           <Form
             form={form}
@@ -503,7 +507,7 @@ const SalaryCalculator: React.FC = () => {
                       checked={params.isPublicSector}
                       onChange={(checked) => handleInputChange('isPublicSector', checked)}
                     />
-                    <Text style={{ color: 'white' }}>
+                    <Text style={{ color: theme.colors.text }}>
                       {params.isPublicSector ? 'מגזר ציבורי' : 'מגזר פרטי'}
                     </Text>
                   </Space>
@@ -511,21 +515,21 @@ const SalaryCalculator: React.FC = () => {
               </Col>
             </Row>
 
-            <Divider style={{ borderColor: 'rgba(255, 255, 255, 0.15)', margin: '32px 0' }} />
+            <Divider style={{ borderColor: theme.colors.border, margin: '32px 0' }} />
 
             <Collapse
               ghost
               style={{ 
                 background: 'transparent',
-                border: '1px solid rgba(255, 255, 255, 0.15)',
+                border: `1px solid ${theme.colors.border}`,
                 borderRadius: '12px'
               }}
             >
               <Panel 
                 header={
                   <Space>
-                    <ClockCircleOutlined style={{ color: '#1890ff' }} />
-                    <Text style={{ color: 'white', fontSize: '16px', fontWeight: 600 }}>
+                    <ClockCircleOutlined style={{ color: theme.colors.info }} />
+                    <Text style={{ color: theme.colors.text, fontSize: '16px', fontWeight: 600 }}>
                       שעות עבודה ותוספות זמן
                     </Text>
                   </Space>
@@ -580,8 +584,8 @@ const SalaryCalculator: React.FC = () => {
               <Panel 
                 header={
                   <Space>
-                    <DollarOutlined style={{ color: '#52c41a' }} />
-                    <Text style={{ color: 'white', fontSize: '16px', fontWeight: 600 }}>
+                    <DollarOutlined style={{ color: theme.colors.success }} />
+                    <Text style={{ color: theme.colors.text, fontSize: '16px', fontWeight: 600 }}>
                       תוספות ונדבות
                     </Text>
                   </Space>
@@ -659,8 +663,8 @@ const SalaryCalculator: React.FC = () => {
               <Panel 
                 header={
                   <Space>
-                    <CarOutlined style={{ color: '#722ed1' }} />
-                    <Text style={{ color: 'white', fontSize: '16px', fontWeight: 600 }}>
+                    <CarOutlined style={{ color: theme.colors.accent }} />
+                    <Text style={{ color: theme.colors.text, fontSize: '16px', fontWeight: 600 }}>
                       תוספות נוספות
                     </Text>
                   </Space>
@@ -676,7 +680,7 @@ const SalaryCalculator: React.FC = () => {
                             checked={params.hasCarAllowance}
                           onChange={(checked) => handleInputChange('hasCarAllowance', checked)}
                         />
-                        <Text style={{ color: 'white' }}>תוספת רכב</Text>
+                        <Text style={{ color: theme.colors.text }}>תוספת רכב</Text>
                       </Space>
                     </Form.Item>
                       {params.hasCarAllowance && (
@@ -699,7 +703,7 @@ const SalaryCalculator: React.FC = () => {
                             checked={params.hasPhoneAllowance}
                           onChange={(checked) => handleInputChange('hasPhoneAllowance', checked)}
                         />
-                        <Text style={{ color: 'white' }}>תוספת טלפון</Text>
+                        <Text style={{ color: theme.colors.text }}>תוספת טלפון</Text>
                       </Space>
                     </Form.Item>
                       {params.hasPhoneAllowance && (
@@ -722,7 +726,7 @@ const SalaryCalculator: React.FC = () => {
                           checked={params.hasTravelExpenses}
                           onChange={(checked) => handleInputChange('hasTravelExpenses', checked)}
                         />
-                        <Text style={{ color: 'white' }}>הוצאות נסיעה</Text>
+                        <Text style={{ color: theme.colors.text }}>הוצאות נסיעה</Text>
                       </Space>
                     </Form.Item>
                     {params.hasTravelExpenses && (
@@ -745,7 +749,7 @@ const SalaryCalculator: React.FC = () => {
                           checked={params.hasChildAllowances}
                           onChange={(checked) => handleInputChange('hasChildAllowances', checked)}
                         />
-                        <Text style={{ color: 'white' }}>תוספת ילדים</Text>
+                        <Text style={{ color: theme.colors.text }}>תוספת ילדים</Text>
                       </Space>
                     </Form.Item>
                     {params.hasChildAllowances && (
@@ -778,8 +782,8 @@ const SalaryCalculator: React.FC = () => {
               <Panel 
                 header={
                   <Space>
-                    <CalculatorOutlined style={{ color: '#f5222d' }} />
-                    <Text style={{ color: 'white', fontSize: '16px', fontWeight: 600 }}>
+                    <CalculatorOutlined style={{ color: theme.colors.error }} />
+                    <Text style={{ color: theme.colors.text, fontSize: '16px', fontWeight: 600 }}>
                       חישובים מתקדמים - מס ופנסיה
                     </Text>
                   </Space>
@@ -924,7 +928,7 @@ const SalaryCalculator: React.FC = () => {
               </Panel>
             </Collapse>
 
-            <Divider style={{ borderColor: 'rgba(255, 255, 255, 0.15)', margin: '32px 0' }} />
+            <Divider style={{ borderColor: theme.colors.border, margin: '32px 0' }} />
 
               {/* Action Buttons */}
             <Row gutter={[16, 16]} justify="center">
@@ -938,7 +942,9 @@ const SalaryCalculator: React.FC = () => {
                   onClick={calculateSalary}
                     loading={loading}
                     style={{
-                      background: 'linear-gradient(135deg, #1890ff 0%, #096dd9 100%)',
+                      background: theme.mode === 'dark' 
+                        ? 'linear-gradient(135deg, #1890ff 0%, #096dd9 100%)'
+                        : 'linear-gradient(135deg, #007bff 0%, #0056b3 100%)',
                       border: 'none',
                         borderRadius: '12px', 
                       height: '48px',
@@ -985,8 +991,8 @@ const SalaryCalculator: React.FC = () => {
                 style={cardStyle}
                 title={
                   <Space>
-                    <CheckCircleOutlined style={{ color: '#52c41a' }} />
-                    <span style={{ color: 'white' }}>תוצאות חישוב השכר</span>
+                    <CheckCircleOutlined style={{ color: theme.colors.success }} />
+                    <span style={{ color: theme.colors.text }}>תוצאות חישוב השכר</span>
                   </Space>
                 }
                 headStyle={{
@@ -994,7 +1000,7 @@ const SalaryCalculator: React.FC = () => {
                   borderBottom: '1px solid rgba(255, 255, 255, 0.15)',
                   direction: 'rtl',
                 }}
-                bodyStyle={{ padding: '32px', direction: 'rtl' }}
+                bodyStyle={{ padding: '12px', direction: 'rtl' }}
               >
                 <Row gutter={[24, 24]}>
                   {/* Summary Cards */}
@@ -1008,10 +1014,10 @@ const SalaryCalculator: React.FC = () => {
                       bodyStyle={{ padding: '24px', textAlign: 'center' }}
                     >
                       <Statistic
-                        title={<Text style={{ color: 'rgba(255, 255, 255, 0.8)' }}>שכר ברוטו</Text>}
+                        title={<Text style={{ color: 'theme.colors.textSecondary' }}>שכר ברוטו</Text>}
                         value={result.totalGross}
                         formatter={(value) => formatCurrency(Number(value))}
-                        valueStyle={{ color: '#1890ff', fontSize: '28px', fontWeight: 700 }}
+                        valueStyle={{ color: theme.colors.info, fontSize: '28px', fontWeight: 700 }}
                       />
                       </Card>
                   </Col>
@@ -1026,10 +1032,10 @@ const SalaryCalculator: React.FC = () => {
                       bodyStyle={{ padding: '24px', textAlign: 'center' }}
                     >
                       <Statistic
-                        title={<Text style={{ color: 'rgba(255, 255, 255, 0.8)' }}>סך ניכויים</Text>}
+                        title={<Text style={{ color: 'theme.colors.textSecondary' }}>סך ניכויים</Text>}
                         value={result.totalDeductions}
                         formatter={(value) => formatCurrency(Number(value))}
-                        valueStyle={{ color: '#ff4d4f', fontSize: '28px', fontWeight: 700 }}
+                        valueStyle={{ color: theme.colors.error, fontSize: '28px', fontWeight: 700 }}
                       />
                       </Card>
                   </Col>
@@ -1044,10 +1050,10 @@ const SalaryCalculator: React.FC = () => {
                       bodyStyle={{ padding: '24px', textAlign: 'center' }}
                     >
                       <Statistic
-                        title={<Text style={{ color: 'rgba(255, 255, 255, 0.8)' }}>שכר נטו</Text>}
+                        title={<Text style={{ color: 'theme.colors.textSecondary' }}>שכר נטו</Text>}
                         value={result.netSalary}
                         formatter={(value) => formatCurrency(Number(value))}
-                        valueStyle={{ color: '#52c41a', fontSize: '28px', fontWeight: 700 }}
+                        valueStyle={{ color: theme.colors.success, fontSize: '28px', fontWeight: 700 }}
                       />
                       </Card>
                   </Col>
@@ -1065,11 +1071,11 @@ const SalaryCalculator: React.FC = () => {
                       bodyStyle={{ padding: '24px', textAlign: 'center' }}
                     >
                       <Statistic
-                        title={<Text style={{ color: 'rgba(255, 255, 255, 0.8)' }}>אחוז מס אפקטיבי</Text>}
+                        title={<Text style={{ color: 'theme.colors.textSecondary' }}>אחוז מס אפקטיבי</Text>}
                         value={result.effectiveTaxRate}
                         precision={1}
                         formatter={(value) => `${value}%`}
-                        valueStyle={{ color: '#faad14', fontSize: '24px', fontWeight: 700 }}
+                        valueStyle={{ color: theme.colors.warning, fontSize: '24px', fontWeight: 700 }}
                       />
                     </Card>
                   </Col>
@@ -1084,16 +1090,16 @@ const SalaryCalculator: React.FC = () => {
                       bodyStyle={{ padding: '24px', textAlign: 'center' }}
                     >
                       <Statistic
-                        title={<Text style={{ color: 'rgba(255, 255, 255, 0.8)' }}>זכות מס חודשית</Text>}
+                        title={<Text style={{ color: 'theme.colors.textSecondary' }}>זכות מס חודשית</Text>}
                         value={result.taxCredits}
                         formatter={(value) => formatCurrency(Number(value))}
-                        valueStyle={{ color: '#722ed1', fontSize: '24px', fontWeight: 700 }}
+                        valueStyle={{ color: theme.colors.accent, fontSize: '24px', fontWeight: 700 }}
                       />
                     </Card>
                   </Col>
                 </Row>
 
-                <Divider style={{ borderColor: 'rgba(255, 255, 255, 0.15)', margin: '32px 0' }} />
+                <Divider style={{ borderColor: theme.colors.border, margin: '32px 0' }} />
 
                 {/* Detailed Breakdown */}
                 <Row gutter={[24, 24]}>
@@ -1114,14 +1120,14 @@ const SalaryCalculator: React.FC = () => {
                     >
                       <Space direction="vertical" size="middle" style={{ width: '100%' }}>
                         <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                          <Text style={{ color: 'white' }}>שכר בסיס:</Text>
+                          <Text style={{ color: theme.colors.text }}>שכר בסיס:</Text>
                           <Text style={{ color: 'white', fontWeight: 600 }}>
                             {formatCurrency(result.grossSalary)}
                           </Text>
                         </div>
                             {result.overtimePay > 0 && (
                           <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                            <Text style={{ color: 'white' }}>שעות נוספות:</Text>
+                            <Text style={{ color: theme.colors.text }}>שעות נוספות:</Text>
                             <Text style={{ color: '#52c41a', fontWeight: 600 }}>
                               {formatCurrency(result.overtimePay)}
                             </Text>
@@ -1129,7 +1135,7 @@ const SalaryCalculator: React.FC = () => {
                         )}
                             {result.weekendPay > 0 && (
                           <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                            <Text style={{ color: 'white' }}>שעות סוף שבוע:</Text>
+                            <Text style={{ color: theme.colors.text }}>שעות סוף שבוע:</Text>
                             <Text style={{ color: '#52c41a', fontWeight: 600 }}>
                               {formatCurrency(result.weekendPay)}
                             </Text>
@@ -1137,7 +1143,7 @@ const SalaryCalculator: React.FC = () => {
                         )}
                             {result.holidayPay > 0 && (
                           <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                            <Text style={{ color: 'white' }}>שעות חג:</Text>
+                            <Text style={{ color: theme.colors.text }}>שעות חג:</Text>
                             <Text style={{ color: '#52c41a', fontWeight: 600 }}>
                               {formatCurrency(result.holidayPay)}
                             </Text>
@@ -1145,7 +1151,7 @@ const SalaryCalculator: React.FC = () => {
                         )}
                             {result.allowancesTotal > 0 && (
                           <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                            <Text style={{ color: 'white' }}>תוספות ונדבות:</Text>
+                            <Text style={{ color: theme.colors.text }}>תוספות ונדבות:</Text>
                             <Text style={{ color: '#52c41a', fontWeight: 600 }}>
                               {formatCurrency(result.allowancesTotal)}
                             </Text>
@@ -1153,7 +1159,7 @@ const SalaryCalculator: React.FC = () => {
                         )}
                             {result.standbyPay > 0 && (
                           <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                            <Text style={{ color: 'white' }}>דמי כוננות:</Text>
+                            <Text style={{ color: theme.colors.text }}>דמי כוננות:</Text>
                             <Text style={{ color: '#52c41a', fontWeight: 600 }}>
                               {formatCurrency(result.standbyPay)}
                             </Text>
@@ -1161,7 +1167,7 @@ const SalaryCalculator: React.FC = () => {
                         )}
                         {result.carAllowance > 0 && (
                           <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                            <Text style={{ color: 'white' }}>תוספת רכב:</Text>
+                            <Text style={{ color: theme.colors.text }}>תוספת רכב:</Text>
                             <Text style={{ color: '#52c41a', fontWeight: 600 }}>
                               {formatCurrency(result.carAllowance)}
                             </Text>
@@ -1169,7 +1175,7 @@ const SalaryCalculator: React.FC = () => {
                         )}
                         {result.phoneAllowance > 0 && (
                           <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                            <Text style={{ color: 'white' }}>תוספת טלפון:</Text>
+                            <Text style={{ color: theme.colors.text }}>תוספת טלפון:</Text>
                             <Text style={{ color: '#52c41a', fontWeight: 600 }}>
                               {formatCurrency(result.phoneAllowance)}
                             </Text>
@@ -1177,7 +1183,7 @@ const SalaryCalculator: React.FC = () => {
                         )}
                         {result.travelExpenses > 0 && (
                           <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                            <Text style={{ color: 'white' }}>הוצאות נסיעה:</Text>
+                            <Text style={{ color: theme.colors.text }}>הוצאות נסיעה:</Text>
                             <Text style={{ color: '#52c41a', fontWeight: 600 }}>
                               {formatCurrency(result.travelExpenses)}
                             </Text>
@@ -1185,7 +1191,7 @@ const SalaryCalculator: React.FC = () => {
                         )}
                         {result.childAllowances > 0 && (
                           <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                            <Text style={{ color: 'white' }}>תוספת ילדים:</Text>
+                            <Text style={{ color: theme.colors.text }}>תוספת ילדים:</Text>
                             <Text style={{ color: '#52c41a', fontWeight: 600 }}>
                               {formatCurrency(result.childAllowances)}
                             </Text>
@@ -1212,32 +1218,32 @@ const SalaryCalculator: React.FC = () => {
                     >
                       <Space direction="vertical" size="middle" style={{ width: '100%' }}>
                         <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                          <Text style={{ color: 'white' }}>מס הכנסה:</Text>
+                          <Text style={{ color: theme.colors.text }}>מס הכנסה:</Text>
                           <Text style={{ color: '#ff4d4f', fontWeight: 600 }}>
                             -{formatCurrency(result.incomeTax)}
                           </Text>
                         </div>
                         <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                          <Text style={{ color: 'white' }}>ביטוח לאומי:</Text>
+                          <Text style={{ color: theme.colors.text }}>ביטוח לאומי:</Text>
                           <Text style={{ color: '#ff4d4f', fontWeight: 600 }}>
                             -{formatCurrency(result.nationalInsurance)}
                           </Text>
                         </div>
                         <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                          <Text style={{ color: 'white' }}>מס בריאות:</Text>
+                          <Text style={{ color: theme.colors.text }}>מס בריאות:</Text>
                           <Text style={{ color: '#ff4d4f', fontWeight: 600 }}>
                             -{formatCurrency(result.healthTax)}
                           </Text>
                         </div>
                         <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                          <Text style={{ color: 'white' }}>פנסיה:</Text>
+                          <Text style={{ color: theme.colors.text }}>פנסיה:</Text>
                           <Text style={{ color: '#ff4d4f', fontWeight: 600 }}>
                             -{formatCurrency(result.pensionDeduction)}
                           </Text>
                         </div>
                         {result.studyFundDeduction > 0 && (
                           <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                            <Text style={{ color: 'white' }}>קרן השתלמות:</Text>
+                            <Text style={{ color: theme.colors.text }}>קרן השתלמות:</Text>
                             <Text style={{ color: '#ff4d4f', fontWeight: 600 }}>
                               -{formatCurrency(result.studyFundDeduction)}
                             </Text>
@@ -1245,7 +1251,7 @@ const SalaryCalculator: React.FC = () => {
                         )}
                         {result.disabilityInsurance > 0 && (
                           <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                            <Text style={{ color: 'white' }}>ביטוח אובדן כושר:</Text>
+                            <Text style={{ color: theme.colors.text }}>ביטוח אובדן כושר:</Text>
                             <Text style={{ color: '#ff4d4f', fontWeight: 600 }}>
                               -{formatCurrency(result.disabilityInsurance)}
                             </Text>
@@ -1253,7 +1259,7 @@ const SalaryCalculator: React.FC = () => {
                         )}
                         {result.unionDues > 0 && (
                           <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                            <Text style={{ color: 'white' }}>דמי אגוד:</Text>
+                            <Text style={{ color: theme.colors.text }}>דמי אגוד:</Text>
                             <Text style={{ color: '#ff4d4f', fontWeight: 600 }}>
                               -{formatCurrency(result.unionDues)}
                             </Text>
@@ -1261,7 +1267,7 @@ const SalaryCalculator: React.FC = () => {
                         )}
                         {result.professionalTax > 0 && (
                           <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                            <Text style={{ color: 'white' }}>מס מקצועי:</Text>
+                            <Text style={{ color: theme.colors.text }}>מס מקצועי:</Text>
                             <Text style={{ color: '#ff4d4f', fontWeight: 600 }}>
                               -{formatCurrency(result.professionalTax)}
                             </Text>
@@ -1269,7 +1275,7 @@ const SalaryCalculator: React.FC = () => {
                         )}
                         {result.taxCredits > 0 && (
                           <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                            <Text style={{ color: 'white' }}>זכות מס:</Text>
+                            <Text style={{ color: theme.colors.text }}>זכות מס:</Text>
                             <Text style={{ color: '#52c41a', fontWeight: 600 }}>
                               +{formatCurrency(result.taxCredits)}
                             </Text>

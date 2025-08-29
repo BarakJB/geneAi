@@ -1,5 +1,5 @@
 import React from 'react';
-import { ConfigProvider, Layout, Typography, Button } from 'antd';
+import { ConfigProvider, Layout, Typography, Button, theme } from 'antd';
 import { BrowserRouter as Router, Routes, Route, Link, useLocation } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import PensionCalculator from './components/PensionCalculator';
@@ -7,44 +7,44 @@ import SalaryCalculator from './components/SalaryCalculator';
 import PayslipAnalyzer from './components/PayslipAnalyzer';
 import Login from './components/Login';
 import CRMWrapper from './components/CRM/CRMWrapper';
-import GoogleAd from './components/GoogleAd';
-import FloatingAd from './components/FloatingAd';
-import AdDebugger from './components/AdDebugger';
+import { ThemeProvider, useTheme } from './contexts/ThemeContext';
 import 'antd/dist/reset.css';
 import './App.css';
+import './theme.css';
 
 const { Header } = Layout;
 const { Title } = Typography;
 
-// Custom theme configuration for Ant Design
-const customTheme = {
+// Custom theme configuration for Ant Design based on theme mode
+const getAntdTheme = (themeMode: 'dark' | 'light') => ({
   token: {
     // Primary colors
-    colorPrimary: '#007AFF', // Apple Blue
-    colorPrimaryHover: '#5AC8FA',
-    colorPrimaryActive: '#0056CC',
+    colorPrimary: themeMode === 'dark' ? '#2196F3' : '#007AFF',
+    colorPrimaryHover: themeMode === 'dark' ? '#1976D2' : '#5AC8FA',
+    colorPrimaryActive: themeMode === 'dark' ? '#0D47A1' : '#0056CC',
     
     // Success colors
-    colorSuccess: '#34C759', // Apple Green
-    colorSuccessHover: '#30D158',
+    colorSuccess: themeMode === 'dark' ? '#4CAF50' : '#34C759',
+    colorSuccessHover: themeMode === 'dark' ? '#66BB6A' : '#30D158',
     
     // Warning colors  
-    colorWarning: '#FF9500', // Apple Orange
+    colorWarning: themeMode === 'dark' ? '#FFC107' : '#FF9500',
     
     // Error colors
-    colorError: '#FF3B30', // Apple Red
+    colorError: themeMode === 'dark' ? '#F44336' : '#FF3B30',
     
     // Background colors
-    colorBgBase: '#ffffff',
-    colorBgContainer: '#ffffff',
-    colorBgElevated: '#ffffff',
+    colorBgBase: themeMode === 'dark' ? '#0f0f23' : '#ffffff',
+    colorBgContainer: themeMode === 'dark' ? '#222' : '#ffffff',
+    colorBgElevated: themeMode === 'dark' ? '#333' : '#ffffff',
     
     // Text colors
-    colorText: '#1C1C1E',
-    colorTextSecondary: '#8E8E93',
-    colorTextTertiary: '#C7C7CC',
+    colorText: themeMode === 'dark' ? '#ffffff' : '#1C1C1E',
+    colorTextSecondary: themeMode === 'dark' ? 'rgba(255, 255, 255, 0.8)' : '#8E8E93',
+    colorTextTertiary: themeMode === 'dark' ? 'rgba(255, 255, 255, 0.6)' : '#C7C7CC',
     
     // Border
+    colorBorder: themeMode === 'dark' ? 'rgba(255, 255, 255, 0.15)' : '#dee2e6',
     borderRadius: 16,
     borderRadiusLG: 20,
     borderRadiusSM: 12,
@@ -64,9 +64,9 @@ const customTheme = {
     paddingXL: 32,
     
     // Shadows
-    boxShadow: '0 1px 3px rgba(0,0,0,0.05)',
-    boxShadowSecondary: '0 4px 12px rgba(0,0,0,0.07)',
-    boxShadowTertiary: '0 8px 20px rgba(0,0,0,0.08)',
+    boxShadow: themeMode === 'dark' ? '0 1px 3px rgba(0,0,0,0.3)' : '0 1px 3px rgba(0,0,0,0.05)',
+    boxShadowSecondary: themeMode === 'dark' ? '0 4px 12px rgba(0,0,0,0.5)' : '0 4px 12px rgba(0,0,0,0.07)',
+    boxShadowTertiary: themeMode === 'dark' ? '0 8px 20px rgba(0,0,0,0.7)' : '0 8px 20px rgba(0,0,0,0.08)',
   },
   components: {
     Button: {
@@ -77,7 +77,7 @@ const customTheme = {
     },
     Card: {
       borderRadius: 16,
-      boxShadow: '0 1px 3px rgba(0, 0, 0, 0.1)',
+      boxShadow: themeMode === 'dark' ? '0 1px 3px rgba(0, 0, 0, 0.3)' : '0 1px 3px rgba(0, 0, 0, 0.1)',
     },
     Input: {
       borderRadius: 12,
@@ -88,11 +88,13 @@ const customTheme = {
       controlHeight: 48,
     },
   },
-};
+  algorithm: themeMode === 'dark' ? theme.darkAlgorithm : theme.defaultAlgorithm,
+});
 
 // Navigation component
 const Navigation: React.FC = () => {
   const location = useLocation();
+  const { theme, toggleTheme } = useTheme();
   
   const navItems = [
     { path: '/', label: 'מחשבון פנסיה' },
@@ -101,10 +103,14 @@ const Navigation: React.FC = () => {
     { path: '/crm/login', label: 'CRM' },
   ];
 
+  const headerBackground = theme.mode === 'dark' 
+    ? 'linear-gradient(135deg, #2196F3 0%, #1976D2 100%)'
+    : 'linear-gradient(135deg, #007AFF 0%, #5AC8FA 100%)';
+
   return (
     <Header
       style={{
-        background: 'linear-gradient(135deg, #007AFF 0%, #5AC8FA 100%)',
+        background: headerBackground,
         boxShadow: '0 4px 20px rgba(0,122,255,0.3)',
         padding: '0 24px',
         display: 'flex',
@@ -126,7 +132,32 @@ const Navigation: React.FC = () => {
         GeneAI - כלים חכמים
       </Title>
       
-      <div style={{ display: 'flex', gap: '16px' }}>
+      <div style={{ display: 'flex', gap: '16px', alignItems: 'center' }}>
+        {/* Theme Toggle Button */}
+        <Button
+          type="text"
+          size="large"
+          onClick={toggleTheme}
+          style={{
+            color: 'white',
+            fontWeight: 600,
+            backgroundColor: 'rgba(255,255,255,0.1)',
+            border: 'none',
+            borderRadius: '12px',
+            display: 'flex',
+            alignItems: 'center',
+            gap: '8px',
+          }}
+          onMouseEnter={(e) => {
+            (e.target as HTMLElement).style.backgroundColor = 'rgba(255,255,255,0.2)';
+          }}
+          onMouseLeave={(e) => {
+            (e.target as HTMLElement).style.backgroundColor = 'rgba(255,255,255,0.1)';
+          }}
+        >
+          {theme.mode === 'dark' ? '☀️' : '🌙'} {theme.mode === 'dark' ? 'מצב בהיר' : 'מצב כהה'}
+        </Button>
+        
         {navItems.map((item) => {
           const isActive = item.path === '/' 
             ? location.pathname === '/'
@@ -177,6 +208,7 @@ const Navigation: React.FC = () => {
 // Home page component
 const HomePage: React.FC = () => {
   const [showContent, setShowContent] = React.useState(false);
+  const { theme, toggleTheme } = useTheme();
 
   React.useEffect(() => {
     const timer = setTimeout(() => {
@@ -215,12 +247,12 @@ const HomePage: React.FC = () => {
                 <Button
                   size="large"
                   style={{
-                    background: 'rgba(255, 255, 255, 0.9)',
+                    background: theme.colors.cardBackground,
                     border: 'none',
                     borderRadius: '12px',
                     fontWeight: 600,
-                    color: '#007AFF',
-                    boxShadow: '0 2px 8px rgba(0,0,0,0.1)',
+                    color: theme.colors.accent,
+                    boxShadow: `0 2px 8px ${theme.colors.shadow}`,
                     direction: 'rtl',
                   }}
                 >
@@ -231,12 +263,12 @@ const HomePage: React.FC = () => {
                 <Button
                   size="large"
                   style={{
-                    background: 'rgba(255, 255, 255, 0.9)',
+                    background: theme.colors.cardBackground,
                     border: 'none',
                     borderRadius: '12px',
                     fontWeight: 600,
-                    color: '#007AFF',
-                    boxShadow: '0 2px 8px rgba(0,0,0,0.1)',
+                    color: theme.colors.accent,
+                    boxShadow: `0 2px 8px ${theme.colors.shadow}`,
                     direction: 'rtl',
                   }}
                 >
@@ -245,13 +277,42 @@ const HomePage: React.FC = () => {
               </Link>
             </div>
 
+            {/* Center - Theme Toggle */}
+            <Button
+              type="text"
+              size="large"
+              onClick={toggleTheme}
+              style={{
+                background: theme.colors.cardBackground,
+                border: 'none',
+                borderRadius: '12px',
+                fontWeight: 600,
+                color: theme.colors.text,
+                boxShadow: `0 2px 8px ${theme.colors.shadow}`,
+                direction: 'rtl',
+                display: 'flex',
+                alignItems: 'center',
+                gap: '8px',
+              }}
+              onMouseEnter={(e) => {
+                (e.target as HTMLElement).style.transform = 'scale(1.05)';
+              }}
+              onMouseLeave={(e) => {
+                (e.target as HTMLElement).style.transform = 'scale(1)';
+              }}
+            >
+              {theme.mode === 'dark' ? '☀️' : '🌙'} {theme.mode === 'dark' ? 'מצב בהיר' : 'מצב כהה'}
+            </Button>
+
             {/* Right side - CRM access */}
             <Link to="/crm/login">
               <Button
                 type="primary"
                 size="large"
                 style={{
-                  background: 'linear-gradient(135deg, #007AFF 0%, #5AC8FA 100%)',
+                  background: theme.mode === 'dark' 
+                    ? 'linear-gradient(135deg, #2196F3 0%, #1976D2 100%)'
+                    : 'linear-gradient(135deg, #007AFF 0%, #5AC8FA 100%)',
                   border: 'none',
                   borderRadius: '12px',
                   fontWeight: 600,
@@ -270,43 +331,11 @@ const HomePage: React.FC = () => {
             </Link>
           </div>
           
-          {/* פרסומת עליונה */}
-          <motion.div
-            initial={{ opacity: 0, y: -20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.5, duration: 0.6 }}
-            style={{ marginBottom: '32px' }}
-          >
-            <GoogleAd 
-              adSlot="1111222233"
-              adFormat="horizontal"
-              style={{ marginTop: '20px' }}
-            />
-          </motion.div>
+          
 
           <PensionCalculator />
 
-          {/* פרסומת צדדית קבועה */}
-          <div 
-            className="google-ad-sidebar left"
-            style={{
-              position: 'fixed',
-              left: '20px',
-              top: '50%',
-              transform: 'translateY(-50%)',
-              zIndex: 1000,
-              width: '160px'
-            }}>
-            <GoogleAd 
-              adSlot="4444555566"
-              adFormat="vertical"
-              style={{ 
-                position: 'sticky',
-                top: '50vh',
-                transform: 'translateY(-50%)'
-              }}
-            />
-          </div>
+          
         </motion.div>
       )}
     </AnimatePresence>
@@ -327,14 +356,17 @@ const PageWrapper: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   );
 };
 
-function App() {
+// Internal App component that uses theme
+const AppContent: React.FC = () => {
+  const { theme } = useTheme();
+  
   return (
-    <ConfigProvider theme={customTheme} direction="rtl">
+    <ConfigProvider theme={getAntdTheme(theme.mode)} direction="rtl">
       <Router>
         <Layout
           style={{
             minHeight: '100vh',
-            background: '#ffffff',
+            background: theme.colors.primary,
           }}
         >
           <Routes>
@@ -456,16 +488,58 @@ function App() {
                 </PageWrapper>
               } 
             />
+            <Route 
+              path="/crm/tasks" 
+              element={
+                <PageWrapper>
+                  <CRMWrapper />
+                </PageWrapper>
+              } 
+            />
+            <Route 
+              path="/crm/xml-import" 
+              element={
+                <PageWrapper>
+                  <CRMWrapper />
+                </PageWrapper>
+              } 
+            />
+            <Route 
+              path="/crm/client-management" 
+              element={
+                <PageWrapper>
+                  <CRMWrapper />
+                </PageWrapper>
+              } 
+            />
+            <Route 
+              path="/crm/clients" 
+              element={
+                <PageWrapper>
+                  <CRMWrapper />
+                </PageWrapper>
+              } 
+            />
+            <Route 
+              path="/crm/client/:clientId" 
+              element={
+                <PageWrapper>
+                  <CRMWrapper />
+                </PageWrapper>
+              } 
+            />
           </Routes>
         </Layout>
-        
-        {/* פרסומת צפה חכמה */}
-        <FloatingAd />
-        
-        {/* כלי בדיקת פרסומות - רק בפיתוח */}
-        {process.env.NODE_ENV === 'development' && <AdDebugger />}
       </Router>
     </ConfigProvider>
+  );
+};
+
+function App() {
+  return (
+    <ThemeProvider>
+      <AppContent />
+    </ThemeProvider>
   );
 }
 

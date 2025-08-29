@@ -26,9 +26,9 @@ import {
 } from '@ant-design/icons';
 import { motion } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
-import GoogleAd from './GoogleAd';
 import emailjs from '@emailjs/browser';
 import { EMAIL_CONFIG_DEV } from '../config/email';
+import { useTheme } from '../contexts/ThemeContext';
 
 const { Title, Text } = Typography;
 const { TextArea } = Input;
@@ -43,6 +43,7 @@ interface ContactForm {
 
 const Login: React.FC = () => {
   const navigate = useNavigate();
+  const { theme } = useTheme();
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
 
@@ -712,29 +713,7 @@ const Login: React.FC = () => {
         </Card>
         )}
       </motion.div>
-
-      {/* פרסומת בתחתית */}
-      <motion.div
-        initial={{ opacity: 0, y: 30 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 1.2, duration: 0.8 }}
-        style={{ 
-          marginTop: '40px',
-          display: 'flex', 
-          justifyContent: 'center',
-          width: '100%'
-        }}
-      >
-        <GoogleAd 
-          adSlot="1122334455"
-          adFormat="rectangle"
-          style={{ 
-            maxWidth: '500px',
-            width: '60%',
-            minWidth: '320px'
-          }}
-        />
-      </motion.div>
+      
     </div>
   );
 };

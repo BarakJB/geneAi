@@ -30,6 +30,7 @@ import {
 } from '@ant-design/icons';
 import { motion, AnimatePresence } from 'framer-motion';
 import type { UploadProps } from 'antd';
+import { useTheme } from '../../contexts/ThemeContext';
 
 const { Title, Text } = Typography;
 const { TextArea } = Input;
@@ -63,136 +64,10 @@ interface FileUpload {
 }
 
 const AddClient: React.FC = () => {
+  const { theme } = useTheme();
   const [form] = Form.useForm();
 
-  // Add custom styles for inputs to match pension calculator
-  React.useEffect(() => {
-    const style = document.createElement('style');
-    style.textContent = `
-      .crm-input .ant-input {
-        background-color: rgba(0, 0, 0, 0.3) !important;
-        border-color: white !important;
-        color: white !important;
-        border-radius: 8px !important;
-      }
-      
-      .crm-input .ant-input::placeholder {
-        color: rgba(255, 255, 255, 0.65) !important;
-      }
-      
-      .crm-input .ant-input-number {
-        background-color: rgba(0, 0, 0, 0.3) !important;
-        border-color: white !important;
-        color: white !important;
-        border-radius: 8px !important;
-      }
-      
-      .crm-input .ant-input-number .ant-input-number-input {
-        background-color: transparent !important;
-        color: white !important;
-      }
-      
-      .crm-input .ant-input-number .ant-input-number-input::placeholder {
-        color: rgba(255, 255, 255, 0.65) !important;
-      }
-      
-      .crm-input .ant-select .ant-select-selector {
-        background-color: rgba(0, 0, 0, 0.3) !important;
-        border-color: white !important;
-        color: white !important;
-        border-radius: 8px !important;
-      }
-      
-      .crm-input .ant-select .ant-select-selection-placeholder {
-        color: rgba(255, 255, 255, 0.65) !important;
-      }
-      
-      .crm-input .ant-select .ant-select-selection-item {
-        color: white !important;
-      }
-      
-      .crm-input .ant-picker {
-        background-color: rgba(0, 0, 0, 0.3) !important;
-        border-color: white !important;
-        color: white !important;
-        border-radius: 8px !important;
-      }
-      
-      .crm-input .ant-picker input {
-        color: white !important;
-      }
-      
-      .crm-input .ant-picker .ant-picker-input::placeholder {
-        color: rgba(255, 255, 255, 0.65) !important;
-      }
-
-      .crm-input .ant-input:focus,
-      .crm-input .ant-input-focused {
-        border-color: white !important;
-        box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.2) !important;
-      }
-      
-      .crm-input .ant-input-number:focus,
-      .crm-input .ant-input-number-focused {
-        border-color: white !important;
-        box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.2) !important;
-      }
-      
-      .crm-input .ant-select:focus .ant-select-selector,
-      .crm-input .ant-select-focused .ant-select-selector {
-        border-color: white !important;
-        box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.2) !important;
-      }
-      
-      .crm-input .ant-picker:focus,
-      .crm-input .ant-picker-focused {
-        border-color: white !important;
-        box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.2) !important;
-      }
-
-      .crm-input .ant-form-item-label > label {
-        color: white !important;
-      }
-
-      /* Tab styling */
-      .crm-tabs .ant-tabs-tab {
-        color: white !important;
-      }
-
-      .crm-tabs .ant-tabs-tab:hover {
-        color: white !important;
-      }
-
-      .crm-tabs .ant-tabs-tab.ant-tabs-tab-active {
-        color: white !important;
-      }
-
-      .crm-tabs .ant-tabs-tab-btn {
-        color: white !important;
-      }
-
-      .crm-tabs .ant-tabs-ink-bar {
-        background: white !important;
-      }
-
-      .crm-tabs .ant-tabs-content {
-        color: white !important;
-      }
-
-      .crm-tabs .ant-tabs-nav {
-        color: white !important;
-      }
-
-      .crm-tabs .ant-tabs-tab .ant-tabs-tab-btn {
-        color: white !important;
-      }
-    `;
-    document.head.appendChild(style);
-    
-    return () => {
-      document.head.removeChild(style);
-    };
-  }, []);
+  // CSS styling now handled by global theme.css
 
   const [client, setClient] = useState<Client>({
     firstName: '',

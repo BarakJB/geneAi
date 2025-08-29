@@ -439,6 +439,44 @@ li {
   }
 }
 
+/* Laptop screens (14-inch) - optimized for 1366x768 to 1920x1080 */
+@media (min-width: 1024px) and (max-width: 1599px) {
+  html, body, #root {
+    min-width: 1200px;
+    max-width: 100vw;
+    overflow-x: auto;
+  }
+  
+  /* Compact layouts for laptops */
+  .MuiContainer-root {
+    max-width: 100% !important;
+    padding-left: 8px !important;
+    padding-right: 8px !important;
+  }
+  
+  /* Smaller typography for laptops */
+  h1 { font-size: clamp(1.75rem, 4vw, 2.5rem) !important; }
+  h2 { font-size: clamp(1.5rem, 3vw, 2rem) !important; }
+  h3 { font-size: clamp(1.25rem, 2.5vw, 1.75rem) !important; }
+}
+
+/* Desktop layout: enforce minimum canvas width */
+@media (min-width: 1600px) {
+  html, body, #root {
+    min-width: 1400px;
+  }
+  body {
+    overflow-x: auto;
+  }
+}
+
+/* Ultra-wide screens: increase min canvas width */
+@media (min-width: 2000px) {
+  html, body, #root {
+    min-width: 2500px;
+  }
+}
+
 /* Dark mode support (if needed in the future) */
 @media (prefers-color-scheme: dark) {
   /* Dark mode styles can be added here if needed */
@@ -469,58 +507,5 @@ li {
   /* High DPI adjustments if needed */
 }
 
-/* Scoped dark field styles for SalaryCalculator page */
-.salary-calculator .ant-input,
-.salary-calculator .ant-input-affix-wrapper,
-.salary-calculator .ant-input-number,
-.salary-calculator .ant-input-number-input,
-.salary-calculator .ant-input-number-affix-wrapper,
-.salary-calculator .ant-select-selector {
-  background-color: #141414 !important;
-  color: #ffffff !important;
-  border-color: #ffffff !important;
-}
-
-.salary-calculator .ant-input::placeholder,
-.salary-calculator .ant-input-number-input::placeholder,
-.salary-calculator .ant-select-selection-placeholder {
-  color: rgba(255, 255, 255, 0.45) !important;
-}
-
-.salary-calculator .ant-select-selection-item,
-.salary-calculator .ant-select-arrow,
-.salary-calculator .ant-input-prefix,
-.salary-calculator .ant-input-suffix {
-  color: #ffffff !important;
-}
-
-/* Hover and focus states */
-.salary-calculator .ant-input:hover,
-.salary-calculator .ant-input:focus,
-.salary-calculator .ant-input-affix-wrapper:hover,
-.salary-calculator .ant-input-affix-wrapper:focus,
-.salary-calculator .ant-input-affix-wrapper-focused,
-.salary-calculator .ant-input-number:hover,
-.salary-calculator .ant-input-number:focus,
-.salary-calculator .ant-input-number-focused,
-.salary-calculator .ant-select:hover .ant-select-selector,
-.salary-calculator .ant-select-focused .ant-select-selector {
-  border-color: #ffffff !important;
-  box-shadow: none !important;
-}
-
-/* InputNumber handlers */
-.salary-calculator .ant-input-number-handler-wrap {
-  background: #141414 !important;
-  border-left: 1px solid #ffffff !important;
-}
-
-/* Ensure disabled fields remain readable on dark */
-.salary-calculator .ant-input[disabled],
-.salary-calculator .ant-input-affix-wrapper-disabled,
-.salary-calculator .ant-input-number-disabled,
-.salary-calculator .ant-select-disabled .ant-select-selector {
-  background-color: #1f1f1f !important;
-  color: rgba(255, 255, 255, 0.45) !important;
-  border-color: rgba(255, 255, 255, 0.35) !important;
-}
+/* Theme-aware styles for SalaryCalculator - removed hardcoded dark styles */
+/* Now using global theme system instead */
