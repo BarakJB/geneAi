@@ -209,99 +209,98 @@ button, input, textarea, select {
   color: var(--mono-text) !important;
 }
 
-.monochrome a { color: var(--mono-text) !important; }
-.monochrome .anticon { color: var(--mono-text) !important; }
+[data-theme="dark"] .monochrome a { color: var(--mono-text) !important; }
+[data-theme="dark"] .monochrome .anticon { color: var(--mono-text) !important; }
 
 /* Layout and containers */
-.monochrome .ant-layout,
-.monochrome .ant-layout * { color: var(--mono-text); }
-.monochrome .ant-layout,
-.monochrome .ant-layout-content { background: var(--mono-bg) !important; }
-.monochrome .ant-layout-header {
+[data-theme="dark"] .monochrome .ant-layout,
+[data-theme="dark"] .monochrome .ant-layout * { color: var(--mono-text); }
+[data-theme="dark"] .monochrome .ant-layout,
+[data-theme="dark"] .monochrome .ant-layout-content { background: var(--mono-bg) !important; }
+[data-theme="dark"] .monochrome .ant-layout-header {
   background: #000 !important;
   box-shadow: none !important;
   border-bottom: 1px solid var(--mono-border) !important;
 }
 
 /* Cards and panels */
-.monochrome .ant-card,
-.monochrome .ant-collapse,
-.monochrome .ant-collapse-content,
-.monochrome .ant-statistic,
-.monochrome .ant-tabs,
-.monochrome .ant-segmented {
-  background: var(--mono-surface) !important;
+[data-theme="dark"] .monochrome .ant-card,
+[data-theme="dark"] .monochrome .ant-collapse,
+[data-theme="dark"] .monochrome .ant-collapse-content,
+[data-theme="dark"] .monochrome .ant-statistic,
+[data-theme="dark"] .monochrome .ant-tabs,
+[data-theme="dark"] .monochrome .ant-segmented {
   border-color: var(--mono-border) !important;
   color: var(--mono-text) !important;
 }
-.monochrome .ant-card-bordered { border-color: var(--mono-border) !important; }
-.monochrome .ant-card-head { border-bottom: 1px solid var(--mono-border) !important; }
+[data-theme="dark"] .monochrome .ant-card-bordered { border-color: var(--mono-border) !important; }
+[data-theme="dark"] .monochrome .ant-card-head { border-bottom: 1px solid var(--mono-border) !important; }
 
 /* Inputs */
-.monochrome .ant-input,
-.monochrome .ant-input-affix-wrapper,
-.monochrome .ant-input-number,
-.monochrome .ant-input-number-input,
-.monochrome .ant-select-selector,
-.monochrome .ant-picker,
-.monochrome textarea {
+[data-theme="dark"] .monochrome .ant-input,
+[data-theme="dark"] .monochrome .ant-input-affix-wrapper,
+[data-theme="dark"] .monochrome .ant-input-number,
+[data-theme="dark"] .monochrome .ant-input-number-input,
+[data-theme="dark"] .monochrome .ant-select-selector,
+[data-theme="dark"] .monochrome .ant-picker,
+[data-theme="dark"] .monochrome textarea {
   background: #141414 !important;
   color: var(--mono-text) !important;
   border-color: #ffffff !important;
 }
-.monochrome .ant-input::placeholder,
-.monochrome .ant-input-number-input::placeholder { color: var(--mono-muted) !important; }
+[data-theme="dark"] .monochrome .ant-input::placeholder,
+[data-theme="dark"] .monochrome .ant-input-number-input::placeholder { color: var(--mono-muted) !important; }
 
 /* Buttons */
-.monochrome .ant-btn {
+[data-theme="dark"] .monochrome .ant-btn {
   background: transparent !important;
   color: var(--mono-text) !important;
   border: 1px solid #ffffff !important;
 }
-.monochrome .ant-btn-primary {
+[data-theme="dark"] .monochrome .ant-btn-primary {
   background: #000 !important;
   color: #ffffff !important;
   border: 1px solid #ffffff !important;
 }
-.monochrome .ant-btn:hover,
-.monochrome .ant-btn:focus,
-.monochrome .ant-btn-primary:hover,
-.monochrome .ant-btn-primary:focus {
+[data-theme="dark"] .monochrome .ant-btn:hover,
+[data-theme="dark"] .monochrome .ant-btn:focus,
+[data-theme="dark"] .monochrome .ant-btn-primary:hover,
+[data-theme="dark"] .monochrome .ant-btn-primary:focus {
   background: #111 !important;
   border-color: #ffffff !important;
   color: #ffffff !important;
 }
 
 /* Alerts, tags, badges -> monochrome */
-.monochrome .ant-alert,
-.monochrome .ant-tag,
-.monochrome .ant-badge,
-.monochrome .ant-breadcrumb {
+[data-theme="dark"] .monochrome .ant-alert,
+[data-theme="dark"] .monochrome .ant-tag,
+[data-theme="dark"] .monochrome .ant-badge,
+[data-theme="dark"] .monochrome .ant-breadcrumb {
   color: var(--mono-text) !important;
 }
-.monochrome .ant-alert-success,
-.monochrome .ant-alert-info,
-.monochrome .ant-alert-warning,
-.monochrome .ant-alert-error {
+[data-theme="dark"] .monochrome .ant-alert-success,
+[data-theme="dark"] .monochrome .ant-alert-info,
+[data-theme="dark"] .monochrome .ant-alert-warning,
+[data-theme="dark"] .monochrome .ant-alert-error {
   background: rgba(255, 255, 255, 0.06) !important;
   border: 1px solid var(--mono-border) !important;
   color: var(--mono-text) !important;
 }
-.monochrome .ant-tag { background: rgba(255,255,255,0.06) !important; border-color: var(--mono-border) !important; }
+[data-theme="dark"] .monochrome .ant-tag { background: rgba(255,255,255,0.06) !important; border-color: var(--mono-border) !important; }
 
 /* Dividers and borders */
-.monochrome .ant-divider,
-.monochrome .ant-divider-horizontal { border-block-start: 1px solid var(--mono-border) !important; }
+[data-theme="dark"] .monochrome .ant-divider,
+[data-theme="dark"] .monochrome .ant-divider-horizontal { border-block-start: 1px solid var(--mono-border) !important; }
 
 /* Statistic text */
-.monochrome .ant-statistic-content-value,
-.monochrome .ant-statistic-title { color: var(--mono-text) !important; }
+[data-theme="dark"] .monochrome .ant-statistic-content-value,
+[data-theme="dark"] .monochrome .ant-statistic-title { color: var(--mono-text) !important; }
 
 /* Switch, checkbox, radio */
-.monochrome .ant-switch-checked { background: #ffffff !important; }
-.monochrome .ant-switch-checked .ant-switch-handle { background: #000 !important; }
-.monochrome .ant-checkbox-checked .ant-checkbox-inner,
-.monochrome .ant-radio-checked .ant-radio-inner { background: #fff !important; border-color: #fff !important; }
+[data-theme="dark"] .monochrome .ant-switch-checked { background: #ffffff !important; }
+[data-theme="dark"] .monochrome .ant-switch-checked .ant-switch-handle { background: #000 !important; }
+[data-theme="dark"] .monochrome .ant-checkbox-checked .ant-checkbox-inner,
+[data-theme="dark"] .monochrome .ant-radio-checked .ant-radio-inner { background: #fff !important; border-color: #fff !important; }
 
 /* Image optimization */
 img {

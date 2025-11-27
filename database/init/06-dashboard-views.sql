@@ -120,7 +120,7 @@ SELECT
     CASE t.priority 
         WHEN 'urgent' THEN '#F44336'
         WHEN 'high' THEN '#FF9800' 
-        WHEN 'medium' THEN '#2196F3'
+        WHEN 'medium' THEN '#98c8ef'
         WHEN 'low' THEN '#4CAF50'
         ELSE '#9E9E9E'
     END as status_color,
@@ -171,7 +171,7 @@ SELECT
     CASE t.priority 
         WHEN 'urgent' THEN '#F44336'
         WHEN 'high' THEN '#FF9800' 
-        WHEN 'medium' THEN '#2196F3'
+        WHEN 'medium' THEN '#98c8ef'
         WHEN 'low' THEN '#4CAF50'
     END as priority_color,
     t.agency_id,
@@ -219,7 +219,7 @@ SELECT
     c.status_changed_at as due_date,
     DATEDIFF(CURDATE(), c.status_changed_at) as days_overdue,
     'high' as priority,
-    '#2196F3' as priority_color,
+    '#98c8ef' as priority_color,
     c.agency_id,
     a.agency_name,
     NULL as assigned_to

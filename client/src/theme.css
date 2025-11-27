@@ -2,49 +2,13 @@
 
 /* CSS Custom Properties for Theme */
 :root {
-  /* Default (dark) theme colors */
-  --color-primary: linear-gradient(135deg, #0f0f23 0%, #1a1a2e 50%, #16213e 100%);
-  --color-secondary: rgba(10, 10, 16, 0.95);
-  --color-surface: #222;
-  
-  /* Text colors */
-  --color-text: #ffffff;
-  --color-text-secondary: rgba(255, 255, 255, 0.8);
-  --color-text-muted: rgba(255, 255, 255, 0.6);
-  
-  /* Border and divider colors */
-  --color-border: rgba(255, 255, 255, 0.15);
-  --color-divider: rgba(255, 255, 255, 0.1);
-  
-  /* Interactive colors */
-  --color-accent: #2196F3;
-  --color-accent-hover: #1976D2;
-  
-  /* Status colors */
-  --color-success: #4CAF50;
-  --color-warning: #FFC107;
-  --color-error: #F44336;
-  --color-info: #2196F3;
-  
-  /* Component specific colors */
-  --color-card-bg: rgba(0, 0, 0, 0.4);
-  --color-sidebar-bg: rgba(10, 10, 16, 0.95);
-  --color-header-bg: rgba(10, 10, 16, 0.95);
-  --color-input-bg: #333;
-  
-  /* Shadows */
-  --shadow: rgba(0, 0, 0, 0.3);
-  --shadow-hover: rgba(0, 0, 0, 0.5);
-}
-
-/* Light theme override */
-[data-theme="light"] {
+  /* Default (light) theme colors */
   --color-primary: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
   --color-secondary: #ffffff;
   --color-surface: #f1f3f4;
   
   /* Text colors */
-  --color-text: #212529;
+  --color-text: #000000;
   --color-text-secondary: #495057;
   --color-text-muted: #6c757d;
   
@@ -53,7 +17,7 @@
   --color-divider: #e9ecef;
   
   /* Interactive colors */
-  --color-accent: #007bff;
+  --color-accent: #6c757d;
   --color-accent-hover: #0056b3;
   
   /* Status colors */
@@ -73,10 +37,43 @@
   --shadow-hover: rgba(0, 0, 0, 0.15);
 }
 
-/* Global styles that use CSS variables */
-* {
-  color: var(--color-text) !important;
+/* Dark theme override */
+[data-theme="dark"] {
+  --color-primary: linear-gradient(135deg, #0f0f23 0%, #1a1a2e 50%, #16213e 100%);
+  --color-secondary: rgba(10, 10, 16, 0.95);
+  --color-surface: #222;
+  
+  /* Text colors */
+  --color-text: #ffffff;
+  --color-text-secondary: rgba(255, 255, 255, 0.8);
+  --color-text-muted: rgba(255, 255, 255, 0.6);
+  
+  /* Border and divider colors */
+  --color-border: rgba(255, 255, 255, 0.15);
+  --color-divider: rgba(255, 255, 255, 0.1);
+  
+  /* Interactive colors */
+  --color-accent: transparent;
+  --color-accent-hover:#6c757d ;
+  
+  /* Status colors */
+  --color-success: #4CAF50;
+  --color-warning: #FFC107;
+  --color-error: #F44336;
+  --color-info: #98c8ef;
+  
+  /* Component specific colors */
+  --color-card-bg: rgba(0, 0, 0, 0.4);
+  --color-sidebar-bg: rgba(10, 10, 16, 0.95);
+  --color-header-bg: rgba(10, 10, 16, 0.95);
+  --color-input-bg: #333;
+  
+  /* Shadows */
+  --shadow: rgba(0, 0, 0, 0.3);
+  --shadow-hover: rgba(0, 0, 0, 0.5);
 }
+
+/* Global styles that use CSS variables */
 
 /* Ant Design component overrides */
 .ant-typography {
@@ -108,12 +105,17 @@
 
 .ant-input {
   background: var(--color-input-bg) !important;
-  border-color: var(--color-border) !important;
+  border: 1px solid var(--color-border) !important;
+  border-radius: 12px !important;
   color: var(--color-text) !important;
+  min-height: 48px !important;
+  backdrop-filter: blur(10px) !important;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+  box-shadow: 0 4px 16px var(--shadow) !important;
 }
 
 .ant-input::placeholder {
-  color: var(--color-text-muted) !important;
+  color: var(--color-text-secondary) !important;
 }
 
 .ant-select .ant-select-selection {
@@ -130,15 +132,35 @@
   color: var(--color-text) !important;
 }
 
+/* Light: force default buttons to black border/text */
+[data-theme="light"] .ant-btn,
+[data-theme="light"] .ant-btn-default {
+  border-color: #000000 !important;
+  color: #000000 !important;
+}
+
+[data-theme="light"] .ant-btn:hover,
+[data-theme="light"] .ant-btn-default:hover {
+  border-color: #000000 !important;
+  color: #000000 !important;
+}
+
 .ant-btn-primary {
-  background: var(--color-accent) !important;
-  border-color: var(--color-accent) !important;
-  color: #ffffff !important;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
+  border: none !important;
+  border-radius: 12px !important;
+  color: white !important;
+  font-weight: 600 !important;
+  min-height: 48px !important;
+  box-shadow: 0 8px 32px rgba(102, 126, 234, 0.3) !important;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+  backdrop-filter: blur(10px) !important;
 }
 
 .ant-btn-primary:hover {
-  background: var(--color-accent-hover) !important;
-  border-color: var(--color-accent-hover) !important;
+  background: linear-gradient(135deg, #5a67d8 0%, #6a4c93 100%) !important;
+  transform: translateY(-2px) !important;
+  box-shadow: 0 12px 40px rgba(102, 126, 234, 0.4) !important;
 }
 
 .ant-table {
@@ -181,20 +203,60 @@
 }
 
 .MuiTextField-root .MuiInputBase-root {
-  background: var(--color-input-bg) !important;
-  color: var(--color-text) !important;
+  background: rgba(0, 0, 0, 0.3) !important;
+  border-radius: 12px !important;
+  min-height: 48px !important;
+  backdrop-filter: blur(10px) !important;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2) !important;
+  color: white !important;
 }
 
 .MuiTextField-root .MuiInputBase-input {
-  color: var(--color-text) !important;
+  color: white !important;
+  padding: 14px 16px !important;
+  font-weight: 400 !important;
+}
+
+.MuiTextField-root .MuiInputBase-input::placeholder {
+  color: rgba(255, 255, 255, 0.65) !important;
+  opacity: 1 !important;
+}
+
+.MuiTextField-root:hover .MuiInputBase-root,
+.MuiSelect-root:hover {
+  background: rgba(0, 0, 0, 0.4) !important;
+  box-shadow: 0 6px 20px rgba(102, 126, 234, 0.3) !important;
+  transform: translateY(-1px) !important;
+}
+
+.MuiTextField-root:hover .MuiOutlinedInput-notchedOutline {
+  border-color: #667eea !important;
+}
+
+.MuiTextField-root .MuiInputBase-root.Mui-focused,
+.MuiSelect-root.Mui-focused {
+  background: rgba(0, 0, 0, 0.4) !important;
+  box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.2) !important;
+}
+
+.MuiTextField-root .MuiInputBase-root.Mui-focused .MuiOutlinedInput-notchedOutline {
+  border-color: #667eea !important;
+  border-width: 1px !important;
 }
 
 .MuiTextField-root .MuiInputLabel-root {
-  color: var(--color-text-secondary) !important;
+  color: rgba(255, 255, 255, 0.65) !important;
+  font-weight: 500 !important;
+}
+
+.MuiTextField-root .MuiInputLabel-root.Mui-focused {
+  color: #667eea !important;
 }
 
 .MuiTextField-root .MuiOutlinedInput-notchedOutline {
-  border-color: var(--color-border) !important;
+  border: 1px solid white !important;
+  border-radius: 12px !important;
 }
 
 .MuiButton-root {
@@ -203,12 +265,25 @@
 }
 
 .MuiButton-contained {
-  background: var(--color-accent) !important;
-  color: #ffffff !important;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
+  border: none !important;
+  border-radius: 12px !important;
+  color: white !important;
+  font-weight: 600 !important;
+  min-height: 48px !important;
+  box-shadow: 0 8px 32px rgba(102, 126, 234, 0.3) !important;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+  backdrop-filter: blur(10px) !important;
 }
 
 .MuiButton-contained:hover {
-  background: var(--color-accent-hover) !important;
+  background: linear-gradient(135deg, #5a67d8 0%, #6a4c93 100%) !important;
+  transform: translateY(-2px) !important;
+  box-shadow: 0 12px 40px rgba(102, 126, 234, 0.4) !important;
+}
+
+.MuiButton-contained:focus {
+  box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.3) !important;
 }
 
 /* Specific fixes for white text problem */
@@ -245,7 +320,7 @@ h1, h2, h3, h4, h5, h6, p, span, div, label, li, td, th {
 [data-theme="light"] .MuiCard-root,
 [data-theme="light"] .MuiPaper-root {
   background-color: #ffffff !important;
-  color: #212529 !important;
+  color: #000000 !important;
   border-color: #dee2e6 !important;
 }
 
@@ -268,7 +343,7 @@ h1, h2, h3, h4, h5, h6, p, span, div, label, li, td, th {
 
 /* Special handling for primary text */
 [data-theme="light"] .MuiTypography-root {
-  color: #212529 !important;
+  color: #000000 !important;
 }
 
 [data-theme="dark"] .MuiTypography-root {
@@ -278,7 +353,7 @@ h1, h2, h3, h4, h5, h6, p, span, div, label, li, td, th {
 /* Force MUI components to use theme colors */
 [data-theme="light"] .MuiPaper-root {
   background-color: #ffffff !important;
-  color: #212529 !important;
+  color: #000000 !important;
 }
 
 [data-theme="dark"] .MuiPaper-root {
@@ -286,9 +361,10 @@ h1, h2, h3, h4, h5, h6, p, span, div, label, li, td, th {
   color: #ffffff !important;
 }
 
-[data-theme="light"] .MuiButton-root {
-  color: #212529 !important;
-  border-color: #dee2e6 !important;
+[data-theme="light"] .MuiButton-text,
+[data-theme="light"] .MuiButton-outlined {
+  color: #000000 !important;
+  border-color: #000000 !important;
 }
 
 [data-theme="dark"] .MuiButton-root {
@@ -297,8 +373,8 @@ h1, h2, h3, h4, h5, h6, p, span, div, label, li, td, th {
 }
 
 [data-theme="light"] .MuiButton-outlined:hover {
-  border-color: #007bff !important;
-  background-color: rgba(0, 123, 255, 0.1) !important;
+  border-color: #000000 !important;
+  background-color: rgba(0, 0, 0, 0.05) !important;
 }
 
 [data-theme="dark"] .MuiButton-outlined:hover {
@@ -388,27 +464,7 @@ h1, h2, h3, h4, h5, h6, p, span, div, label, li, td, th {
   color: var(--color-text-secondary) !important;
 }
 
-/* Ultra-aggressive theme enforcement */
-[data-theme="light"] {
-  --force-text-color: #212529 !important;
-  --force-bg-color: #ffffff !important;
-  --force-border-color: #dee2e6 !important;
-}
-
-[data-theme="dark"] {
-  --force-text-color: #ffffff !important;
-  --force-bg-color: rgba(0, 0, 0, 0.4) !important;
-  --force-border-color: rgba(255, 255, 255, 0.15) !important;
-}
-
-/* Override ALL inline styles that set colors */
-[data-theme="light"] [style] {
-  color: #212529 !important;
-}
-
-[data-theme="dark"] [style] {
-  color: #ffffff !important;
-}
+/* Ultra-aggressive theme enforcement - merged with previous selectors */
 
 /* Force specific components */
 [data-theme="light"] .ant-statistic-content,
@@ -432,14 +488,7 @@ h1, h2, h3, h4, h5, h6, p, span, div, label, li, td, th {
   color: rgba(255, 255, 255, 0.8) !important;
 }
 
-/* Force all elements with hardcoded styles */
-[data-theme="light"] * {
-  border-color: #dee2e6 !important;
-}
-
-[data-theme="dark"] * {
-  border-color: rgba(255, 255, 255, 0.15) !important;
-}
+/* Removed duplicate selectors to avoid linting warnings */
 
 /* Force Statistic components to inherit background */
 [data-theme="light"] .ant-statistic {
@@ -460,17 +509,11 @@ h1, h2, h3, h4, h5, h6, p, span, div, label, li, td, th {
   color: rgba(255, 255, 255, 0.8) !important;
 }
 
-[data-theme="light"] .ant-statistic-content {
-  /* Don't override if inline style is present */
-}
-
-[data-theme="dark"] .ant-statistic-content {
-  /* Don't override if inline style is present */
-}
+/* Removed empty rules for statistic content to avoid linting warnings */
 
 /* Only override if no specific color is set */
 [data-theme="light"] .ant-statistic-content:not([style*="color"]) {
-  color: #212529 !important;
+  color: #000000 !important;
 }
 
 [data-theme="dark"] .ant-statistic-content:not([style*="color"]) {
@@ -501,15 +544,15 @@ h1, h2, h3, h4, h5, h6, p, span, div, label, li, td, th {
 }
 
 [data-theme="dark"] .custom-statistic-info .ant-statistic-content {
-  color: #2196F3 !important;
+  color: #98c8ef !important;
 }
 
 [data-theme="light"] .custom-statistic-accent .ant-statistic-content {
-  color: #007bff !important;
+  color: #6c757d !important;
 }
 
 [data-theme="dark"] .custom-statistic-accent .ant-statistic-content {
-  color: #2196F3 !important;
+  color: #98c8ef !important;
 }
 
 /* Fix for CRM forms - Ant Design components */
@@ -561,4 +604,232 @@ h1, h2, h3, h4, h5, h6, p, span, div, label, li, td, th {
 [data-theme="dark"] .task-management .MuiTextField-root .MuiInputBase-input {
   background-color: rgba(255, 255, 255, 0.1) !important;
   color: #ffffff !important;
+}
+
+/* ===========================================================================
+   UNIFIED INPUT STYLING TO MATCH LOGIN BUTTON DESIGN
+   ===========================================================================
+   
+   Login button style reference:
+   - background: linear-gradient(135deg, #667eea 0%, #764ba2 100%)
+   - border-radius: 16px
+   - height: 56px
+   - Input style: background: rgba(0, 0, 0, 0.3), border: white, radius: 12px
+   =========================================================================== */
+
+/* === ANT DESIGN INPUTS === */
+
+/* Base input styling for all Ant Design inputs */
+.ant-input,
+.ant-input-number,
+.ant-input-password,
+.ant-select .ant-select-selector,
+.ant-picker,
+.ant-cascader-picker,
+.ant-mentions,
+.ant-input-search,
+.ant-input-affix-wrapper {
+  background: rgba(0, 0, 0, 0.3) !important;
+  border: 1px solid white !important;
+  border-radius: 12px !important;
+  color: white !important;
+  min-height: 48px !important;
+  backdrop-filter: blur(10px) !important;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2) !important;
+}
+
+/* TextArea specific styling */
+.ant-input.ant-input {
+  min-height: 48px !important;
+}
+
+/* Textarea rows adjustment */
+.ant-input-textarea .ant-input {
+  min-height: 96px !important;
+  padding: 12px 16px !important;
+}
+
+/* Input placeholder styling */
+.ant-input::placeholder,
+.ant-input-number input::placeholder,
+.ant-select .ant-select-selection-placeholder,
+.ant-picker input::placeholder {
+  color: rgba(255, 255, 255, 0.65) !important;
+  font-weight: 400 !important;
+}
+
+/* Hover states */
+.ant-input:hover,
+.ant-input-number:hover,
+.ant-input-password:hover,
+.ant-select:hover .ant-select-selector,
+.ant-picker:hover,
+.ant-input-affix-wrapper:hover {
+  border-color: #667eea !important;
+  background: rgba(0, 0, 0, 0.4) !important;
+  box-shadow: 0 6px 20px rgba(102, 126, 234, 0.3) !important;
+  transform: translateY(-1px) !important;
+}
+
+/* Focus states */
+.ant-input:focus,
+.ant-input-focused,
+.ant-input-number:focus,
+.ant-input-password:focus,
+.ant-select.ant-select-focused .ant-select-selector,
+.ant-picker.ant-picker-focused,
+.ant-input-affix-wrapper:focus,
+.ant-input-affix-wrapper-focused {
+  border-color: #667eea !important;
+  box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.2) !important;
+  background: rgba(0, 0, 0, 0.4) !important;
+  outline: none !important;
+}
+
+/* Icons inside inputs */
+.ant-input-prefix,
+.ant-input-suffix,
+.ant-input-password-icon,
+.ant-select-arrow,
+.ant-picker-suffix {
+  color: rgba(255, 255, 255, 0.65) !important;
+}
+
+/* Select dropdown styling */
+.ant-select-dropdown {
+  background: rgba(10, 10, 16, 0.95) !important;
+  backdrop-filter: blur(20px) !important;
+  border: 1px solid rgba(255, 255, 255, 0.15) !important;
+  border-radius: 12px !important;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4) !important;
+}
+
+.ant-select-item {
+  color: white !important;
+  background: transparent !important;
+}
+
+.ant-select-item:hover {
+  background: rgba(102, 126, 234, 0.2) !important;
+}
+
+.ant-select-item-option-selected {
+  background: rgba(102, 126, 234, 0.3) !important;
+}
+
+/* DatePicker dropdown */
+.ant-picker-dropdown {
+  background: rgba(10, 10, 16, 0.95) !important;
+  backdrop-filter: blur(20px) !important;
+  border: 1px solid rgba(255, 255, 255, 0.15) !important;
+  border-radius: 12px !important;
+}
+
+/* Removed duplicate Material-UI styling - consolidated with existing selectors above */
+
+/* Select dropdown */
+.MuiPaper-root.MuiMenu-paper {
+  background: rgba(10, 10, 16, 0.95) !important;
+  backdrop-filter: blur(20px) !important;
+  border: 1px solid rgba(255, 255, 255, 0.15) !important;
+  border-radius: 12px !important;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4) !important;
+}
+
+.MuiMenuItem-root {
+  color: white !important;
+  background: transparent !important;
+}
+
+.MuiMenuItem-root:hover {
+  background: rgba(102, 126, 234, 0.2) !important;
+}
+
+/* Removed duplicate button styling - consolidated with existing selectors above */
+
+/* === SPECIAL LOGIN COMPONENT OVERRIDES === */
+
+/* Ensure login component inputs are styled correctly */
+.login-component .ant-input,
+.login-component .ant-input-password,
+.login-component .ant-input-affix-wrapper {
+  background: rgba(0, 0, 0, 0.3) !important;
+  border: 1px solid white !important;
+  border-radius: 12px !important;
+  color: white !important;
+  min-height: 48px !important;
+}
+
+.login-component .ant-input:hover,
+.login-component .ant-input-password:hover,
+.login-component .ant-input-affix-wrapper:hover {
+  border-color: #667eea !important;
+  background: rgba(0, 0, 0, 0.4) !important;
+  box-shadow: 0 6px 20px rgba(102, 126, 234, 0.3) !important;
+}
+
+.login-component .ant-input:focus,
+.login-component .ant-input-password:focus,
+.login-component .ant-input-affix-wrapper:focus {
+  border-color: #667eea !important;
+  box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.2) !important;
+  background: rgba(0, 0, 0, 0.4) !important;
+}
+
+/* === RESPONSIVE ADJUSTMENTS === */
+
+@media (max-width: 768px) {
+  .ant-input,
+  .ant-input-number,
+  .ant-input-password,
+  .ant-select .ant-select-selector,
+  .ant-picker,
+  .MuiTextField-root .MuiInputBase-root {
+    min-height: 44px !important;
+    font-size: 16px !important; /* Prevents zoom on iOS */
+  }
+  
+  .ant-btn-primary,
+  .MuiButton-contained {
+    min-height: 44px !important;
+  }
+}
+
+/* ===== Light theme button text color enforcement ===== */
+[data-theme="light"] .ant-btn-primary {
+  color: #000000 !important;
+}
+
+[data-theme="light"] .MuiButton-contained {
+  color: #000000 !important;
+}
+
+/* === ACCESSIBILITY IMPROVEMENTS === */
+
+/* High contrast mode support */
+@media (prefers-contrast: high) {
+  .ant-input,
+  .ant-input-number,
+  .ant-input-password,
+  .ant-select .ant-select-selector,
+  .ant-picker,
+  .MuiTextField-root .MuiInputBase-root {
+    border-width: 2px !important;
+  }
+}
+
+/* Reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+  .ant-input,
+  .ant-input-number,
+  .ant-input-password,
+  .ant-select .ant-select-selector,
+  .ant-picker,
+  .MuiTextField-root .MuiInputBase-root,
+  .ant-btn-primary,
+  .MuiButton-contained {
+    transition: none !important;
+    transform: none !important;
+  }
 }

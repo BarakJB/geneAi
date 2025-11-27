@@ -30,6 +30,7 @@ import emailjs from '@emailjs/browser';
 import { EMAIL_CONFIG_DEV } from '../config/email';
 import { useTheme } from '../contexts/ThemeContext';
 
+
 const { Title, Text } = Typography;
 const { TextArea } = Input;
 
@@ -43,78 +44,120 @@ interface ContactForm {
 
 const Login: React.FC = () => {
   const navigate = useNavigate();
-  const { theme } = useTheme();
+
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
 
-  // Add custom styles for inputs to match CRM
+  const { theme } = useTheme();
+
+  // Add custom styles for inputs to match login button design (scoped per theme)
   React.useEffect(() => {
     const style = document.createElement('style');
-    style.textContent = `
-      .login-component .ant-input {
-        background-color: rgba(0, 0, 0, 0.3) !important;
-        border-color: white !important;
-        color: white !important;
-        border-radius: 8px !important;
-      }
-      
-      .login-component .ant-input::placeholder {
-        color: rgba(255, 255, 255, 0.65) !important;
-      }
-      
-      .login-component .ant-input:hover {
-        border-color: white !important;
-        background-color: rgba(0, 0, 0, 0.3) !important;
-      }
-      
-      .login-component .ant-input:focus,
-      .login-component .ant-input-focused {
-        border-color: white !important;
-        box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.2) !important;
-        background-color: rgba(0, 0, 0, 0.3) !important;
-      }
-
-      /* שדות input ספציפיים */
-      .login-component input[type="text"],
-      .login-component input[type="email"] {
-        background-color: rgba(0, 0, 0, 0.3) !important;
-        border-color: white !important;
-        color: white !important;
-      }
-
-      /* וידוא שכל השדות עקביים */
-      .login-component .ant-form-item .ant-input {
+    style.textContent = theme.mode === 'dark' ? `
+      /* Enhanced input styling - ONLY for wrappers */
+      .login-component .ant-input-affix-wrapper,
+      .login-component .ant-input-password,
+      .login-component .ant-input-textarea {
+        background: rgba(0, 0, 0, 0.3) !important;
         background-color: rgba(0, 0, 0, 0.3) !important;
         border: 1px solid white !important;
-        color: white !important;
-      }
-
-      .login-component .ant-input-password {
-        background-color: rgba(0, 0, 0, 0.3) !important;
         border-color: white !important;
-        border-radius: 8px !important;
+        border-radius: 12px !important;
+        color: white !important;
+        min-height: 48px !important;
+        height: 48px !important;
+        backdrop-filter: blur(10px) !important;
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+        box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2) !important;
       }
 
+      /* Remove all styling from inner inputs - they should be invisible */
+
+      /* Ensure inner inputs in wrappers are completely invisible */
+      .login-component .ant-input-affix-wrapper input,
       .login-component .ant-input-password input {
+        background: transparent !important;
         background-color: transparent !important;
+        border: none !important;
+        box-shadow: none !important;
+        outline: none !important;
+      }
+      
+      .login-component .ant-input::placeholder,
+      .login-component .ant-input-password input::placeholder,
+      .login-component .ant-input-affix-wrapper input::placeholder {
+        color: rgba(255, 255, 255, 0.65) !important;
+        font-weight: 400 !important;
+        text-align: right !important;
+        direction: rtl !important;
+      }
+      
+      /* Hover effects - ONLY for wrappers */
+      .login-component .ant-input-affix-wrapper:hover,
+      .login-component .ant-input-password:hover,
+      .login-component .ant-input-textarea:hover {
+        border-color: #667eea !important;
+        background: rgba(0, 0, 0, 0.4) !important;
+        box-shadow: 0 6px 20px rgba(102, 126, 234, 0.3) !important;
+        transform: translateY(-1px) !important;
+      }
+      
+      /* Focus effects - ONLY for wrappers */
+      .login-component .ant-input-affix-wrapper:focus,
+      .login-component .ant-input-affix-wrapper-focused,
+      .login-component .ant-input-password:focus,
+      .login-component .ant-input-password-focused,
+      .login-component .ant-input-textarea:focus {
+        border-color: #667eea !important;
+        box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.2) !important;
+        background: rgba(0, 0, 0, 0.4) !important;
+        outline: none !important;
+      }
+
+      /* Password field specific styling */
+      .login-component .ant-input-password input {
+        background: transparent !important;
+        color: white !important;
+        border: none !important;
+        text-align: right !important;
+        direction: rtl !important;
+        padding: 12px 16px !important;
+      }
+
+      /* Input text alignment - only for wrappers */
+
+      /* CRITICAL: Make inner input completely transparent */
+      .login-component .ant-input-affix-wrapper input {
+        background: transparent !important;
+        background-color: transparent !important;
+        border: none !important;
+        box-shadow: none !important;
+        text-align: right !important;
+        direction: rtl !important;
+        padding: 0 !important;
         color: white !important;
       }
 
-      .login-component .ant-input-password:hover {
-        border-color: white !important;
-        background-color: rgba(0, 0, 0, 0.3) !important;
+      .login-component .ant-input-affix-wrapper {
+        padding: 12px 16px !important;
+        direction: rtl !important;
       }
 
-      .login-component .ant-input-password:focus,
-      .login-component .ant-input-password-focused {
-        border-color: white !important;
-        box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.2) !important;
-        background-color: rgba(0, 0, 0, 0.3) !important;
+      /* Password field inner input */
+      .login-component .ant-input-password input {
+        background: transparent !important;
+        background-color: transparent !important;
+        border: none !important;
+        box-shadow: none !important;
+        text-align: right !important;
+        direction: rtl !important;
+        color: white !important;
       }
 
-      /* איקונים בשדות */
+      /* Icons styling */
       .login-component .ant-input-prefix,
-      .login-component .ant-input-suffix {
+      .login-component .ant-input-suffix,
+      .login-component .ant-input-password-icon {
         color: rgba(255, 255, 255, 0.65) !important;
       }
 
@@ -122,17 +165,112 @@ const Login: React.FC = () => {
         color: rgba(255, 255, 255, 0.65) !important;
       }
 
-      .login-component .ant-form-item-label > label {
-        color: white !important;
+      /* RTL icon positioning */
+      .login-component .ant-input-prefix {
+        margin-left: 8px !important;
+        margin-right: 0 !important;
       }
 
-      /* וידוא שכל הFormItems עקביים */
+      .login-component .ant-input-suffix {
+        margin-right: 8px !important;
+        margin-left: 0 !important;
+      }
+
+      /* Labels styling */
+      .login-component .ant-form-item-label > label {
+        color: white !important;
+        font-weight: 500 !important;
+      }
+
+      /* Form items spacing */
       .login-component .ant-form-item {
         margin-bottom: 24px;
       }
 
       .login-component .ant-form-item .ant-form-item-control-input {
-        min-height: 40px;
+        min-height: 48px;
+      }
+
+      /* TextArea styling */
+      .login-component .ant-input.ant-input {
+        min-height: 48px !important;
+        padding: 12px 16px !important;
+      }
+
+      .login-component .ant-input-textarea .ant-input {
+        min-height: 96px !important;
+        padding: 12px 16px !important;
+        resize: vertical !important;
+        text-align: right !important;
+        direction: rtl !important;
+      }
+
+      /* Ensure all form inputs are consistent */
+      .login-component .ant-form-item .ant-input,
+      .login-component .ant-form-item .ant-input-password,
+      .login-component .ant-form-item .ant-input-affix-wrapper,
+      .login-component .ant-form-item .ant-input-textarea .ant-input {
+        background: rgba(0, 0, 0, 0.3) !important;
+        background-color: rgba(0, 0, 0, 0.3) !important;
+        border: 1px solid white !important;
+        border-color: white !important;
+        border-radius: 12px !important;
+        color: white !important;
+        min-height: 48px !important;
+        height: 48px !important;
+        backdrop-filter: blur(10px) !important;
+        box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2) !important;
+      }
+
+      /* Simplified - removed redundant rules since we only style wrappers now */
+    ` : `
+      /* Light theme: clean inputs */
+      .login-component .ant-input-affix-wrapper,
+      .login-component .ant-input-password,
+      .login-component .ant-input-textarea {
+        background: #ffffff !important;
+        border: 1px solid #d9d9d9 !important;
+        border-radius: 12px !important;
+        color: #000000 !important;
+        min-height: 48px !important;
+        height: 48px !important;
+        box-shadow: none !important;
+      }
+
+      .login-component .ant-input-affix-wrapper input,
+      .login-component .ant-input-password input {
+        background: transparent !important;
+        border: none !important;
+        box-shadow: none !important;
+        color: #000000 !important;
+      }
+
+      .login-component .ant-input::placeholder,
+      .login-component .ant-input-password input::placeholder,
+      .login-component .ant-input-affix-wrapper input::placeholder {
+        color: rgba(0,0,0,0.45) !important;
+        text-align: right !important;
+        direction: rtl !important;
+      }
+
+      .login-component .ant-input-prefix,
+      .login-component .ant-input-suffix,
+      .login-component .ant-input-password-icon {
+        color: rgba(0,0,0,0.45) !important;
+      }
+
+      .login-component .ant-form-item-label > label {
+        color: #000000 !important;
+      }
+
+      .login-component .ant-form-item .ant-input,
+      .login-component .ant-form-item .ant-input-password,
+      .login-component .ant-form-item .ant-input-affix-wrapper,
+      .login-component .ant-form-item .ant-input-textarea .ant-input {
+        background: #ffffff !important;
+        border: 1px solid #d9d9d9 !important;
+        color: #000000 !important;
+        box-shadow: none !important;
       }
     `;
     document.head.appendChild(style);
@@ -140,7 +278,7 @@ const Login: React.FC = () => {
     return () => {
       document.head.removeChild(style);
     };
-  }, []);
+  }, [theme.mode]);
   const [contactForm] = Form.useForm();
 
   const [error, setError] = useState<string>('');
@@ -181,10 +319,7 @@ const Login: React.FC = () => {
     }
   };
 
-  // const fillDemoCredentials = () => {
-  //   setUsername('admin');
-  //   setPassword('password');
-  // };
+
 
   const handleContactSubmit = async (values: ContactForm) => {
     setContactLoading(true);
@@ -226,14 +361,14 @@ const Login: React.FC = () => {
   };
 
   const containerStyle: React.CSSProperties = {
-        minHeight: '100vh',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        background: 'linear-gradient(135deg, #0f0f23 0%, #1a1a2e 50%, #16213e 100%)',
+    minHeight: '100vh',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    background: theme.mode === 'dark' ? 'linear-gradient(135deg, #0f0f23 0%, #1a1a2e 50%, #16213e 100%)' : 'linear-gradient(135deg, #f8fafc 0%, #eef2f7 100%)',
     padding: '16px',
-        position: 'relative',
-        overflow: 'hidden',
+    position: 'relative',
+    overflow: 'hidden',
   };
 
   const overlayStyle: React.CSSProperties = {
@@ -248,7 +383,7 @@ const Login: React.FC = () => {
     pointerEvents: 'none',
   };
 
-  const cardStyle: React.CSSProperties = {
+  const cardStyle: React.CSSProperties = theme.mode === 'dark' ? {
     maxWidth: '500px',
     width: '60%',
     minWidth: '400px',
@@ -257,6 +392,16 @@ const Login: React.FC = () => {
     backdropFilter: 'blur(20px)',
     boxShadow: '0 25px 50px rgba(0, 0, 0, 0.25), 0 0 0 1px rgba(255, 255, 255, 0.15)',
     border: '1px solid rgba(255, 255, 255, 0.15)',
+    position: 'relative',
+    zIndex: 1,
+  } : {
+    maxWidth: '500px',
+    width: '60%',
+    minWidth: '400px',
+    borderRadius: '16px',
+    background: '#ffffff',
+    boxShadow: '0 10px 30px rgba(0,0,0,0.08)',
+    border: '1px solid #e5e7eb',
     position: 'relative',
     zIndex: 1,
   };
@@ -350,12 +495,7 @@ const Login: React.FC = () => {
             <Input
               placeholder="הזן שם פרטי"
               style={{ 
-                borderRadius: '12px', 
-                height: '48px',
                 textAlign: 'right',
-                backgroundColor: 'rgba(0, 0, 0, 0.3)',
-                borderColor: 'white',
-                color: 'white',
               }}
             />
           </Form.Item>
@@ -369,12 +509,7 @@ const Login: React.FC = () => {
             <Input
               placeholder="הזן שם משפחה"
               style={{ 
-                borderRadius: '12px', 
-                height: '48px',
                 textAlign: 'right',
-                backgroundColor: 'rgba(0, 0, 0, 0.3)',
-                borderColor: 'white',
-                color: 'white',
               }}
             />
           </Form.Item>
@@ -392,12 +527,7 @@ const Login: React.FC = () => {
             prefix={<MailOutlined style={{ color: 'rgba(255, 255, 255, 0.65)' }} />}
             placeholder="example@email.com"
             style={{ 
-              borderRadius: '12px', 
-              height: '48px',
               textAlign: 'right',
-              backgroundColor: 'rgba(0, 0, 0, 0.3)',
-              borderColor: 'white',
-              color: 'white',
             }}
           />
         </Form.Item>
@@ -411,12 +541,7 @@ const Login: React.FC = () => {
             prefix={<PhoneOutlined style={{ color: 'rgba(255, 255, 255, 0.65)' }} />}
             placeholder="050-1234567"
             style={{ 
-              borderRadius: '12px', 
-              height: '48px',
               textAlign: 'right',
-              backgroundColor: 'rgba(0, 0, 0, 0.3)',
-              borderColor: 'white',
-              color: 'white',
             }}
           />
         </Form.Item>
@@ -430,11 +555,7 @@ const Login: React.FC = () => {
             rows={4}
             placeholder="ספר לנו על הצרכים שלך, סוג העסק, כמות לקוחות וכו..."
             style={{ 
-              borderRadius: '12px',
               textAlign: 'right',
-              backgroundColor: 'rgba(0, 0, 0, 0.3)',
-              borderColor: 'white',
-              color: 'white',
             }}
           />
         </Form.Item>
@@ -504,18 +625,29 @@ const Login: React.FC = () => {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.4, duration: 0.6 }}
               >
-              <Title
-                level={1}
-                style={{
-                    fontWeight: 800,
-                    color: 'white',
-                  marginBottom: '8px',
-                    direction: 'rtl',
-                  fontSize: 'clamp(2rem, 5vw, 3rem)',
-                  }}
-                >
-                  CRM מתקדם
-              </Title>
+              <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '16px', marginBottom: '16px' }}>
+                <img 
+                  src="/cover-logo.png" 
+                  alt="Cover" 
+                  style={{ 
+                    height: '48px', 
+                    width: 'auto'
+                  }} 
+                />
+                <Title
+                  level={1}
+                  style={{
+                      fontWeight: 800,
+                      color: 'white',
+                    marginBottom: '8px',
+                      direction: 'rtl',
+                    fontSize: 'clamp(2rem, 5vw, 3rem)',
+                    margin: 0
+                    }}
+                  >
+                    CRM מתקדם
+                </Title>
+              </div>
               <Title
                 level={4}
                 type="secondary"
@@ -595,14 +727,7 @@ const Login: React.FC = () => {
                 prefix={<UserOutlined style={{ color: 'rgba(255, 255, 255, 0.65)' }} />}
                 placeholder="הזן שם משתמש"
                 size="large"
-                style={{ 
-                  borderRadius: '12px', 
-                  height: '48px',
-                  direction: 'rtl',
-                  backgroundColor: 'rgba(0, 0, 0, 0.3)',
-                  borderColor: 'white',
-                  color: 'white',
-                }}
+                className="login-input-field"
               />
             </div>
 
@@ -626,14 +751,7 @@ const Login: React.FC = () => {
                 placeholder="הזן סיסמה"
                 size="large"
                 iconRender={(visible) => (visible ? <EyeTwoTone twoToneColor="rgba(255, 255, 255, 0.65)" /> : <EyeInvisibleOutlined style={{ color: 'rgba(255, 255, 255, 0.65)' }} />)}
-                style={{ 
-                  borderRadius: '12px', 
-                  height: '48px',
-                  direction: 'rtl',
-                  backgroundColor: 'rgba(0, 0, 0, 0.3)',
-                  borderColor: 'white',
-                  color: 'white',
-                }}
+                className="login-input-field login-password-field"
               />
             </div>
 

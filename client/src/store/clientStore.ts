@@ -166,8 +166,8 @@ class ClientStore {
       client.personalInfo.firstName.toLowerCase().includes(lowerQuery) ||
       client.personalInfo.lastName.toLowerCase().includes(lowerQuery) ||
       client.personalInfo.id.includes(lowerQuery) ||
-      client.personalInfo.phoneNumber.includes(lowerQuery) ||
-      client.personalInfo.email.toLowerCase().includes(lowerQuery) ||
+      (client.personalInfo.phoneNumber && client.personalInfo.phoneNumber.includes(lowerQuery)) ||
+      (client.personalInfo.email && client.personalInfo.email.toLowerCase().includes(lowerQuery)) ||
       client.employmentHistory.some(emp => 
         emp.companyName.toLowerCase().includes(lowerQuery) ||
         emp.position.toLowerCase().includes(lowerQuery)
@@ -176,6 +176,22 @@ class ClientStore {
         pension.fundName.toLowerCase().includes(lowerQuery)
       )
     );
+  }
+
+  // Find client by phone number
+  findClientByPhone(phoneNumber: string): PensionClientData | undefined {
+    if (!phoneNumber) return undefined;
+    
+    // נרמול מספר הטלפון - הסרת רווחים, מקפים וסימנים
+    const normalizedPhone = phoneNumber.replace(/[\s\-\(\)]/g, '');
+    
+    return this.clients.find(client => {
+      if (!client.personalInfo.phoneNumber) return false;
+      const clientPhone = client.personalInfo.phoneNumber.replace(/[\s\-\(\)]/g, '');
+      return clientPhone === normalizedPhone || 
+             clientPhone.endsWith(normalizedPhone.slice(-7)) || // השוואה של 7 ספרות אחרונות
+             normalizedPhone.endsWith(clientPhone.slice(-7));
+    });
   }
 
   // Subscribe to changes
@@ -216,6 +232,7 @@ export const useClientStore = () => {
     addClient: (client: PensionClientData) => clientStore.addClient(client),
     removeClient: (id: string) => clientStore.removeClient(id),
     getClientById: (id: string) => clientStore.getClientById(id),
-    searchClients: (query: string) => clientStore.searchClients(query)
+    searchClients: (query: string) => clientStore.searchClients(query),
+    findClientByPhone: (phoneNumber: string) => clientStore.findClientByPhone(phoneNumber)
   };
 };

@@ -59,12 +59,12 @@ const PensionCalculator: React.FC = () => {
     retirementAge: 67,
     currentBalance: 150000,
     grossSalary: 20000,
-    monthlyDeposit: 4100,
+    monthlyDeposit: 3700,
     annualReturn: 4.38,
     employerCompensation: 6.00,
     employerContribution: 6.50,
     employeeContribution: 6.00,
-    studyFundContribution: 2.50,
+    studyFundContribution: 0,
     currentManagementFeeDeposit: 1.50,
     currentManagementFeeBalance: 0.50,
     coverManagementFeeDeposit: 0.90,
@@ -77,8 +77,8 @@ const PensionCalculator: React.FC = () => {
   const [showResults, setShowResults] = useState(false);
 
   // Calculate monthly deposit based on salary and contribution percentages
-  const calculateMonthlyDeposit = (salary: number, employerComp: number, employerCont: number, employeeCont: number, studyFund: number) => {
-    const totalPercentage = employerComp + employerCont + employeeCont + studyFund;
+  const calculateMonthlyDeposit = (salary: number, employerComp: number, employerCont: number, employeeCont: number) => {
+    const totalPercentage = employerComp + employerCont + employeeCont;
     return Math.round((salary * totalPercentage) / 100);
   };
 
@@ -88,13 +88,12 @@ const PensionCalculator: React.FC = () => {
       params.grossSalary,
       params.employerCompensation,
       params.employerContribution,
-      params.employeeContribution,
-      params.studyFundContribution
+      params.employeeContribution
     );
     if (newMonthlyDeposit !== params.monthlyDeposit) {
       setParams(prev => ({ ...prev, monthlyDeposit: newMonthlyDeposit }));
     }
-  }, [params.grossSalary, params.employerCompensation, params.employerContribution, params.employeeContribution, params.studyFundContribution]);
+  }, [params.grossSalary, params.employerCompensation, params.employerContribution, params.employeeContribution]);
 
   // Helper function for annual to monthly interest conversion
   const annualToMonthlyInterest = (annualRate: number): number => {
@@ -246,12 +245,12 @@ const PensionCalculator: React.FC = () => {
         retirementAge: 67,
         currentBalance: 150000,
         grossSalary: 20000,
-        monthlyDeposit: 4100,
+        monthlyDeposit: 3700,
       annualReturn: 4.38,
       employerCompensation: 6.00,
       employerContribution: 6.50,
       employeeContribution: 6.00,
-      studyFundContribution: 2.50,
+      studyFundContribution: 0,
       currentManagementFeeDeposit: 1.50,
       currentManagementFeeBalance: 0.50,
       coverManagementFeeDeposit: 0.90,
@@ -300,7 +299,7 @@ const PensionCalculator: React.FC = () => {
         {/* Header Card */}
         <Card 
           style={cardStyle}
-          bodyStyle={{ padding: '12px', textAlign: 'center', direction: 'rtl' }}
+          styles={{ body: { padding: '12px', textAlign: 'center', direction: 'rtl' } }}
         >
           <Space direction="vertical" size="large" style={{ width: '100%' }}>
             <motion.div
@@ -310,7 +309,7 @@ const PensionCalculator: React.FC = () => {
               <TrophyOutlined style={{ fontSize: '48px', color: '#faad14' }} />
             </motion.div>
             <Title level={1} style={{ color: theme.colors.text, margin: 0 }}>
-              מחשבון פנסיה וקרן השתלמות
+              מחשבון פנסיה
             </Title>
             <Text style={{ color: theme.colors.textSecondary, fontSize: '18px' }}>
               השוואת תוכניות פנסיוניות וחישוב חיסכון
@@ -342,13 +341,15 @@ const PensionCalculator: React.FC = () => {
               <span style={{ color: theme.colors.text }}>פרטי החישוב</span>
             </Space>
           }
-          headStyle={{
-            background: 'transparent',
-            borderBottom: `1px solid ${theme.colors.border}`,
-            direction: 'rtl',
-            color: theme.colors.text,
+          styles={{ 
+            header: {
+              background: 'transparent',
+              borderBottom: `1px solid ${theme.colors.border}`,
+              direction: 'rtl',
+              color: theme.colors.text,
+            },
+            body: { padding: '12px', direction: 'rtl' }
           }}
-          bodyStyle={{ padding: '12px', direction: 'rtl' }}
         >
           <Form
             form={form}
@@ -573,29 +574,6 @@ const PensionCalculator: React.FC = () => {
                 </Form.Item>
               </Col>
 
-              <Col xs={24} sm={12} lg={6}>
-                <Form.Item 
-                  label={<span style={{ color: theme.colors.text }}>קרן השתלמות (%)</span>}
-                >
-                  <InputNumber
-                    value={params.studyFundContribution}
-                    onChange={(value) => setParams(prev => ({ ...prev, studyFundContribution: value ?? 0 }))}
-                    min={0}
-                    max={10}
-                    step={0.01}
-                    precision={2}
-                    style={{ 
-                      width: '100%', 
-                      borderRadius: '8px', 
-                      color: theme.colors.text,
-                      backgroundColor: theme.colors.inputBackground,
-                      borderColor: theme.colors.border
-                    }}
-                    addonAfter="%"
-                    placeholder="2.50"
-                  />
-                </Form.Item>
-              </Col>
             </Row>
 
             {/* דמי ניהול */}
@@ -781,12 +759,14 @@ const PensionCalculator: React.FC = () => {
                     <span style={{ color: theme.colors.text }}>תוצאות השוואת הפנסיה</span>
                   </Space>
                 }
-                headStyle={{
-                  background: 'transparent',
-                  borderBottom: '1px solid rgba(255, 255, 255, 0.15)',
-                  direction: 'rtl',
+                styles={{ 
+                  header: {
+                    background: 'transparent',
+                    borderBottom: '1px solid rgba(255, 255, 255, 0.15)',
+                    direction: 'rtl',
+                  },
+                  body: { padding: '12px', direction: 'rtl' }
                 }}
-                bodyStyle={{ padding: '12px', direction: 'rtl' }}
               >
                 {/* Savings Highlight */}
                 <Card
@@ -800,7 +780,7 @@ const PensionCalculator: React.FC = () => {
                       : '2px solid rgba(255, 77, 79, 0.4)',
                     marginBottom: '32px',
                   }}
-                  bodyStyle={{ padding: '32px', textAlign: 'center' }}
+                  styles={{ body: { padding: '32px', textAlign: 'center' } }}
                 >
                   <Title level={2} style={{ color: 'white', margin: 0 }}>
                     {result.savings > 0 ? 'חיסכון צפוי!' : 'הפסד צפוי'}
@@ -835,12 +815,14 @@ const PensionCalculator: React.FC = () => {
                         border: '1px solid rgba(255, 255, 255, 0.1)',
                 borderRadius: '12px',
                       }}
-                      headStyle={{ 
-                        background: 'transparent', 
-                        color: 'white',
-                        direction: 'rtl'
+                      styles={{ 
+                        header: { 
+                          background: 'transparent', 
+                          color: 'white',
+                          direction: 'rtl'
+                        },
+                        body: { direction: 'rtl' }
                       }}
-                      bodyStyle={{ direction: 'rtl' }}
                     >
                       <Statistic
                         title={<Text style={{ color: 'rgba(255, 255, 255, 0.8)' }}>צבירה עד הפרישה</Text>}
@@ -859,12 +841,14 @@ const PensionCalculator: React.FC = () => {
                         border: '1px solid rgba(82, 196, 26, 0.3)',
                         borderRadius: '12px',
                       }}
-                      headStyle={{ 
-                        background: 'transparent', 
-                        color: 'white',
-                        direction: 'rtl'
+                      styles={{ 
+                        header: { 
+                          background: 'transparent', 
+                          color: 'white',
+                          direction: 'rtl'
+                        },
+                        body: { direction: 'rtl' }
                       }}
-                      bodyStyle={{ direction: 'rtl' }}
                     >
                       <Statistic
                         title={<Text style={{ color: 'rgba(255, 255, 255, 0.8)' }}>צבירה עד הפרישה</Text>}

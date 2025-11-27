@@ -30,7 +30,7 @@ INSERT INTO agencies (
     'https://center-insurance.co.il',
     'https://via.placeholder.com/64/2196F3/white?text=CI',
     'https://via.placeholder.com/200x80/2196F3/white?text=CENTER+INSURANCE',
-    '#2196F3',
+    '#98c8ef',
     '#FFC107',
     15,
     500,

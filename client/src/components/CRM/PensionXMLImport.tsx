@@ -12,17 +12,10 @@ import {
   StepLabel,
   Card,
   CardContent,
-  Box as Grid,
-  Alert,
   LinearProgress,
   Chip,
   Avatar,
-  Divider,
   Stack,
-
-  Accordion,
-  AccordionSummary,
-  AccordionDetails,
   Dialog,
   DialogTitle,
   DialogContent,
@@ -32,23 +25,18 @@ import {
   CloudUpload as UploadIcon,
   Description as FileIcon,
   Check as CheckIcon,
-  Error as ErrorIcon,
-  Warning as WarningIcon,
   Save as SaveIcon,
   Refresh as RefreshIcon,
-  ExpandMore as ExpandIcon,
   Person as PersonIcon,
-  AccountBalance as PensionIcon,
-  Work as WorkIcon,
-  TrendingUp as TrendingIcon,
   Info as InfoIcon,
 } from '@mui/icons-material';
 
 import { useDropzone } from 'react-dropzone';
 import { motion, AnimatePresence } from 'framer-motion';
 
-import { PensionXMLParser, formatCurrency, formatDate, calculateAge } from '../../utils/xmlParser';
+import { PensionXMLParser, EnhancedPensionXMLParser, formatCurrency } from '../../utils/xmlParser';
 import { PensionClientData, XMLParsingResult } from '../../types/pension';
+import { apiService } from '../../services/api';
 
 interface ImportStep {
   id: number;
@@ -58,9 +46,13 @@ interface ImportStep {
 }
 
 const PensionXMLImport: React.FC = () => {
+  console.log('PensionXMLImport component loaded!');
+  
   const { theme } = useTheme();
   const navigate = useNavigate();
   const { addClient } = useClientStore();
+  
+  // All state variables
   const [currentStep, setCurrentStep] = useState(0);
   const [selectedFiles, setSelectedFiles] = useState<File[]>([]);
   const [isProcessing, setIsProcessing] = useState(false);
@@ -69,6 +61,91 @@ const PensionXMLImport: React.FC = () => {
   const [parsedClients, setParsedClients] = useState<PensionClientData[]>([]);
   const [showSuccessDialog, setShowSuccessDialog] = useState(false);
   const [savedClients, setSavedClients] = useState<number>(0);
+  
+  // Log current step changes
+  React.useEffect(() => {
+    console.log('Current step changed to:', currentStep);
+  }, [currentStep]);
+  
+  // Log selected files changes
+  React.useEffect(() => {
+    console.log('Selected files changed:', selectedFiles.length, 'files');
+    selectedFiles.forEach((file, index) => {
+      console.log(`File ${index + 1}:`, file.name, file.size, 'bytes');
+    });
+  }, [selectedFiles]);
+
+  // Define processFiles function first
+  const processFiles = React.useCallback(async () => {
+    console.log('processFiles function called!');
+    console.log('selectedFiles:', selectedFiles);
+    
+    if (selectedFiles.length === 0) return;
+
+    setIsProcessing(true);
+    setProcessingProgress(0);
+    
+    const results: XMLParsingResult[] = [];
+    const clients: PensionClientData[] = [];
+
+    for (let i = 0; i < selectedFiles.length; i++) {
+      const file = selectedFiles[i];
+      setProcessingProgress(((i + 1) / selectedFiles.length) * 100);
+      
+      try {
+        const text = await file.text();
+        const parser = new DOMParser();
+        const xmlDoc = parser.parseFromString(text, 'text/xml');
+
+        // Try enhanced parser first for detailed pension clearing house data
+        let clientData = EnhancedPensionXMLParser.parseDetailedXML(xmlDoc, file.name);
+
+        // Fallback to basic parser if enhanced parsing fails
+        if (!clientData) {
+          clientData = PensionXMLParser.parseXML(xmlDoc, file.name);
+        }
+
+        if (clientData) {
+          results.push({
+            fileName: file.name,
+            success: true,
+            clientData,
+            errors: []
+          });
+          clients.push(clientData);
+        } else {
+          results.push({
+            fileName: file.name,
+            success: false,
+            clientData: null,
+            errors: ['Failed to parse XML file']
+          });
+        }
+      } catch (error) {
+        results.push({
+          fileName: file.name,
+          success: false,
+          clientData: null,
+          errors: [error instanceof Error ? error.message : 'Unknown error']
+        });
+      }
+    }
+
+    setParsingResults(results);
+    setParsedClients(clients);
+    setIsProcessing(false);
+    setCurrentStep(2);
+  }, [selectedFiles]);
+
+  // Auto-process files when step changes to 1
+  React.useEffect(() => {
+    if (currentStep === 1 && selectedFiles.length > 0 && !isProcessing) {
+      console.log('Auto-starting processFiles...');
+      setTimeout(() => {
+        processFiles();
+      }, 1000);
+    }
+  }, [currentStep, selectedFiles.length, isProcessing, processFiles]);
 
   const steps: ImportStep[] = [
     {
@@ -121,93 +198,65 @@ const PensionXMLImport: React.FC = () => {
     multiple: true
   });
 
-  const processFiles = async () => {
-    if (selectedFiles.length === 0) return;
 
-    setIsProcessing(true);
-    setProcessingProgress(0);
-    
-    const results: XMLParsingResult[] = [];
-    const clients: PensionClientData[] = [];
-
-    for (let i = 0; i < selectedFiles.length; i++) {
-      const file = selectedFiles[i];
-      setProcessingProgress((i / selectedFiles.length) * 100);
-
-      try {
-        const text = await file.text();
-        const parser = new DOMParser();
-        const xmlDoc = parser.parseFromString(text, 'text/xml');
-        
-        // Check for parsing errors
-        const parseError = xmlDoc.querySelector('parsererror');
-        if (parseError) {
-          results.push({
-            fileName: file.name,
-            success: false,
-            errors: ['קובץ XML לא תקין'],
-            warnings: [],
-            clientData: null
-          });
-          continue;
-        }
-
-        const clientData = PensionXMLParser.parseXML(xmlDoc, file.name);
-        
-        if (clientData) {
-          clients.push(clientData);
-          results.push({
-            fileName: file.name,
-            success: true,
-            errors: [],
-            warnings: [],
-            clientData
-          });
-        } else {
-          results.push({
-            fileName: file.name,
-            success: false,
-            errors: ['שגיאה בעיבוד הקובץ'],
-            warnings: [],
-            clientData: null
-          });
-        }
-      } catch (error) {
-        results.push({
-          fileName: file.name,
-          success: false,
-          errors: [`שגיאה: ${error}`],
-          warnings: [],
-          clientData: null
-        });
-      }
-    }
-
-    setProcessingProgress(100);
-    setParsingResults(results);
-    setParsedClients(clients);
-    setIsProcessing(false);
-    setCurrentStep(2);
-  };
 
   const saveClients = async () => {
-    // Save clients to global store
+    console.log('saveClients function called!');
+    console.log('parsedClients:', parsedClients);
+    
+    // Save clients to database via API
     setIsProcessing(true);
     setProcessingProgress(0);
 
     let savedCount = 0;
+    let clientToOpen: PensionClientData | null = null;
+    
     for (let i = 0; i < parsedClients.length; i++) {
       setProcessingProgress(((i + 1) / parsedClients.length) * 100);
       
       try {
-        // Add client to global store
-        addClient(parsedClients[i]);
-        savedCount++;
+        const client = parsedClients[i];
         
-        // Simulate API call delay for UI feedback
-        await new Promise(resolve => setTimeout(resolve, 300));
+        console.log('Processing client:', client.personalInfo.firstName, client.personalInfo.lastName);
+        
+        // Convert client data to API format
+        const apiData = apiService.convertPensionClientToApiFormat(client);
+        console.log('API Data:', apiData);
+        
+        // Import to database
+        console.log('Calling API...');
+        const result = await apiService.importPensionData(apiData);
+        console.log('API Result:', result);
+        
+        if (result.success) {
+          // Check if customer already existed by trying to find by phone
+          const existingCustomerResult = await apiService.findCustomerByPhone(
+            client.personalInfo.phoneNumber || ''
+          );
+          
+          if (existingCustomerResult.success && existingCustomerResult.data) {
+            // Convert API customer back to PensionClientData format
+            clientToOpen = apiService.convertApiCustomerToPensionClient(existingCustomerResult.data);
+            console.log(`לקוח עם טלפון ${client.personalInfo.phoneNumber} עודכן במערכת`);
+          } else {
+            // New customer created
+            clientToOpen = { ...client, id: result.data?.customerId || client.id };
+            console.log(`לקוח חדש נוצר במערכת עם ID: ${result.data?.customerId}`);
+          }
+          
+          // Also add to local store for immediate UI updates
+          addClient(clientToOpen);
+          savedCount++;
+        } else {
+          console.error('שגיאה בשמירת לקוח:', result.error);
+          alert(`שגיאה בשמירת לקוח: ${result.error}`);
+        }
+        
+        // Simulate delay for UI feedback
+        await new Promise(resolve => setTimeout(resolve, 500));
       } catch (error) {
         console.error('שגיאה בשמירת לקוח:', error);
+        alert(`שגיאה בשמירת לקוח: ${error}`);
       }
     }
 
@@ -215,6 +264,13 @@ const PensionXMLImport: React.FC = () => {
     setIsProcessing(false);
     setCurrentStep(3);
     setShowSuccessDialog(true);
+    
+    // אם יש רק לקוח אחד, נפתח את המסך שלו אוטומטית אחרי 2 שניות
+    if (parsedClients.length === 1 && clientToOpen) {
+      setTimeout(() => {
+        navigate(`/crm/client/${clientToOpen!.id}`);
+      }, 2000);
+    }
   };
 
   const resetImport = () => {
@@ -317,7 +373,7 @@ const PensionXMLImport: React.FC = () => {
                       color: '#4CAF50',
                     },
                     '& .MuiStepLabel-label.Mui-active': {
-                      color: '#2196F3',
+                      color: '#98c8ef',
                     },
                     '& .MuiStepIcon-root': {
                       color: 'rgba(255,255,255,0.3)',
@@ -326,7 +382,7 @@ const PensionXMLImport: React.FC = () => {
                       color: '#4CAF50',
                     },
                     '& .MuiStepIcon-root.Mui-active': {
-                      color: '#2196F3',
+                      color: '#98c8ef',
                     },
                   }}
                 >
@@ -344,7 +400,7 @@ const PensionXMLImport: React.FC = () => {
                   borderRadius: 2,
                   height: 8,
                   '& .MuiLinearProgress-bar': {
-                    background: 'linear-gradient(135deg, #2196F3 0%, #21CBF3 100%)',
+                    background: 'linear-gradient(135deg, #98c8ef 0%, #21CBF3 100%)',
                   },
                 }}
               />
@@ -387,14 +443,14 @@ const PensionXMLImport: React.FC = () => {
                   sx={{
                     p: 6,
                     textAlign: 'center',
-                    border: `2px dashed ${isDragActive ? '#2196F3' : 'rgba(255,255,255,0.3)'}`,
+                    border: `2px dashed ${isDragActive ? '#98c8ef' : 'rgba(255,255,255,0.3)'}`,
                     borderRadius: 3,
                     bgcolor: isDragActive ? 'rgba(33, 150, 243, 0.1)' : 'transparent',
                     cursor: 'pointer',
                     transition: 'all 0.3s ease',
                     '&:hover': {
                       bgcolor: 'rgba(33, 150, 243, 0.05)',
-                      borderColor: '#2196F3',
+                      borderColor: '#98c8ef',
                     }
                   }}
                 >
@@ -402,7 +458,7 @@ const PensionXMLImport: React.FC = () => {
                   <UploadIcon 
                     sx={{ 
                       fontSize: 64, 
-                      color: isDragActive ? '#2196F3' : 'rgba(255,255,255,0.5)',
+                      color: isDragActive ? '#98c8ef' : 'rgba(255,255,255,0.5)',
                       mb: 2 
                     }} 
                   />
@@ -440,7 +496,7 @@ const PensionXMLImport: React.FC = () => {
                       label="עד 10 קבצים" 
                       sx={{ 
                         bgcolor: 'rgba(33, 150, 243, 0.2)',
-                        color: '#2196F3',
+                        color: '#98c8ef',
                         border: '1px solid rgba(33, 150, 243, 0.3)'
                       }} 
                     />
@@ -473,7 +529,7 @@ const PensionXMLImport: React.FC = () => {
                           >
                             <CardContent sx={{ p: 2 }}>
                               <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
-                                <FileIcon sx={{ color: '#2196F3' }} />
+                                <FileIcon sx={{ color: '#98c8ef' }} />
                                 <Box sx={{ flex: 1, minWidth: 0 }}>
                                   <Typography 
                                     variant="body2" 
@@ -504,10 +560,13 @@ const PensionXMLImport: React.FC = () => {
                       <Button
                         variant="contained"
                         size="large"
-                        onClick={processFiles}
+                        onClick={() => {
+                          console.log('Process Files button clicked!');
+                          processFiles();
+                        }}
                         disabled={isProcessing}
                         sx={{
-                          background: 'linear-gradient(135deg, #2196F3 0%, #21CBF3 100%)',
+                          background: 'linear-gradient(135deg, #98c8ef 0%, #21CBF3 100%)',
                           px: 4,
                           py: 1.5,
                           fontSize: '1.1rem',
@@ -549,7 +608,7 @@ const PensionXMLImport: React.FC = () => {
                     animate={{ rotate: 360 }}
                     transition={{ duration: 2, repeat: Infinity, ease: "linear" }}
                   >
-                    <UploadIcon sx={{ fontSize: 64, color: '#2196F3' }} />
+                    <UploadIcon sx={{ fontSize: 64, color: '#98c8ef' }} />
                   </motion.div>
                   <Typography variant="h5" sx={{ color: 'white', fontWeight: 600 }}>
                     מעבד קבצים...
@@ -631,7 +690,7 @@ const PensionXMLImport: React.FC = () => {
                         sx={{
                           p: 2,
                           textAlign: 'center',
-                          background: 'linear-gradient(135deg, #2196F3 0%, #1976D2 100%)',
+                          background: 'linear-gradient(135deg, #98c8ef 0%, #1976D2 100%)',
                           color: 'white'
                         }}
                       >
@@ -729,6 +788,28 @@ const PensionXMLImport: React.FC = () => {
                                       >
                                         ת.ז: {client.personalInfo.id}
                                       </Typography>
+                                      {client.employerInfo && (
+                                        <Typography 
+                                          variant="caption" 
+                                          sx={{ 
+                                            color: 'rgba(255,255,255,0.6)',
+                                            display: 'block'
+                                          }}
+                                        >
+                                          מעסיק: {client.employerInfo.employerName}
+                                        </Typography>
+                                      )}
+                                      {client.policyInfo && (
+                                        <Typography 
+                                          variant="caption" 
+                                          sx={{ 
+                                            color: 'rgba(255,255,255,0.6)',
+                                            display: 'block'
+                                          }}
+                                        >
+                                          פוליסה: {client.policyInfo.policyNumber}
+                                        </Typography>
+                                      )}
                                     </Box>
                                   </Box>
                                 </Box>
@@ -759,7 +840,7 @@ const PensionXMLImport: React.FC = () => {
                                   <Typography 
                                     variant="body1" 
                                     sx={{ 
-                                      color: '#2196F3',
+                                      color: '#98c8ef',
                                       fontWeight: 600
                                     }}
                                   >
@@ -786,6 +867,79 @@ const PensionXMLImport: React.FC = () => {
                                   </Typography>
                                 </Box>
                               </Box>
+
+                              {/* Additional Details from Enhanced Parser */}
+                              {(client.lastDepositInfo || client.annualDeposits || client.insuranceCoverage?.length) && (
+                                <Box sx={{ mt: 2, pt: 2, borderTop: '1px solid rgba(255,255,255,0.1)' }}>
+                                  <Typography 
+                                    variant="subtitle2" 
+                                    sx={{ 
+                                      color: 'rgba(255,255,255,0.8)',
+                                      mb: 1,
+                                      fontWeight: 600
+                                    }}
+                                  >
+                                    פרטים נוספים מהמסלקה
+                                  </Typography>
+                                  <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 2 }}>
+                                    {client.lastDepositInfo && (
+                                      <Chip
+                                        label={`הפקדה אחרונה: ${formatCurrency(client.lastDepositInfo.totalDeposit)}`}
+                                        size="small"
+                                        sx={{
+                                          bgcolor: 'rgba(76, 175, 80, 0.2)',
+                                          color: '#4CAF50',
+                                          border: '1px solid rgba(76, 175, 80, 0.3)'
+                                        }}
+                                      />
+                                    )}
+                                    {client.annualDeposits && (
+                                      <Chip
+                                        label={`הפקדות שנתיות: ${formatCurrency(client.annualDeposits.totalEmployeeDeposits + client.annualDeposits.totalEmployerDeposits)}`}
+                                        size="small"
+                                        sx={{
+                                          bgcolor: 'rgba(33, 150, 243, 0.2)',
+                                          color: '#2196F3',
+                                          border: '1px solid rgba(33, 150, 243, 0.3)'
+                                        }}
+                                      />
+                                    )}
+                                    {client.insuranceCoverage && client.insuranceCoverage.length > 0 && (
+                                      <Chip
+                                        label={`כיסויי ביטוח: ${client.insuranceCoverage.length}`}
+                                        size="small"
+                                        sx={{
+                                          bgcolor: 'rgba(156, 39, 176, 0.2)',
+                                          color: '#9C27B0',
+                                          border: '1px solid rgba(156, 39, 176, 0.3)'
+                                        }}
+                                      />
+                                    )}
+                                    {client.debtsArrears?.hasDebtOrArrears === '1' && (
+                                      <Chip
+                                        label="יש חובות/פיגורים"
+                                        size="small"
+                                        sx={{
+                                          bgcolor: 'rgba(244, 67, 54, 0.2)',
+                                          color: '#F44336',
+                                          border: '1px solid rgba(244, 67, 54, 0.3)'
+                                        }}
+                                      />
+                                    )}
+                                    {client.policyInfo?.programName && (
+                                      <Chip
+                                        label={client.policyInfo.programName}
+                                        size="small"
+                                        sx={{
+                                          bgcolor: 'rgba(255, 193, 7, 0.2)',
+                                          color: '#FFC107',
+                                          border: '1px solid rgba(255, 193, 7, 0.3)'
+                                        }}
+                                      />
+                                    )}
+                                  </Box>
+                                </Box>
+                              )}
                             </CardContent>
                           </Card>
                         ))}
@@ -811,11 +965,14 @@ const PensionXMLImport: React.FC = () => {
                     >
                       חזור לבחירת קבצים
                     </Button>
-                    <Button
+                                        <Button 
                       variant="contained"
                       size="large"
                       startIcon={<SaveIcon />}
-                      onClick={saveClients}
+                      onClick={() => {
+                        console.log('Save Clients button clicked!');
+                        saveClients();
+                      }}
                       disabled={parsedClients.length === 0 || isProcessing}
                       sx={{
                         background: 'linear-gradient(135deg, #4CAF50 0%, #45A049 100%)',
@@ -874,11 +1031,24 @@ const PensionXMLImport: React.FC = () => {
                   variant="h6" 
                   sx={{ 
                     color: '#4CAF50',
-                    mb: 4
+                    mb: 2
                   }}
                 >
                   {savedClients} לקוחות נשמרו במערכת
                 </Typography>
+                
+                {parsedClients.length === 1 && (
+                  <Typography 
+                    variant="body1" 
+                    sx={{ 
+                      color: 'rgba(255,255,255,0.8)',
+                      mb: 4,
+                      fontStyle: 'italic'
+                    }}
+                  >
+                    🔄 פותח את מסך הלקוח אוטומטית...
+                  </Typography>
+                )}
                 
                 <Stack direction="row" spacing={2} justifyContent="center">
                   <Button
@@ -899,7 +1069,7 @@ const PensionXMLImport: React.FC = () => {
                     variant="contained"
                     onClick={() => navigate('/crm/clients')}
                     sx={{
-                      background: 'linear-gradient(135deg, #2196F3 0%, #21CBF3 100%)',
+                      background: 'linear-gradient(135deg, #98c8ef 0%, #21CBF3 100%)',
                       '&:hover': {
                         background: 'linear-gradient(135deg, #1976D2 0%, #0288D1 100%)',
                       }
@@ -957,7 +1127,7 @@ const PensionXMLImport: React.FC = () => {
               variant="contained"
               onClick={() => navigate('/crm/clients')}
               sx={{
-                background: 'linear-gradient(135deg, #2196F3 0%, #21CBF3 100%)',
+                background: 'linear-gradient(135deg, #98c8ef 0%, #21CBF3 100%)',
               }}
             >
               צפה בלקוחות

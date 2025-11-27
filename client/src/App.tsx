@@ -3,10 +3,12 @@ import { ConfigProvider, Layout, Typography, Button, theme } from 'antd';
 import { BrowserRouter as Router, Routes, Route, Link, useLocation } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import PensionCalculator from './components/PensionCalculator';
-import SalaryCalculator from './components/SalaryCalculator';
+import SalaryCalculatorPage from './components/SalaryCalculatorPage';
 import PayslipAnalyzer from './components/PayslipAnalyzer';
 import Login from './components/Login';
 import CRMWrapper from './components/CRM/CRMWrapper';
+import LeadFormPage from './components/LeadFormPage';
+import MarketingSite from './components/MarketingSite';
 import { ThemeProvider, useTheme } from './contexts/ThemeContext';
 import 'antd/dist/reset.css';
 import './App.css';
@@ -19,7 +21,7 @@ const { Title } = Typography;
 const getAntdTheme = (themeMode: 'dark' | 'light') => ({
   token: {
     // Primary colors
-    colorPrimary: themeMode === 'dark' ? '#2196F3' : '#007AFF',
+    colorPrimary: themeMode === 'dark' ? '#98c8ef' : '#007AFF',
     colorPrimaryHover: themeMode === 'dark' ? '#1976D2' : '#5AC8FA',
     colorPrimaryActive: themeMode === 'dark' ? '#0D47A1' : '#0056CC',
     
@@ -98,13 +100,14 @@ const Navigation: React.FC = () => {
   
   const navItems = [
     { path: '/', label: 'מחשבון פנסיה' },
-    { path: '/salary', label: 'מחשבון שכר' },
+    { path: '/salary', label: 'מחשבון שכר סוכן' },
     { path: '/payslip', label: 'ניתוח תלוש' },
+    { path: '/lead', label: 'טופס ליד' },
     { path: '/crm/login', label: 'CRM' },
   ];
 
   const headerBackground = theme.mode === 'dark' 
-    ? 'linear-gradient(135deg, #2196F3 0%, #1976D2 100%)'
+    ? 'linear-gradient(135deg, #98c8ef 0%, #1976D2 100%)'
     : 'linear-gradient(135deg, #007AFF 0%, #5AC8FA 100%)';
 
   return (
@@ -119,18 +122,28 @@ const Navigation: React.FC = () => {
         height: '70px',
       }}
     >
-      <Title
-        level={3}
-        style={{
-          color: 'white',
-          margin: 0,
-          fontWeight: 700,
-          fontSize: '24px',
-          direction: 'rtl',
-        }}
-      >
-        GeneAI - כלים חכמים
-      </Title>
+      <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+        <img 
+          src="/cover-logo.png" 
+          alt="Cover" 
+          style={{ 
+            height: '32px', 
+            width: 'auto'
+          }} 
+        />
+        <Title
+          level={4}
+          style={{
+            color: 'white',
+            margin: 0,
+            fontWeight: 400,
+            fontSize: '16px',
+            direction: 'rtl',
+          }}
+        >
+          כלים חכמים
+        </Title>
+      </div>
       
       <div style={{ display: 'flex', gap: '16px', alignItems: 'center' }}>
         {/* Theme Toggle Button */}
@@ -208,7 +221,6 @@ const Navigation: React.FC = () => {
 // Home page component
 const HomePage: React.FC = () => {
   const [showContent, setShowContent] = React.useState(false);
-  const { theme, toggleTheme } = useTheme();
 
   React.useEffect(() => {
     const timer = setTimeout(() => {
@@ -230,106 +242,8 @@ const HomePage: React.FC = () => {
             width: '100%',
           }}
         >
-          {/* Navigation Buttons */}
-          <div style={{ 
-            position: 'absolute', 
-            top: '20px', 
-            right: '20px', 
-            left: '20px',
-            zIndex: 10,
-            display: 'flex',
-            justifyContent: 'space-between',
-            alignItems: 'center'
-          }}>
-            {/* Left side - Other calculators */}
-            <div style={{ display: 'flex', gap: '12px' }}>
-              <Link to="/salary">
-                <Button
-                  size="large"
-                  style={{
-                    background: theme.colors.cardBackground,
-                    border: 'none',
-                    borderRadius: '12px',
-                    fontWeight: 600,
-                    color: theme.colors.accent,
-                    boxShadow: `0 2px 8px ${theme.colors.shadow}`,
-                    direction: 'rtl',
-                  }}
-                >
-                  💰 מחשבון שכר
-                </Button>
-              </Link>
-              <Link to="/payslip">
-                <Button
-                  size="large"
-                  style={{
-                    background: theme.colors.cardBackground,
-                    border: 'none',
-                    borderRadius: '12px',
-                    fontWeight: 600,
-                    color: theme.colors.accent,
-                    boxShadow: `0 2px 8px ${theme.colors.shadow}`,
-                    direction: 'rtl',
-                  }}
-                >
-                  📄 ניתוח תלוש
-                </Button>
-              </Link>
-            </div>
-
-            {/* Center - Theme Toggle */}
-            <Button
-              type="text"
-              size="large"
-              onClick={toggleTheme}
-              style={{
-                background: theme.colors.cardBackground,
-                border: 'none',
-                borderRadius: '12px',
-                fontWeight: 600,
-                color: theme.colors.text,
-                boxShadow: `0 2px 8px ${theme.colors.shadow}`,
-                direction: 'rtl',
-                display: 'flex',
-                alignItems: 'center',
-                gap: '8px',
-              }}
-              onMouseEnter={(e) => {
-                (e.target as HTMLElement).style.transform = 'scale(1.05)';
-              }}
-              onMouseLeave={(e) => {
-                (e.target as HTMLElement).style.transform = 'scale(1)';
-              }}
-            >
-              {theme.mode === 'dark' ? '☀️' : '🌙'} {theme.mode === 'dark' ? 'מצב בהיר' : 'מצב כהה'}
-            </Button>
-
-            {/* Right side - CRM access */}
-            <Link to="/crm/login">
-              <Button
-                type="primary"
-                size="large"
-                style={{
-                  background: theme.mode === 'dark' 
-                    ? 'linear-gradient(135deg, #2196F3 0%, #1976D2 100%)'
-                    : 'linear-gradient(135deg, #007AFF 0%, #5AC8FA 100%)',
-                  border: 'none',
-                  borderRadius: '12px',
-                  fontWeight: 600,
-                  boxShadow: '0 4px 20px rgba(0,122,255,0.3)',
-                  direction: 'rtl',
-                }}
-                onMouseEnter={(e) => {
-                  (e.target as HTMLElement).style.transform = 'scale(1.05)';
-                }}
-                onMouseLeave={(e) => {
-                  (e.target as HTMLElement).style.transform = 'scale(1)';
-                }}
-              >
-                🏢 כניסה ל-CRM
-              </Button>
-            </Link>
-          </div>
+          {/* Top bar is now unified via Navigation component */}
+          <Navigation />
           
           
 
@@ -379,13 +293,29 @@ const AppContent: React.FC = () => {
               } 
             />
             <Route 
+              path="/lead" 
+              element={
+                <PageWrapper>
+                  <Navigation />
+                  <LeadFormPage />
+                </PageWrapper>
+              } 
+            />
+            <Route 
+              path=":brand" 
+              element={
+                <PageWrapper>
+                  <Navigation />
+                  <LeadFormPage />
+                </PageWrapper>
+              } 
+            />
+            <Route 
               path="/salary" 
               element={
                 <PageWrapper>
                   <Navigation />
-                  <div style={{ padding: '24px' }}>
-                    <SalaryCalculator />
-                  </div>
+                  <SalaryCalculatorPage />
                 </PageWrapper>
               } 
             />
@@ -396,6 +326,28 @@ const AppContent: React.FC = () => {
                   <Navigation />
                   <div style={{ padding: '24px' }}>
                     <PayslipAnalyzer />
+                  </div>
+                </PageWrapper>
+              } 
+            />
+            <Route 
+              path="/site/preview" 
+              element={
+                <PageWrapper>
+                  <Navigation />
+                  <div style={{ padding: '0px' }}>
+                    <MarketingSite />
+                  </div>
+                </PageWrapper>
+              } 
+            />
+            <Route 
+              path="/site/:slug" 
+              element={
+                <PageWrapper>
+                  <Navigation />
+                  <div style={{ padding: 0 }}>
+                    <MarketingSite />
                   </div>
                 </PageWrapper>
               } 
@@ -522,6 +474,30 @@ const AppContent: React.FC = () => {
             />
             <Route 
               path="/crm/client/:clientId" 
+              element={
+                <PageWrapper>
+                  <CRMWrapper />
+                </PageWrapper>
+              } 
+            />
+            <Route 
+              path="/crm/campaigns" 
+              element={
+                <PageWrapper>
+                  <CRMWrapper />
+                </PageWrapper>
+              } 
+            />
+            <Route 
+              path="/crm/bionic-agent" 
+              element={
+                <PageWrapper>
+                  <CRMWrapper />
+                </PageWrapper>
+              } 
+            />
+            <Route 
+              path="/crm/website-builder" 
               element={
                 <PageWrapper>
                   <CRMWrapper />

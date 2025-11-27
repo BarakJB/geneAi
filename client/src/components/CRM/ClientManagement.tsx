@@ -166,22 +166,35 @@ const ClientCard: React.FC<{
     >
       <Card
         sx={{
-          mb: 2,
+          mb: { xs: 1.5, sm: 2 },
           borderRadius: 3,
           border: `1px solid ${theme.colors.border}`,
           background: theme.colors.cardBackground,
           backdropFilter: 'blur(10px)',
           transition: 'all 0.3s ease',
+          boxShadow: `0 4px 16px ${theme.colors.shadow}`,
           '&:hover': {
-            transform: 'translateY(-2px)',
-            boxShadow: '0 8px 32px rgba(0,0,0,0.3)',
-            border: '1px solid rgba(255, 255, 255, 0.2)',
+            transform: 'translateY(-4px)',
+            boxShadow: '0 12px 40px rgba(0,0,0,0.4)',
+            border: `1px solid ${theme.colors.accent}`,
           }
         }}
       >
-        <CardContent sx={{ p: 3 }}>
-          <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, flexWrap: 'wrap' }}>
-            <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, flex: '1 1 300px' }}>
+        <CardContent sx={{ p: { xs: 2, sm: 3 } }}>
+          <Box sx={{ 
+            display: 'flex', 
+            alignItems: 'center', 
+            gap: { xs: 1.5, sm: 2 }, 
+            flexWrap: 'wrap',
+            flexDirection: { xs: 'column', sm: 'row' }
+          }}>
+            <Box sx={{ 
+              display: 'flex', 
+              alignItems: 'center', 
+              gap: { xs: 1.5, sm: 2 }, 
+              flex: '1 1 300px',
+              width: { xs: '100%', sm: 'auto' }
+            }}>
                 <Avatar
                   sx={{
                     bgcolor: 'primary.main',
@@ -436,8 +449,8 @@ const ClientManagement: React.FC = () => {
 
   return (
     <Box sx={{ 
-      py: 1, 
-      px: 1,
+      py: { xs: 1, sm: 2 }, 
+      px: { xs: 1, sm: 2 },
       maxWidth: '100%',
       width: '100%',
       overflow: 'hidden'
@@ -450,23 +463,31 @@ const ClientManagement: React.FC = () => {
         {/* Header */}
         <Paper
           sx={{
-            p: 3,
-            mb: 3,
+            p: { xs: 2, sm: 3 },
+            mb: { xs: 2, sm: 3 },
             borderRadius: 3,
             background: theme.colors.cardBackground,
             backdropFilter: 'blur(10px)',
             border: `1px solid ${theme.colors.border}`,
-            boxShadow: `0 4px 12px ${theme.colors.shadow}`,
+            boxShadow: `0 4px 20px ${theme.colors.shadow}`,
           }}
         >
-          <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 3 }}>
+          <Box sx={{ 
+            display: 'flex', 
+            flexDirection: { xs: 'column', sm: 'row' },
+            justifyContent: 'space-between', 
+            alignItems: { xs: 'flex-start', sm: 'center' }, 
+            mb: { xs: 2, sm: 3 },
+            gap: { xs: 2, sm: 0 }
+          }}>
             <Box>
               <Typography 
                 variant="h4" 
                 sx={{ 
                   color: theme.colors.text,
                   fontWeight: 700,
-                  mb: 1
+                  mb: 1,
+                  fontSize: { xs: '1.75rem', sm: '2.125rem' }
                 }}
               >
                 ניהול לקוחות
@@ -474,16 +495,23 @@ const ClientManagement: React.FC = () => {
               <Typography 
                 variant="body1" 
                 sx={{ 
-                  color: theme.colors.textSecondary
+                  color: theme.colors.textSecondary,
+                  fontSize: { xs: '0.875rem', sm: '1rem' }
                 }}
               >
                 חיפוש וניהול נתוני לקוחות שיובאו מקבצי XML
               </Typography>
             </Box>
-            <Box sx={{ display: 'flex', gap: 2 }}>
+            <Box sx={{ 
+              display: 'flex', 
+              gap: { xs: 1, sm: 2 },
+              flexDirection: { xs: 'column', sm: 'row' },
+              width: { xs: '100%', sm: 'auto' }
+            }}>
               <Button
                 variant="outlined"
                 startIcon={<RefreshIcon />}
+                size={window.innerWidth < 768 ? 'medium' : 'large'}
                 sx={{
                   borderColor: theme.colors.border,
                   color: 'white',
@@ -984,7 +1012,7 @@ const ClientManagement: React.FC = () => {
                             {emp.companyName}
                           </Typography>
                           <Typography variant="body2" sx={{ color: theme.colors.textSecondary }}>
-                            {emp.position} • {formatCurrency(emp.salary)}
+                            {emp.position} • {formatCurrency(emp.salary || 0)}
                           </Typography>
                           <Typography variant="caption" sx={{ color: theme.colors.textMuted }}>
                             {formatDate(emp.startDate)} - {emp.endDate ? formatDate(emp.endDate) : 'נוכחי'}

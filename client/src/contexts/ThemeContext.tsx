@@ -59,14 +59,14 @@ const darkTheme: Theme = {
     divider: 'rgba(255, 255, 255, 0.1)',
     
     // Interactive colors
-    accent: '#2196F3',
+    accent: '#98c8ef',
     accentHover: '#1976D2',
     
     // Status colors
     success: '#4CAF50',
     warning: '#FFC107',
     error: '#F44336',
-    info: '#2196F3',
+    info: '#98c8ef',
     
     // Component specific colors
     cardBackground: 'rgba(0, 0, 0, 0.4)',
@@ -99,7 +99,7 @@ const lightTheme: Theme = {
     divider: '#e9ecef',
     
     // Interactive colors
-    accent: '#007bff',
+    accent: '#6c757d',
     accentHover: '#0056b3',
     
     // Status colors
@@ -136,13 +136,16 @@ interface ThemeProviderProps {
 
 // Theme provider component
 export const ThemeProvider: React.FC<ThemeProviderProps> = ({ children }) => {
-  const [currentTheme, setCurrentTheme] = useState<'dark' | 'light'>('dark');
+  const [currentTheme, setCurrentTheme] = useState<'dark' | 'light'>('light');
 
   // Load theme from localStorage on mount
   useEffect(() => {
     const savedTheme = localStorage.getItem('agentsCalculator-theme') as 'dark' | 'light';
     if (savedTheme && (savedTheme === 'dark' || savedTheme === 'light')) {
       setCurrentTheme(savedTheme);
+    } else {
+      // Default to light if nothing saved
+      setCurrentTheme('light');
     }
   }, []);
 
@@ -162,7 +165,7 @@ export const ThemeProvider: React.FC<ThemeProviderProps> = ({ children }) => {
     // Update body background
     document.body.style.background = currentTheme === 'dark' 
       ? 'linear-gradient(135deg, #0f0f23 0%, #1a1a2e 50%, #16213e 100%)'
-      : 'linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%)';
+      : 'linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%)';
       
     // Update body text color to ensure it's correct
     document.body.style.color = theme.colors.text;
