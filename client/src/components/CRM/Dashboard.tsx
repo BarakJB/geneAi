@@ -13,6 +13,8 @@ import {
   Divider,
   Progress,
   Timeline,
+  Modal,
+  List,
 } from 'antd';
 import {
   TeamOutlined,
@@ -32,12 +34,15 @@ import {
 } from '@ant-design/icons';
 import { motion } from 'framer-motion';
 import { useTheme } from '../../contexts/ThemeContext';
+import { useNavigate } from 'react-router-dom';
 
 const { Title, Text } = Typography;
 
 const Dashboard: React.FC = () => {
   const { theme } = useTheme();
   const [currentTime, setCurrentTime] = useState(new Date());
+  const navigate = useNavigate();
+  const [improveVisible, setImproveVisible] = useState(false);
 
   useEffect(() => {
     const timer = setInterval(() => {
@@ -139,7 +144,41 @@ const Dashboard: React.FC = () => {
     fetchDashboardData();
   }, [currentAgencyId]);
 
+  // Improvement suggestions popup (mock) - show on each dashboard load (refresh/login)
+  useEffect(() => {
+    setImproveVisible(true);
+  }, []);
 
+  const generateMeeting = (daysFromNow: number, hour: number, minute: number): string => {
+    const d = new Date();
+    d.setDate(d.getDate() + daysFromNow);
+    d.setHours(hour, minute, 0, 0);
+    return d.toLocaleString('he-IL', {
+      weekday: 'long',
+      day: '2-digit',
+      month: '2-digit',
+      hour: '2-digit',
+      minute: '2-digit'
+    });
+  };
+
+  const improvementItems = [
+    {
+      name: 'ישראל ישראלי',
+      summary: 'מסלול פנסיה כללי – מומלץ מעבר למסלול מנייתי מדורג',
+      meeting: generateMeeting(1, 9, 30),
+    },
+    {
+      name: 'דנה כהן',
+      summary: 'קרן השתלמות – עדכון דמי ניהול והעברת מסלול',
+      meeting: generateMeeting(3, 13, 0),
+    },
+    {
+      name: 'דוד לוי',
+      summary: 'ביטוח מנהלים – בדיקת כיסויים ומעבר למסלול מניב',
+      meeting: generateMeeting(5, 16, 30),
+    },
+  ];
 
   const formatCurrency = (amount: number): string => {
     return new Intl.NumberFormat('he-IL', {
@@ -225,7 +264,8 @@ const Dashboard: React.FC = () => {
       maxWidth: '100%',
       width: '100%',
       overflow: 'hidden',
-      boxSizing: 'border-box'
+      boxSizing: 'border-box',
+      padding: window.innerWidth < 768 ? '8px' : '16px'
     }}>
       <motion.div
         initial={{ opacity: 0, y: 20 }}
@@ -233,8 +273,13 @@ const Dashboard: React.FC = () => {
         transition={{ duration: 0.6 }}
       >
         {/* Welcome Section */}
-        <Card style={welcomeCardStyle} styles={{ body: { padding: '12px' } }}>
-          <Row align="middle" justify="space-between" style={{ width: '100%' }}>
+        <Card style={{
+          ...welcomeCardStyle,
+          borderRadius: '16px',
+          boxShadow: '0 4px 20px rgba(0,0,0,0.1)',
+          marginBottom: window.innerWidth < 768 ? '12px' : '16px'
+        }} styles={{ body: { padding: window.innerWidth < 768 ? '16px' : '20px' } }}>
+          <Row align="middle" justify="space-between" style={{ width: '100%' }} gutter={[16, 16]}>
             <Col>
               <Space align="center" size="large">
                 <motion.div
@@ -278,6 +323,7 @@ const Dashboard: React.FC = () => {
                       border: 'none',
                       borderRadius: '12px',
                     }}
+                    onClick={() => setImproveVisible(true)}
                   />
                 </Badge>
                 <Button 
@@ -297,7 +343,7 @@ const Dashboard: React.FC = () => {
         </Card>
 
         {/* Stats Cards */}
-        <Row gutter={[16, 16]} style={{ marginTop: '16px', width: '100%' }}>
+        <Row gutter={[window.innerWidth < 768 ? 12 : 16, window.innerWidth < 768 ? 12 : 16]} style={{ marginTop: window.innerWidth < 768 ? '12px' : '16px', width: '100%' }}>
           {topCards.map((card, index) => (
             <Col xs={24} sm={12} lg={6} key={index}>
               <motion.div
@@ -311,17 +357,28 @@ const Dashboard: React.FC = () => {
                     ...cardStyle,
                     background: card.bgColor,
                     border: `1px solid ${card.color}40`,
+                    borderRadius: '16px',
+                    boxShadow: '0 4px 20px rgba(0,0,0,0.15)',
+                    transition: 'all 0.3s ease'
                   }}
-                  styles={{ body: { padding: '24px' } }}
+                  styles={{ body: { padding: window.innerWidth < 768 ? '16px' : '24px' } }}
                 >
                   <Row justify="space-between" align="middle" style={{ width: '100%' }}>
                     <Col>
                       <div style={{ marginBottom: '8px' }}>
-                        <Text style={{ color: 'white', fontSize: '14px', fontWeight: 500 }}>
+                        <Text style={{ 
+                          color: 'white', 
+                          fontSize: window.innerWidth < 768 ? '12px' : '14px', 
+                          fontWeight: 500 
+                        }}>
                           {card.title}
                         </Text>
                       </div>
-                      <Title level={2} style={{ color: 'white', margin: 0 }}>
+                      <Title level={window.innerWidth < 768 ? 3 : 2} style={{ 
+                        color: 'white', 
+                        margin: 0,
+                        fontSize: window.innerWidth < 768 ? '1.5rem' : '2rem'
+                      }}>
                         {card.value}
                       </Title>
                       <div style={{ marginTop: '8px' }}>
@@ -591,6 +648,7 @@ const Dashboard: React.FC = () => {
                         fontWeight: 600,
                         backdropFilter: 'blur(10px)',
                       }}
+                      onClick={() => navigate('/crm/add-client')}
                       onMouseEnter={(e) => {
                         (e.target as HTMLElement).style.background = 'rgba(255, 255, 255, 0.1)';
                         (e.target as HTMLElement).style.transform = 'translateY(-2px)';
@@ -618,6 +676,7 @@ const Dashboard: React.FC = () => {
                         fontWeight: 600,
                         backdropFilter: 'blur(10px)',
                       }}
+                      onClick={() => navigate('/crm/schedule-meeting')}
                       onMouseEnter={(e) => {
                         (e.target as HTMLElement).style.background = 'rgba(255, 255, 255, 0.1)';
                         (e.target as HTMLElement).style.transform = 'translateY(-2px)';
@@ -645,6 +704,7 @@ const Dashboard: React.FC = () => {
                         fontWeight: 600,
                         backdropFilter: 'blur(10px)',
                       }}
+                      onClick={() => navigate('/crm/new-lead')}
                       onMouseEnter={(e) => {
                         (e.target as HTMLElement).style.background = 'rgba(255, 255, 255, 0.1)';
                         (e.target as HTMLElement).style.transform = 'translateY(-2px)';
@@ -672,6 +732,7 @@ const Dashboard: React.FC = () => {
                         fontWeight: 600,
                         backdropFilter: 'blur(10px)',
                       }}
+                      onClick={() => navigate('/crm/reports')}
                       onMouseEnter={(e) => {
                         (e.target as HTMLElement).style.background = 'rgba(255, 255, 255, 0.1)';
                         (e.target as HTMLElement).style.transform = 'translateY(-2px)';
@@ -690,6 +751,50 @@ const Dashboard: React.FC = () => {
           </Col>
         </Row>
       </motion.div>
+      <Modal
+        title="הזדמנות לשיפור תנאים ללקוחות"
+        open={improveVisible}
+        centered
+        onCancel={() => setImproveVisible(false)}
+        footer={
+          <Space style={{ direction: 'rtl' }}>
+            <Button type="primary" onClick={() => { setImproveVisible(false); try { navigate('/crm/schedule-meeting'); } catch {} }}>
+              עבור ליומן
+            </Button>
+            <Button onClick={() => setImproveVisible(false)}>
+              טיפול מאוחר יותר
+            </Button>
+          </Space>
+        }
+        styles={{
+          header: { direction: 'rtl', textAlign: 'right', background: 'transparent' },
+          body: { direction: 'rtl', textAlign: 'right' },
+          footer: { direction: 'rtl' }
+        }}
+      >
+        <Typography.Paragraph style={{ color: theme.colors.text }}>
+          המערכת זיהתה כי קיימים 3 לקוחות שניתן לשפר להם את התנאים ו/או לעבור למסלולים מניבים יותר.
+          תואמו פגישות במהלך השבוע בשעות הבאות:
+        </Typography.Paragraph>
+        <List
+          itemLayout="vertical"
+          dataSource={improvementItems}
+          renderItem={(item) => (
+            <List.Item style={{ borderInlineStart: `4px solid ${theme.colors.accent}`, paddingInlineStart: 12 }}>
+              <List.Item.Meta
+                title={<span style={{ color: theme.colors.text, fontWeight: 700 }}>{item.name}</span>}
+                description={<span style={{ color: theme.colors.textSecondary }}>{item.summary}</span>}
+              />
+              <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+                <Typography.Text style={{ color: theme.colors.text, fontWeight: 600 }}>
+                  נקבע פגישה
+                </Typography.Text>
+                <Tag color="blue" style={{ borderRadius: 8 }}>{item.meeting}</Tag>
+              </div>
+            </List.Item>
+          )}
+        />
+      </Modal>
     </div>
   );
 };

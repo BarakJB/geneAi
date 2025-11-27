@@ -156,7 +156,7 @@ const TaskManagement: React.FC = () => {
   const getStatusColor = (status: Task['status']) => {
     switch (status) {
       case 'todo': return '#6c757d';
-      case 'in-progress': return '#007bff';
+      case 'in-progress': return '#6c757d';
       case 'done': return '#28a745';
       default: return '#6c757d';
     }
@@ -298,26 +298,27 @@ const TaskManagement: React.FC = () => {
       >
         <Card
           sx={{
-            mb: 2,
+            mb: { xs: 1.5, sm: 2 },
             bgcolor: '#1a1a1a',
             border: '1px solid #333',
-            borderRadius: 2,
+            borderRadius: 3,
             transition: 'all 0.3s ease',
+            boxShadow: '0 2px 12px rgba(0,0,0,0.2)',
             '&:hover': {
-              transform: 'translateY(-2px)',
-              boxShadow: '0 8px 24px rgba(255,255,255,0.1)',
-              borderColor: '#555',
+              transform: 'translateY(-4px)',
+              boxShadow: '0 8px 32px rgba(255,255,255,0.15)',
+              borderColor: '#666',
             }
           }}
         >
-          <CardContent sx={{ p: 3 }}>
+          <CardContent sx={{ p: { xs: 2, sm: 3 } }}>
             <Box sx={{ 
               display: 'flex', 
               flexDirection: { xs: 'column', sm: 'row' },
               justifyContent: 'space-between', 
               alignItems: 'flex-start', 
-              gap: 2,
-              mb: 2 
+              gap: { xs: 1.5, sm: 2 },
+              mb: { xs: 1.5, sm: 2 }
             }}>
               <Box sx={{ flex: 1 }}>
                 <Typography 
@@ -326,7 +327,7 @@ const TaskManagement: React.FC = () => {
                     color: 'white',
                     fontWeight: 600,
                     mb: 1,
-                    fontSize: '1.1rem'
+                    fontSize: { xs: '1rem', sm: '1.1rem' }
                   }}
                 >
                   {task.title}
@@ -335,27 +336,38 @@ const TaskManagement: React.FC = () => {
                   variant="body2" 
                   sx={{ 
                     color: '#ccc',
-                    mb: 2,
-                    lineHeight: 1.5
+                    mb: { xs: 1.5, sm: 2 },
+                    lineHeight: 1.5,
+                    fontSize: { xs: '0.875rem', sm: '0.875rem' }
                   }}
                 >
                   {task.description}
                 </Typography>
               </Box>
               
-              <Box sx={{ display: 'flex', gap: 1, ml: 2 }}>
+              <Box sx={{ 
+                display: 'flex', 
+                gap: 1, 
+                ml: { xs: 0, sm: 2 },
+                mt: { xs: 1, sm: 0 },
+                alignSelf: { xs: 'flex-end', sm: 'flex-start' }
+              }}>
                 <Tooltip title="עריכה">
                   <IconButton
                     onClick={() => handleEdit(task)}
                     sx={{
                       bgcolor: '#333',
                       color: '#fff',
-                      '&:hover': { bgcolor: '#444' },
-                      width: 36,
-                      height: 36
+                      '&:hover': { 
+                        bgcolor: '#444',
+                        transform: 'scale(1.05)'
+                      },
+                      width: { xs: 32, sm: 36 },
+                      height: { xs: 32, sm: 36 },
+                      transition: 'all 0.2s ease-in-out'
                     }}
                   >
-                    <EditIcon sx={{ fontSize: 18 }} />
+                    <EditIcon sx={{ fontSize: { xs: 16, sm: 18 } }} />
                   </IconButton>
                 </Tooltip>
                 <Tooltip title="מחיקה">
@@ -364,25 +376,37 @@ const TaskManagement: React.FC = () => {
                     sx={{
                       bgcolor: '#333',
                       color: '#fff',
-                      '&:hover': { bgcolor: '#d32f2f' },
-                      width: 36,
-                      height: 36
+                      '&:hover': { 
+                        bgcolor: '#d32f2f',
+                        transform: 'scale(1.05)'
+                      },
+                      width: { xs: 32, sm: 36 },
+                      height: { xs: 32, sm: 36 },
+                      transition: 'all 0.2s ease-in-out'
                     }}
                   >
-                    <DeleteIcon sx={{ fontSize: 18 }} />
+                    <DeleteIcon sx={{ fontSize: { xs: 16, sm: 18 } }} />
                   </IconButton>
                 </Tooltip>
               </Box>
             </Box>
 
-            <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 2, mb: 2 }}>
+            <Box sx={{ 
+              display: 'flex', 
+              flexWrap: 'wrap', 
+              gap: { xs: 1, sm: 1.5 }, 
+              mb: { xs: 1.5, sm: 2 } 
+            }}>
               <Chip
                 label={getStatusText(task.status)}
                 sx={{
                   bgcolor: getStatusColor(task.status),
                   color: 'white',
                   fontWeight: 600,
-                  fontSize: '0.75rem'
+                  fontSize: { xs: '0.7rem', sm: '0.75rem' },
+                  height: { xs: 24, sm: 28 },
+                  borderRadius: 2,
+                  boxShadow: '0 1px 4px rgba(0,0,0,0.2)'
                 }}
               />
               <Chip
@@ -391,7 +415,10 @@ const TaskManagement: React.FC = () => {
                   bgcolor: getPriorityColor(task.priority),
                   color: 'white',
                   fontWeight: 600,
-                  fontSize: '0.75rem'
+                  fontSize: { xs: '0.7rem', sm: '0.75rem' },
+                  height: { xs: 24, sm: 28 },
+                  borderRadius: 2,
+                  boxShadow: '0 1px 4px rgba(0,0,0,0.2)'
                 }}
               />
               {task.tags.map((tag, index) => (
@@ -402,7 +429,13 @@ const TaskManagement: React.FC = () => {
                   sx={{
                     borderColor: '#666',
                     color: '#ccc',
-                    fontSize: '0.75rem'
+                    fontSize: { xs: '0.7rem', sm: '0.75rem' },
+                    height: { xs: 24, sm: 28 },
+                    borderRadius: 2,
+                    '&:hover': {
+                      borderColor: '#888',
+                      bgcolor: 'rgba(255,255,255,0.05)'
+                    }
                   }}
                 />
               ))}
@@ -457,8 +490,8 @@ const TaskManagement: React.FC = () => {
                     size="small"
                     onClick={() => handleStatusChange(task.id, 'in-progress')}
                     sx={{
-                      color: '#007bff',
-                      borderColor: '#007bff',
+                      color: '#6c757d',
+                      borderColor: '#6c757d',
                       '&:hover': { bgcolor: 'rgba(0,123,255,0.1)' }
                     }}
                     variant="outlined"
@@ -503,7 +536,6 @@ const TaskManagement: React.FC = () => {
     <Box sx={{ 
       py: 1, 
       px: 1, 
-      bgcolor: '#000', 
       minHeight: '100vh',
       maxWidth: '100%',
       width: '100%',
@@ -517,21 +549,30 @@ const TaskManagement: React.FC = () => {
         {/* Header */}
         <Paper
           sx={{
-            p: 3,
-            mb: 3,
+            p: { xs: 2, sm: 3 },
+            mb: { xs: 2, sm: 3 },
             bgcolor: '#1a1a1a',
             border: '1px solid #333',
-            borderRadius: 2,
+            borderRadius: 3,
+            boxShadow: '0 4px 20px rgba(0,0,0,0.15)',
           }}
         >
-          <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 3 }}>
+          <Box sx={{ 
+            display: 'flex', 
+            flexDirection: { xs: 'column', sm: 'row' },
+            justifyContent: 'space-between', 
+            alignItems: { xs: 'flex-start', sm: 'center' }, 
+            mb: 3,
+            gap: { xs: 2, sm: 0 }
+          }}>
             <Box>
               <Typography 
                 variant="h4" 
                 sx={{ 
                   color: 'white',
                   fontWeight: 700,
-                  mb: 1
+                  mb: 1,
+                  fontSize: { xs: '1.75rem', sm: '2.125rem' }
                 }}
               >
                 ניהול משימות
@@ -539,7 +580,8 @@ const TaskManagement: React.FC = () => {
               <Typography 
                 variant="body1" 
                 sx={{ 
-                  color: '#ccc'
+                  color: '#ccc',
+                  fontSize: { xs: '0.875rem', sm: '1rem' }
                 }}
               >
                 ניהול ומעקב אחר משימות ופרויקטים של הלקוחות
@@ -553,9 +595,18 @@ const TaskManagement: React.FC = () => {
                 bgcolor: '#fff',
                 color: '#000',
                 fontWeight: 600,
+                borderRadius: 2,
+                px: { xs: 2, sm: 3 },
+                py: { xs: 1, sm: 1.5 },
+                fontSize: { xs: '0.875rem', sm: '1rem' },
+                boxShadow: '0 2px 8px rgba(255,255,255,0.2)',
                 '&:hover': {
-                  bgcolor: '#f0f0f0'
-                }
+                  bgcolor: '#f0f0f0',
+                  boxShadow: '0 4px 12px rgba(255,255,255,0.3)',
+                  transform: 'translateY(-1px)'
+                },
+                transition: 'all 0.2s ease-in-out',
+                alignSelf: { xs: 'stretch', sm: 'auto' }
               }}
             >
               משימה חדשה
@@ -571,88 +622,157 @@ const TaskManagement: React.FC = () => {
               md: 'repeat(3, 1fr)', 
               lg: 'repeat(5, 1fr)' 
             },
-            gap: 2,
+            gap: { xs: 1.5, sm: 2 },
             width: '100%'
           }}>
             <Card
               sx={{
-                p: 2,
+                p: { xs: 1.5, sm: 2 },
                 textAlign: 'center',
                 bgcolor: '#333',
                 color: 'white',
                 minWidth: { xs: '100%', sm: 120 },
-                border: '1px solid #555'
+                border: '1px solid #555',
+                borderRadius: 2,
+                boxShadow: '0 2px 8px rgba(0,0,0,0.2)',
+                transition: 'all 0.2s ease-in-out',
+                '&:hover': {
+                  transform: 'translateY(-2px)',
+                  boxShadow: '0 4px 16px rgba(0,0,0,0.3)',
+                  borderColor: '#666'
+                }
               }}
             >
-              <Typography variant="h4" sx={{ fontWeight: 700, color: '#fff' }}>
+              <Typography variant="h4" sx={{ 
+                fontWeight: 700, 
+                color: '#fff',
+                fontSize: { xs: '1.5rem', sm: '2rem' }
+              }}>
                 {stats.total}
               </Typography>
-              <Typography variant="body2" sx={{ color: '#ccc' }}>
+              <Typography variant="body2" sx={{ 
+                color: '#ccc',
+                fontSize: { xs: '0.75rem', sm: '0.875rem' }
+              }}>
                 סך הכל משימות
               </Typography>
             </Card>
             <Card
               sx={{
-                p: 2,
+                p: { xs: 1.5, sm: 2 },
                 textAlign: 'center',
                 bgcolor: '#6c757d',
                 color: 'white',
-                minWidth: 120
+                minWidth: { xs: '100%', sm: 120 },
+                borderRadius: 2,
+                boxShadow: '0 2px 8px rgba(0,0,0,0.2)',
+                transition: 'all 0.2s ease-in-out',
+                '&:hover': {
+                  transform: 'translateY(-2px)',
+                  boxShadow: '0 4px 16px rgba(0,0,0,0.3)',
+                  bgcolor: '#7a8288'
+                }
               }}
             >
-              <Typography variant="h4" sx={{ fontWeight: 700 }}>
+              <Typography variant="h4" sx={{ 
+                fontWeight: 700,
+                fontSize: { xs: '1.5rem', sm: '2rem' }
+              }}>
                 {stats.todo}
               </Typography>
-              <Typography variant="body2">
+              <Typography variant="body2" sx={{
+                fontSize: { xs: '0.75rem', sm: '0.875rem' }
+              }}>
                 לביצוע
               </Typography>
             </Card>
             <Card
               sx={{
-                p: 2,
+                p: { xs: 1.5, sm: 2 },
                 textAlign: 'center',
-                bgcolor: '#007bff',
+                bgcolor: '#6c757d',
                 color: 'white',
-                minWidth: 120
+                minWidth: { xs: '100%', sm: 120 },
+                borderRadius: 2,
+                boxShadow: '0 2px 8px rgba(0,0,0,0.2)',
+                transition: 'all 0.2s ease-in-out',
+                '&:hover': {
+                  transform: 'translateY(-2px)',
+                  boxShadow: '0 4px 16px rgba(0,0,0,0.3)',
+                  bgcolor: '#0d6efd'
+                }
               }}
             >
-              <Typography variant="h4" sx={{ fontWeight: 700 }}>
+              <Typography variant="h4" sx={{ 
+                fontWeight: 700,
+                fontSize: { xs: '1.5rem', sm: '2rem' }
+              }}>
                 {stats.inProgress}
               </Typography>
-              <Typography variant="body2">
+              <Typography variant="body2" sx={{
+                fontSize: { xs: '0.75rem', sm: '0.875rem' }
+              }}>
                 בביצוע
               </Typography>
             </Card>
             <Card
               sx={{
-                p: 2,
+                p: { xs: 1.5, sm: 2 },
                 textAlign: 'center',
                 bgcolor: '#28a745',
                 color: 'white',
-                minWidth: 120
+                minWidth: { xs: '100%', sm: 120 },
+                borderRadius: 2,
+                boxShadow: '0 2px 8px rgba(0,0,0,0.2)',
+                transition: 'all 0.2s ease-in-out',
+                '&:hover': {
+                  transform: 'translateY(-2px)',
+                  boxShadow: '0 4px 16px rgba(0,0,0,0.3)',
+                  bgcolor: '#198754'
+                }
               }}
             >
-              <Typography variant="h4" sx={{ fontWeight: 700 }}>
+              <Typography variant="h4" sx={{ 
+                fontWeight: 700,
+                fontSize: { xs: '1.5rem', sm: '2rem' }
+              }}>
                 {stats.done}
               </Typography>
-              <Typography variant="body2">
+              <Typography variant="body2" sx={{
+                fontSize: { xs: '0.75rem', sm: '0.875rem' }
+              }}>
                 הושלם
               </Typography>
             </Card>
             <Card
               sx={{
-                p: 2,
+                p: { xs: 1.5, sm: 2 },
                 textAlign: 'center',
                 bgcolor: '#333',
                 color: 'white',
                 minWidth: { xs: '100%', sm: 120 },
-                border: '1px solid #555'
+                border: '1px solid #555',
+                borderRadius: 2,
+                boxShadow: '0 2px 8px rgba(0,0,0,0.2)',
+                transition: 'all 0.2s ease-in-out',
+                '&:hover': {
+                  transform: 'translateY(-2px)',
+                  boxShadow: '0 4px 16px rgba(0,0,0,0.3)',
+                  borderColor: '#666'
+                }
               }}
             >
-              <Typography variant="h4" sx={{ fontWeight: 700, color: '#fff' }}>
+              <Typography variant="h4" sx={{ 
+                fontWeight: 700, 
+                color: '#fff',
+                fontSize: { xs: '1.5rem', sm: '2rem' }
+              }}>
                 {stats.completionRate}%
               </Typography>
-              <Typography variant="body2" sx={{ color: '#ccc' }}>
+              <Typography variant="body2" sx={{ 
+                color: '#ccc',
+                fontSize: { xs: '0.75rem', sm: '0.875rem' }
+              }}>
                 הושלמו
               </Typography>
             </Card>
@@ -682,17 +802,18 @@ const TaskManagement: React.FC = () => {
         {/* Filters */}
         <Paper
           sx={{
-            p: 3,
-            mb: 3,
+            p: { xs: 2, sm: 3 },
+            mb: { xs: 2, sm: 3 },
             bgcolor: '#1a1a1a',
             border: '1px solid #333',
-            borderRadius: 2,
+            borderRadius: 3,
+            boxShadow: '0 4px 20px rgba(0,0,0,0.15)',
           }}
         >
           <Box sx={{ 
             display: 'flex', 
             flexDirection: { xs: 'column', md: 'row' },
-            gap: 2, 
+            gap: { xs: 2, md: 2 }, 
             alignItems: 'stretch',
             width: '100%'
           }}>
@@ -710,7 +831,7 @@ const TaskManagement: React.FC = () => {
                   ),
                   sx: {
                     bgcolor: '#333',
-                    borderRadius: 1,
+                    borderRadius: 2,
                     '& .MuiOutlinedInput-notchedOutline': {
                       borderColor: '#555',
                     },
@@ -725,6 +846,10 @@ const TaskManagement: React.FC = () => {
                       color: '#888',
                       opacity: 1,
                     },
+                    transition: 'all 0.2s ease-in-out',
+                    '&:hover': {
+                      boxShadow: '0 2px 8px rgba(255,255,255,0.1)'
+                    }
                   }
                 }}
               />

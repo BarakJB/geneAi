@@ -35,7 +35,7 @@ INSERT INTO insurance_types (id, type_name, type_code, description) VALUES
 -- =====================================================
 INSERT INTO task_categories (id, category_name, category_code, description, color_code) VALUES
 (UUID(), 'ייעוץ פנסיוני', 'PENSION_ADV', 'ייעוץ ותכנון פנסיוני', '#4CAF50'),
-(UUID(), 'ביטוח', 'INSURANCE', 'משימות הקשורות לביטוח', '#2196F3'),
+(UUID(), 'ביטוח', 'INSURANCE', 'משימות הקשורות לביטוח', '#98c8ef'),
 (UUID(), 'דיווחים', 'REPORTS', 'הכנת דוחות ומסמכים', '#FF9800'),
 (UUID(), 'שירות לקוחות', 'CUSTOMER_SRV', 'שירות ותמיכה ללקוחות', '#9C27B0'),
 (UUID(), 'פגישה', 'MEETING', 'פגישות עם לקוחות', '#F44336'),

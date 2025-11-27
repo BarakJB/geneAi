@@ -2,7 +2,7 @@ import React from 'react';
 import { useLocation } from 'react-router-dom';
 import Dashboard from './Dashboard';
 import PensionCalculator from '../PensionCalculator';
-import SalaryCalculator from '../SalaryCalculator';
+import SalaryCalculatorPage from '../SalaryCalculatorPage';
 import PayslipAnalyzer from '../PayslipAnalyzer';
 import AddClient from './AddClient';
 import InsuranceWebView from '../InsuranceWebView';
@@ -14,6 +14,9 @@ import TaskManagement from './TaskManagement';
 import PensionXMLImport from './PensionXMLImport';
 import ClientManagement from './ClientManagement';
 import ClientPersonalArea from './ClientPersonalArea';
+import CampaignManagement from './CampaignManagement';
+import BionicAgent from './BionicAgent';
+import WebsiteBuilder from './WebsiteBuilder';
  
 import SidebarLayout from '../Layout/SidebarLayout';
  
@@ -91,7 +94,7 @@ const CRMWrapper: React.FC = () => {
       case '/crm/pension':
         return '📈 מחשבון פנסיה';
       case '/crm/salary':
-        return '💰 מחשבון שכר';
+        return '💰 מחשבון שכר סוכן';
       case '/crm/payslip':
         return '📄 ניתוח תלוש';
       case '/crm/add-client':
@@ -106,6 +109,12 @@ const CRMWrapper: React.FC = () => {
         return '📅 קביעת פגישה';
       case '/crm/reports':
         return '📊 דוחות ואנליטיקה';
+      case '/crm/campaigns':
+        return '📢 ניהול קמפיינים';
+      case '/crm/bionic-agent':
+        return '🤖 Bionic Agent';
+      case '/crm/website-builder':
+        return '🌐 בונה אתרי תדמית';
       case '/crm/tasks':
         return '📋 ניהול משימות';
       case '/crm/xml-import':
@@ -128,7 +137,7 @@ const CRMWrapper: React.FC = () => {
       case '/crm/pension':
         return <PensionCalculator />;
       case '/crm/salary':
-        return <SalaryCalculator />;
+        return <SalaryCalculatorPage />;
       case '/crm/payslip':
         return <PayslipAnalyzer />;
       case '/crm/add-client':
@@ -143,7 +152,13 @@ const CRMWrapper: React.FC = () => {
         return <ScheduleMeeting />;
       case '/crm/reports':
         return <Reports />;
-              case '/crm/tasks':
+      case '/crm/campaigns':
+        return <CampaignManagement />;
+      case '/crm/bionic-agent':
+        return <BionicAgent />;
+      case '/crm/website-builder':
+        return <WebsiteBuilder />;
+      case '/crm/tasks':
           return <TaskManagement />;
       case '/crm/xml-import':
         return <PensionXMLImport />;

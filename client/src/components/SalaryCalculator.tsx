@@ -944,7 +944,7 @@ const SalaryCalculator: React.FC = () => {
                     style={{
                       background: theme.mode === 'dark' 
                         ? 'linear-gradient(135deg, #1890ff 0%, #096dd9 100%)'
-                        : 'linear-gradient(135deg, #007bff 0%, #0056b3 100%)',
+                        : 'linear-gradient(135deg, #6c757d 0%, #0056b3 100%)',
                       border: 'none',
                         borderRadius: '12px', 
                       height: '48px',

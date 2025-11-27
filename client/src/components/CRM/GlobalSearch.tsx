@@ -216,7 +216,7 @@ const GlobalSearch: React.FC<GlobalSearchProps> = ({ isOpen, onClose }) => {
         case 'client':
           return '#4CAF50';
         case 'task':
-          return '#2196F3';
+          return '#98c8ef';
         case 'pension':
           return '#FF9800';
         case 'employment':

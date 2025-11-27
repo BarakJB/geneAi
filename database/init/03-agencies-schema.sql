@@ -25,7 +25,7 @@ CREATE TABLE agencies (
     -- Branding
     icon_url VARCHAR(500) COMMENT 'קישור לאייקון הסוכנות',
     logo_url VARCHAR(500) COMMENT 'קישור ללוגו הסוכנות',
-    primary_color VARCHAR(7) DEFAULT '#2196F3' COMMENT 'צבע ראשי לממשק',
+    primary_color VARCHAR(7) DEFAULT '#98c8ef' COMMENT 'צבע ראשי לממשק',
     secondary_color VARCHAR(7) DEFAULT '#FFC107' COMMENT 'צבע משני',
     
     -- Configuration

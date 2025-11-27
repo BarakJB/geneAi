@@ -30,6 +30,9 @@ import UploadIcon from '@mui/icons-material/CloudUploadOutlined';
 import GroupIcon from '@mui/icons-material/GroupOutlined';
 import LightModeIcon from '@mui/icons-material/LightModeOutlined';
 import DarkModeIcon from '@mui/icons-material/DarkModeOutlined';
+import CampaignIcon from '@mui/icons-material/CampaignOutlined';
+import SmartToyIcon from '@mui/icons-material/SmartToyOutlined';
+import WebIcon from '@mui/icons-material/PublicOutlined';
 import { useLocation, useNavigate } from 'react-router-dom';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import { useTheme } from '@mui/material/styles';
@@ -72,7 +75,7 @@ export default function SidebarLayout({ title = 'Dashboard', children }: Sidebar
   const navItems = [
     { label: 'דאשבורד', icon: <DashboardIcon />, path: '/crm/dashboard' },
     { label: 'מחשבון פנסיה', icon: <CalculateIcon />, path: '/crm/pension' },
-    { label: 'מחשבון שכר', icon: <MoneyIcon />, path: '/crm/salary' },
+    { label: 'מחשבון שכר סוכן', icon: <MoneyIcon />, path: '/crm/salary' },
     { label: 'ניתוח תלוש', icon: <ReceiptIcon />, path: '/crm/payslip' },
     { label: 'הוספת לקוח', icon: <PersonAddIcon />, path: '/crm/add-client' },
     { label: 'הר הביטוח', icon: <SecurityIcon />, path: '/crm/insurance' },
@@ -86,6 +89,11 @@ export default function SidebarLayout({ title = 'Dashboard', children }: Sidebar
     { label: 'ליד חדש', icon: <SearchIcon />, path: '/crm/new-lead' },
     { label: 'קבע פגישה', icon: <EventIcon />, path: '/crm/schedule-meeting' },
     { label: 'דוחות', icon: <BarChartIcon />, path: '/crm/reports' },
+    { divider: true },
+    { label: 'ניהול קמפיינים', icon: <CampaignIcon />, path: '/crm/campaigns' },
+    { label: 'Bionic Agent', icon: <SmartToyIcon />, path: '/crm/bionic-agent' },
+    { divider: true },
+    { label: 'בונה אתרי תדמית', icon: <WebIcon />, path: '/crm/website-builder' },
     { divider: true },
     { label: 'יציאה', icon: <LogoutIcon />, path: '/crm/login' },
   ] as const;
@@ -131,17 +139,26 @@ export default function SidebarLayout({ title = 'Dashboard', children }: Sidebar
               <MenuOpenIcon sx={{ fontSize: { xs: 20, sm: 24 } }} />
             </IconButton>
           </Tooltip>
-          <Typography 
-            variant="h6" 
-            sx={{ 
-              fontWeight: 700, 
-              color: appTheme.theme.colors.text,
-              fontSize: { xs: '1.1rem', sm: '1.25rem' }, // Responsive font size
-              flex: 1
-            }}
-          >
-            {title}
-          </Typography>
+          <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, flex: 1 }}>
+            <img 
+              src="/cover-logo.png" 
+              alt="Cover" 
+              style={{ 
+                height: '28px', 
+                width: 'auto'
+              }} 
+            />
+            <Typography 
+              variant="h6" 
+              sx={{ 
+                fontWeight: 700, 
+                color: appTheme.theme.colors.text,
+                fontSize: { xs: '1.1rem', sm: '1.25rem' }, // Responsive font size
+              }}
+            >
+              {title}
+            </Typography>
+          </Box>
           
           {/* Theme Toggle Button */}
           <Tooltip title={appTheme.theme.mode === 'dark' ? 'מצב בהיר' : 'מצב כהה'}>

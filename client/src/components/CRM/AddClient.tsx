@@ -64,7 +64,7 @@ interface FileUpload {
 }
 
 const AddClient: React.FC = () => {
-  const { theme } = useTheme();
+  // const { theme } = useTheme(); // Removed as it's now handled by global CSS
   const [form] = Form.useForm();
 
   // CSS styling now handled by global theme.css
@@ -103,10 +103,7 @@ const AddClient: React.FC = () => {
 
   const cardStyle: React.CSSProperties = {
     borderRadius: '16px',
-    boxShadow: '0 8px 32px rgba(255, 255, 255, 0.1)',
-    border: '1px solid rgba(255, 255, 255, 0.15)',
-    background: 'rgba(255, 255, 255, 0.05)',
-    backdropFilter: 'blur(20px)',
+    // background and border colors now handled by global CSS
     width: '60%',
     maxWidth: '1000px',
     minWidth: '600px',
@@ -286,7 +283,7 @@ const AddClient: React.FC = () => {
             <div style={{ textAlign: 'center', direction: 'rtl' }}>
               <Space>
                 <UserAddOutlined style={{ color: '#52c41a', fontSize: '24px' }} />
-                <Title level={2} style={{ color: 'white', margin: 0 }}>
+                <Title level={2} style={{ margin: 0 }}>
                   הוספת לקוח חדש
                 </Title>
               </Space>
@@ -295,7 +292,6 @@ const AddClient: React.FC = () => {
           styles={{
             header: {
               background: 'transparent',
-              borderBottom: '1px solid rgba(255, 255, 255, 0.15)',
               textAlign: 'center',
               direction: 'rtl',
             },
@@ -344,8 +340,8 @@ const AddClient: React.FC = () => {
                   key: '1',
                   label: (
                     <Space>
-                      <UserAddOutlined style={{ color: 'white' }} />
-                      <span style={{ color: 'white' }}>פרטים אישיים</span>
+                      <UserAddOutlined  />
+                      <span >פרטים אישיים</span>
                     </Space>
                   ),
                   children: (
@@ -357,7 +353,7 @@ const AddClient: React.FC = () => {
                       <Row gutter={[24, 24]}>
                         <Col xs={24} sm={12}>
                           <Form.Item
-                        label={<span style={{ color: 'white' }}>שם פרטי</span>}
+                        label="שם פרטי"
                             validateStatus={errors.firstName ? 'error' : ''}
                             help={errors.firstName}
                             style={{ textAlign: 'right' }}
@@ -517,8 +513,8 @@ style={{ borderRadius: '8px' }}
                   key: '2',
                   label: (
                     <Space>
-                      <EditOutlined style={{ color: 'white' }} />
-                      <span style={{ color: 'white' }}>פרטים נוספים</span>
+                      <EditOutlined  />
+                      <span >פרטים נוספים</span>
                     </Space>
                   ),
                   children: (
@@ -680,8 +676,8 @@ style={{ textAlign: 'right' }}
                   key: '3',
                   label: (
                     <Space>
-                      <UploadOutlined style={{ color: 'white' }} />
-                      <span style={{ color: 'white' }}>מסמכים</span>
+                      <UploadOutlined  />
+                      <span >מסמכים</span>
                     </Space>
                   ),
                   children: (
@@ -695,17 +691,17 @@ style={{ textAlign: 'right' }}
                           <p className="ant-upload-drag-icon">
                             <CloudUploadOutlined style={{ fontSize: '48px', color: '#1890ff' }} />
                           </p>
-                          <p style={{ fontSize: '18px', color: 'white' }}>
+                          <p style={{ fontSize: '18px' }}>
                             גרור קבצים לכאן או לחץ להעלאה
                           </p>
-                          <p style={{ color: 'rgba(255, 255, 255, 0.7)' }}>
+                          <p>
                             תמיכה בקבצי PDF, DOC, DOCX, JPG, PNG
                           </p>
                         </AntUpload.Dragger>
 
                         {uploadedFiles.length > 0 && (
                           <div style={{ marginTop: '24px' }}>
-                            <Title level={4} style={{ color: 'white', textAlign: 'right' }}>
+                            <Title level={4} style={{ textAlign: 'right' }}>
                               קבצים שהועלו:
                             </Title>
                             <List
@@ -713,7 +709,7 @@ style={{ textAlign: 'right' }}
                               renderItem={(file) => (
                                 <List.Item>
                                   <List.Item.Meta
-                                    title={<Text style={{ color: 'white' }}>{file.name}</Text>}
+                                    title={<Text>{file.name}</Text>}
                                     description={
                                       <Text type="secondary">
                                         {(file.size / 1024 / 1024).toFixed(2)} MB
@@ -723,7 +719,6 @@ style={{ textAlign: 'right' }}
                                 </List.Item>
                               )}
                               style={{
-                                background: 'rgba(255, 255, 255, 0.05)',
                                 borderRadius: '8px',
                                 padding: '16px',
                               }}
@@ -738,7 +733,7 @@ style={{ textAlign: 'right' }}
             />
           </Form>
 
-          <Divider style={{ borderColor: 'rgba(255, 255, 255, 0.15)' }} />
+          <Divider />
 
           <Row gutter={[16, 16]} justify="center">
             <Col xs={24} sm={8}>
@@ -750,8 +745,6 @@ style={{ textAlign: 'right' }}
                   icon={<SaveOutlined />}
                   onClick={handleSave}
                   style={{
-                    background: 'linear-gradient(135deg, #52c41a 0%, #389e0d 100%)',
-                    border: 'none',
                     borderRadius: '12px',
                     height: '48px',
                     fontSize: '16px',
@@ -770,9 +763,6 @@ style={{ textAlign: 'right' }}
                   icon={<ClearOutlined />}
                   onClick={handleClear}
                   style={{
-                    background: 'rgba(255, 255, 255, 0.1)',
-                    border: '1px solid rgba(255, 255, 255, 0.3)',
-                    color: 'white',
                     borderRadius: '12px',
                     height: '48px',
                     fontSize: '16px',

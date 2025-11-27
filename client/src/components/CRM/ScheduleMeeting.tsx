@@ -41,6 +41,7 @@ interface Meeting {
 
 const ScheduleMeeting: React.FC = () => {
   const [form] = Form.useForm();
+  const [upcoming, setUpcoming] = useState<Array<{ name: string; type: string; date: string; time: string; location: string }>>([]);
   const [meeting, setMeeting] = useState<Meeting>({
     clientName: '',
     clientEmail: '',
@@ -113,6 +114,15 @@ const ScheduleMeeting: React.FC = () => {
     };
   }, []);
 
+  React.useEffect(() => {
+    // mock meetings of the agent
+    setUpcoming([
+      { name: 'ישראל ישראלי', type: 'ייעוץ', date: new Date(Date.now() + 24*3600*1000).toLocaleDateString('he-IL'), time: '09:30', location: 'זום' },
+      { name: 'דנה כהן', type: 'הצגת הצעה', date: new Date(Date.now() + 3*24*3600*1000).toLocaleDateString('he-IL'), time: '13:00', location: 'המשרד שלנו' },
+      { name: 'דוד לוי', type: 'פגישת מעקב', date: new Date(Date.now() + 5*24*3600*1000).toLocaleDateString('he-IL'), time: '16:30', location: 'שיחת טלפון' },
+    ]);
+  }, []);
+
   const containerStyle: React.CSSProperties = {
     padding: '24px',
     background: 'transparent',
@@ -171,6 +181,56 @@ const ScheduleMeeting: React.FC = () => {
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6 }}
       >
+        {/* Upcoming meetings (mock) */}
+        <Card
+          style={{ ...cardStyle, width: '100%', maxWidth: '900px', minWidth: 'auto', marginBottom: 16 }}
+          title={
+            <div style={{ textAlign: 'center', direction: 'rtl' }}>
+              <Space>
+                <CalendarOutlined style={{ color: '#52c41a', fontSize: '22px' }} />
+                <Title level={3} style={{ color: 'white', margin: 0 }}>
+                  פגישות קרובות
+                </Title>
+              </Space>
+            </div>
+          }
+          styles={{
+            header: { background: 'transparent', borderBottom: '1px solid rgba(255,255,255,0.15)' },
+            body: { padding: '20px', direction: 'rtl' }
+          }}
+        >
+          <Row gutter={[12, 12]}>
+            {upcoming.map((m, idx) => (
+              <Col xs={24} key={`${m.name}-${idx}`}>
+                <div style={{
+                  display: 'flex',
+                  justifyContent: 'space-between',
+                  alignItems: 'center',
+                  padding: '12px 16px',
+                  borderRadius: 12,
+                  border: '1px solid rgba(255,255,255,0.2)',
+                  background: 'rgba(255,255,255,0.06)'
+                }}>
+                  <Space direction="vertical" size={2} style={{ color: 'white' }}>
+                    <strong>{m.name}</strong>
+                    <span style={{ opacity: 0.8 }}>{m.type} • {m.location}</span>
+                  </Space>
+                  <Space size="large" style={{ color: 'white' }}>
+                    <Space>
+                      <ClockCircleOutlined />
+                      <span>{m.time}</span>
+                    </Space>
+                    <Space>
+                      <CalendarOutlined />
+                      <span>{m.date}</span>
+                    </Space>
+                  </Space>
+                </div>
+              </Col>
+            ))}
+          </Row>
+        </Card>
+
         <Card
           style={cardStyle}
           title={
